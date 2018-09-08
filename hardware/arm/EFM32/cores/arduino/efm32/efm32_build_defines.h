@@ -115,6 +115,21 @@
 #ifndef USE_USART2
 #define USE_USART2 1
 #endif
+#ifndef USE_USART3
+#define USE_USART3 1
+#endif
+#ifndef USE_USART4
+#define USE_USART4 1
+#endif
+#ifndef USE_USART5
+#define USE_USART5 1
+#endif
+#ifndef USE_UART0
+#define USE_UART0 1
+#endif
+#ifndef USE_UART1
+#define USE_UART1 1
+#endif
 
 #ifndef USE_LEUART0
 #define USE_LEUART0 1

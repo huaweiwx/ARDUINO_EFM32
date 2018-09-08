@@ -49,11 +49,11 @@ EFM32G222.menu.osc.hfxO.build.osc=32000000L -DUSE_HFXO
 EFM32G222.menu.osc.Lfxo=LFXO
 EFM32G222.menu.osc.LfxO.build.osc=32768L -DUSE_LFXO
 
-EFM32G222.menu.serial.serial2=USART1(PC0/1)
-EFM32G222.menu.serial.serial2.build.extra_flags_serial=-DMENU_SERIAL=Serial2
 EFM32G222.menu.serial.serial1=USART0(PE10/11) 
 EFM32G222.menu.serial.serial1.build.extra_flags_serial=-DMENU_SERIAL=Serial1
-EFM32G222.menu.serial.leserial=LEUART0(PD4/5)
+EFM32G222.menu.serial.serial2=USART1(PC0/1)
+EFM32G222.menu.serial.serial2.build.extra_flags_serial=-DMENU_SERIAL=Serial2
+EFM32G222.menu.serial.leserial=LEUART0(9600bps only PD4/5)
 EFM32G222.menu.serial.leserial.build.extra_flags_serial=-DMENU_SERIAL=LESerial0
 
 EFM32G222.build.vect=VECT_TAB_OFFSET=0x0000000
@@ -128,11 +128,11 @@ EFM32TG110.menu.osc.hfxO.build.osc=3200000L -DUSE_HFXO
 EFM32TG110.menu.osc.Lfxo=LFXO
 EFM32TG110.menu.osc.LfxO.build.osc=32768L -DUSE_LFXO
 
-EFM32TG110.menu.serial.serial2=USART1(PD0/1)
-EFM32TG110.menu.serial.serial2.build.extra_flags_serial=-DMENU_SERIAL=Serial2
 EFM32TG110.menu.serial.serial1=USART0(PE10/11) 
 EFM32TG110.menu.serial.serial1.build.extra_flags_serial=-DMENU_SERIAL=Serial1
-EFM32TG110.menu.serial.leserial=LEUART0(PD4/5)
+EFM32TG110.menu.serial.serial2=USART1(PD0/1)
+EFM32TG110.menu.serial.serial2.build.extra_flags_serial=-DMENU_SERIAL=Serial2
+EFM32TG110.menu.serial.leserial=LEUART0(9600bps only PD4/5)
 EFM32TG110.menu.serial.leserial.build.extra_flags_serial=-DMENU_SERIAL=LESerial0
 
 EFM32TG110.build.vect=VECT_TAB_OFFSET=0x0000000

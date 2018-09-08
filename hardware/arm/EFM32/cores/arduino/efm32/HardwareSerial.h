@@ -23,8 +23,8 @@
 #include "print.h"
 
 #if !(defined(SERIAL_TX_BUFFER_SIZE) && defined(SERIAL_RX_BUFFER_SIZE))
-#define SERIAL_TX_BUFFER_SIZE 64
-#define SERIAL_RX_BUFFER_SIZE 256
+ #define SERIAL_TX_BUFFER_SIZE 32
+ #define SERIAL_RX_BUFFER_SIZE 256
 #endif
  
 #define SERIAL_8N1 0x06
@@ -35,7 +35,6 @@
 
 #define SERIAL_8O1 0x36
 #define SERIAL_8O2 0x3E
-
 
 typedef struct {
     USART_TypeDef *instance;
@@ -59,13 +58,12 @@ typedef struct {
 #endif
 }USART_Buf_TypeDef;
 
-
- 
 class HardwareSerial : public Stream {
  public:
     HardwareSerial(USART_TypeDef *instance);
+    /* Pin accessors */	
+    void setRouteLoc(uint8_t route = 0);
 
-    /* Set up/tear down */
     void begin(const uint32_t baud,uint8_t config = SERIAL_8N1);
     void end();
     virtual int available(void);
@@ -75,17 +73,14 @@ class HardwareSerial : public Stream {
     virtual void flush(void);
     virtual size_t write(uint8_t);
     using Print::write;
-	operator bool() { return true; }  // UART always active
-
-    /* Pin accessors */	
-    void setRouteLoc(uint8_t route = 0);
-
-    USART_TypeDef *instance = NULL;
-	USART_Buf_TypeDef *buf = NULL;
+	operator bool() { return true; }
 
   private:
+	USART_Buf_TypeDef *buf = NULL;
+    USART_TypeDef *instance = NULL;
 	uint32_t routeLoc = 0;
     uint32_t USART_ROUTE_LOCATION_LOCx = USART_ROUTE_LOCATION_LOC0;
+
   protected:
 };
 
