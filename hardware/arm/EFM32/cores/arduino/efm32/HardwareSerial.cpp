@@ -380,16 +380,14 @@ void HardwareSerial::end(void) {
 
 }
 
-int HardwareSerial::available(void) 
-{
-  if (buf->rxEnd >= buf->rxStart) return (buf->rxEnd - buf->rxStart); /*0~ SERIAL_RX_BUFFER_SIZE-1*/
+int HardwareSerial::available(void) {
+  if (buf->rxEnd >= buf->rxStart) return (buf->rxEnd - buf->rxStart);
   return SERIAL_RX_BUFFER_SIZE + buf->rxEnd - buf->rxStart;
 }
 
 int HardwareSerial::availableForWrite(void)
 {
-  if (buf->txEnd >= buf->txStart) return SERIAL_TX_BUFFER_SIZE -1 - (buf->txEnd-buf->txStart); /*SERIAL_RX_BUFFER_SIZE-1 ~ 0*/
-  return (buf->txStart - buf->txEnd);
+	return buf->txEnd != buf->txStart;
 }
 
 int HardwareSerial::peek(void)
@@ -402,23 +400,22 @@ int HardwareSerial::peek(void)
 }
 
 void HardwareSerial::flush(void) {
-  while (buf->txEnd != buf-> txStart);
+  while (buf->txEnd % SERIAL_TX_BUFFER_SIZE !=buf-> txStart % SERIAL_TX_BUFFER_SIZE);
 }
 
 int HardwareSerial::read(void) {
   if (available()) {
-	uint8_t rtn =  buf->rxBuffer[buf->rxStart++];
-    buf->rxStart %=	SERIAL_RX_BUFFER_SIZE;
-    return rtn;
+    return buf->rxBuffer[buf->rxStart++ % SERIAL_RX_BUFFER_SIZE];
   } else {
     return -1;
   }
 }
 
 size_t HardwareSerial::write(unsigned char ch) {
-  while (availableForWrite() == 0);   /*wait*/
-  buf->txBuffer[buf->txEnd++] = ch;
-  buf->txEnd %= SERIAL_TX_BUFFER_SIZE;
+  while ((buf->txEnd + 1) % SERIAL_TX_BUFFER_SIZE == buf->txStart % SERIAL_TX_BUFFER_SIZE);
+  
+  buf->txBuffer[buf->txEnd % SERIAL_TX_BUFFER_SIZE] = ch;
+  buf->txEnd++;
   USART_IntEnable(buf->instance, USART_IEN_TXC);
   USART_IntSet(buf->instance, USART_IFS_TXC);
   return 1;
@@ -426,40 +423,49 @@ size_t HardwareSerial::write(unsigned char ch) {
 #if defined(UART0)||defined(UART1)
 void UART_TXCallback(USART_Buf_TypeDef *interruptUART) {
   if (interruptUART->txStart != interruptUART->txEnd){
-	    UART_Tx((UART_TypeDef *)interruptUART->instance, interruptUART->txBuffer[interruptUART->txStart++]);
+		uint8_t c = interruptUART->txBuffer[interruptUART->txStart % SERIAL_TX_BUFFER_SIZE];
+	    UART_Tx((UART_TypeDef *)interruptUART->instance, c);
+        interruptUART->txStart++;
 		interruptUART->txStart %=SERIAL_TX_BUFFER_SIZE;
   }
 }
 void UART_RXCallback(USART_Buf_TypeDef *interruptUART) {
   if(((interruptUART->rxEnd+1) % SERIAL_RX_BUFFER_SIZE) ==interruptUART->txStart) return;  /*over*/
-  interruptUART->rxBuffer[interruptUART->rxEnd++] = USART_Rx((UART_TypeDef *)interruptUART->instance);
+  interruptUART->rxBuffer[interruptUART->rxEnd % SERIAL_RX_BUFFER_SIZE] = USART_Rx((UART_TypeDef *)interruptUART->instance);
+  interruptUART->rxEnd++;
   interruptUART->rxEnd %=SERIAL_RX_BUFFER_SIZE;
 }
 #endif
 
 void USART_TXCallback(USART_Buf_TypeDef *interruptUART) {
   if (interruptUART->txStart != interruptUART->txEnd){
-	    USART_Tx(interruptUART->instance, interruptUART->txBuffer[interruptUART->txStart++]);
+		uint8_t c = interruptUART->txBuffer[interruptUART->txStart % SERIAL_TX_BUFFER_SIZE];
+	    USART_Tx(interruptUART->instance, c);
+        interruptUART->txStart++;
 		interruptUART->txStart %=SERIAL_TX_BUFFER_SIZE;
   }
 }
 
 void USART_RXCallback(USART_Buf_TypeDef *interruptUART) {
   if(((interruptUART->rxEnd+1) % SERIAL_RX_BUFFER_SIZE) ==interruptUART->txStart) return;  /*over*/
-  interruptUART->rxBuffer[interruptUART->rxEnd++] = USART_Rx(interruptUART->instance);
+  interruptUART->rxBuffer[interruptUART->rxEnd % SERIAL_RX_BUFFER_SIZE] = USART_Rx(interruptUART->instance);
+  interruptUART->rxEnd++;
   interruptUART->rxEnd %=SERIAL_RX_BUFFER_SIZE;
 }
 
 void LEUART_TXCallback(USART_Buf_TypeDef *interruptUART) {
   if (interruptUART->txStart != interruptUART->txEnd) {
-	    LEUART_Tx((LEUART_TypeDef *)interruptUART->instance, interruptUART->txBuffer[interruptUART->txStart++]);
+		uint8_t c = interruptUART->txBuffer[interruptUART->txStart % SERIAL_TX_BUFFER_SIZE];
+	    LEUART_Tx((LEUART_TypeDef *)interruptUART->instance, c);
+        interruptUART->txStart++;
 		interruptUART->txStart %=SERIAL_TX_BUFFER_SIZE;
   }
 }
 
 void LEUART_RXCallback(USART_Buf_TypeDef *interruptUART) {
   if(((interruptUART->rxEnd+1) % SERIAL_RX_BUFFER_SIZE) ==interruptUART->txStart) return;  /*over*/
-  interruptUART->rxBuffer[interruptUART->rxEnd++] = LEUART_Rx((LEUART_TypeDef *)interruptUART->instance);
+  interruptUART->rxBuffer[interruptUART->rxEnd] = LEUART_Rx((LEUART_TypeDef *)interruptUART->instance);
+  interruptUART->rxEnd++;
   interruptUART->rxEnd %=SERIAL_RX_BUFFER_SIZE;
 }
 
