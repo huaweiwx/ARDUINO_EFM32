@@ -47,7 +47,13 @@
 #include "efm32/efm32pwm.h"
 #include "efm32/efm32dac.h"
 #include "efm32/efm32weak.h"
-
+#define INTERNAL1V25 0
+#define DEFAULT  0
+#define INTERNAL2V5  1
+#define INTERNAL     1
+#define INTERNAL3V3  2
+#define INTERNALVDD  2
+#define EXTERNAL     2
 //#include "utils/utils_all.h"
 
 void setup();

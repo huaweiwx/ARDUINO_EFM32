@@ -26,6 +26,7 @@
 #include "em_emu.h"
 #include "em_dac.h"
 
+
 #include "efm32_build_defines.h"
 #include "variant.h"
 #include "wiring_constants.h"
@@ -35,10 +36,10 @@
 extern "C"{
 #endif
 
-void setDacRef(uint32_t ref);
+void     setDacRef(uint32_t ref);
 uint32_t dacValueCalcul(float vOut, float vRef);
 uint32_t dacValueCalculRef(float vOut);
-void  dacWrite(uint32_t channel,uint32_t dacValue);
+void     dacWrite(uint32_t channel,uint32_t dacValue);
 
 #ifdef __cplusplus
 } //extern "C"{
@@ -49,7 +50,7 @@ class DAC {
 	inline void Init(uint32_t ref = dacRef1V25){
 		setDacRef(ref);
 	}
-	inline void ref(uint32_t ref){
+	inline void reference(uint32_t ref){
 		setDacRef(ref);
 	}
 	inline void write(uint32_t val){

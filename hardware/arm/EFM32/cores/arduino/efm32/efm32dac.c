@@ -33,7 +33,7 @@
 #include "wiring_constants.h"
 #include "wiring_digital.h"
 
-static uint32_t dacRef = dacRefVDD; /* dacRef1V25 / dacRef2V5 */
+static uint32_t dacRef = dacRef1V25; /* dacRef1V25 / dacRef2V5 / dacRefVDD;*/
 
 void setDacRef(uint32_t ref){
 	dacRef = ref;

@@ -41,15 +41,21 @@ static ADC_Res_TypeDef readResolution = adcRes12Bit;
 void analogReadResolution(ADC_Res_TypeDef resolution) {
     readResolution = resolution;
 }
-
+int analogGetResolution(void){
+	return readResolution;
+}
 
 //ADC_Ref_TypeDef readReference 
 //  adcRef1V25      = _ADC_SINGLECTRL_REF_1V25 /** Internal 1.25V reference. */
-//  adcRef2V5       = _ADC_SINGLECTRL_REF_2V5,  /** Internal 2.5V reference. */
-//  adcRefVDD       = _ADC_SINGLECTRL_REF_VDD,/** Buffered VDD. */
+//  adcRef2V5       = _ADC_SINGLECTRL_REF_2V5, /** Internal 2.5V reference. */
+//  adcRefVDD       = _ADC_SINGLECTRL_REF_VDD, /** Buffered VDD. */
+
 static ADC_Ref_TypeDef readReference  = adcRef1V25;
-void   analogReadReference(ADC_Ref_TypeDef ref) {
-    readReference = ref;
+void   analogReference(uint8_t ref) {
+    readReference = (ADC_Ref_TypeDef)ref;
+}
+int analogGetReference(void){
+	return readReference;
 }
 
 
@@ -78,7 +84,7 @@ void   analogReadReference(ADC_Ref_TypeDef ref) {
 //  adcSingleInputCh6Ch7   = _ADC_SINGLECTRL_INPUTSEL_CH6CH7,   /**< Positive Ch6, negative Ch7. */
 //  adcSingleInputDiff0    = 4                                  /**< Differential 0. */
 
-int analogReadChannel(ADC_SingleInput_TypeDef adcSingleInputChx){
+int analogReadChannel(ADC_SingleInput_TypeDef adcSingleInputChx, uint8_t diff){
   // Enable ADC0 clock
   CMU_ClockEnable(cmuClock_ADC0, true);
   // Declare init structs
@@ -88,8 +94,8 @@ int analogReadChannel(ADC_SingleInput_TypeDef adcSingleInputChx){
   // Modify init structs and initialize
   init.prescale = ADC_PrescaleCalc(adcFreq, 0); // Init to max ADC clock for Series 0
 
-  initSingle.diff       = false;        // single ended
-  initSingle.reference  = readReference;    // internal 2.5V reference
+  initSingle.diff       = diff;            // false  single ended /true differential
+  initSingle.reference  = readReference;   // internal 2.5V reference
   initSingle.resolution = readResolution;  // 12-bit resolution
 
   // Select ADC input. See README for corresponding EXP header pin.
@@ -111,5 +117,5 @@ int analogReadChannel(ADC_SingleInput_TypeDef adcSingleInputChx){
 int analogRead(uint32_t ulPin) { 
 	uint32_t ch = g_Pin2PortMapArray[ulPin].adc_channel;
 	if (ch == NO_ADC) return 0;
-	return analogReadChannel((ADC_SingleInput_TypeDef)ch);
+	return analogReadChannel((ADC_SingleInput_TypeDef)ch, false);
 }
