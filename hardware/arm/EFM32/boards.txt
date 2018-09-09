@@ -38,16 +38,25 @@ EFM32G222.menu.device_variant.32.upload.maximum_size=32768
 EFM32G222.menu.device_variant.32.upload.maximum_data_size=8192
 
 
-EFM32G222.build.f_cpu=32000000L
-EFM32G222.menu.osc.hfrc=HFRCO (28MHz)
-EFM32G222.menu.osc.hfrc.build.osc=14000000L  -DUSE_HFRCO
-EFM32G222.menu.osc.hfrc.build.f_cpu=28000000L
-EFM32G222.menu.osc.lfrc=LFRCO
-EFM32G222.menu.osc.lfrc.build.osc=32768L -DUSE_LFRCO
-EFM32G222.menu.osc.hfxo=HFXO (32M)
-EFM32G222.menu.osc.hfxO.build.osc=32000000L -DUSE_HFXO
-EFM32G222.menu.osc.Lfxo=LFXO
-EFM32G222.menu.osc.LfxO.build.osc=32768L -DUSE_LFXO
+EFM32G222.build.f_cpu=14000000L
+EFM32G222.menu.osc.hfrc28=HFRCO (28MHz)
+EFM32G222.menu.osc.hfrc28.build.osc=28000000L  -DUSE_HFRCO
+EFM32G222.menu.osc.hfrc28.build.f_cpu=28000000L
+EFM32G222.menu.osc.hfrc21=HFRCO (21MHz)
+EFM32G222.menu.osc.hfrc21.build.osc=21000000L  -DUSE_HFRCO
+EFM32G222.menu.osc.hfrc21.build.f_cpu=21000000L
+EFM32G222.menu.osc.hfrc14=HFRCO (14MHz)
+EFM32G222.menu.osc.hfrc14.build.osc=14000000L  -DUSE_HFRCO
+EFM32G222.menu.osc.hfrc14.build.f_cpu=14000000L
+EFM32G222.menu.osc.hfrc11=HFRCO (11MHz)
+EFM32G222.menu.osc.hfrc11.build.osc=11000000L  -DUSE_HFRCO
+EFM32G222.menu.osc.hfrc11.build.f_cpu=11000000L
+#EFM32G222.menu.osc.lfrc=LFRCO
+#EFM32G222.menu.osc.lfrc.build.osc=32768L -DUSE_LFRCO
+#EFM32G222.menu.osc.hfxo=HFXO (32M)
+#EFM32G222.menu.osc.hfxO.build.osc=32000000L -DUSE_HFXO
+#EFM32G222.menu.osc.Lfxo=LFXO
+#EFM32G222.menu.osc.LfxO.build.osc=32768L -DUSE_LFXO
 
 EFM32G222.menu.serial.serial1=USART0(PE10/11) 
 EFM32G222.menu.serial.serial1.build.extra_flags_serial=-DMENU_SERIAL=Serial1
@@ -118,15 +127,24 @@ EFM32TG110.menu.device_variant.16.upload.maximum_size=16384
 EFM32TG110.menu.device_variant.16.upload.maximum_data_size=4096
 
 EFM32TG110.build.f_cpu=32000000L
-EFM32TG110.menu.osc.hfrc=HFRCO (28MHz)
-EFM32TG110.menu.osc.hfrc.build.osc=14000000L  -DUSE_HFRCO
-EFM32TG110.menu.osc.hfrc.build.f_cpu=28000000L
-EFM32TG110.menu.osc.lfrc=LFRCO
-EFM32TG110.menu.osc.lfrc.build.osc=32768L -DUSE_LFRCO
-EFM32TG110.menu.osc.hfxo=HFXO 32M
-EFM32TG110.menu.osc.hfxO.build.osc=3200000L -DUSE_HFXO
-EFM32TG110.menu.osc.Lfxo=LFXO
-EFM32TG110.menu.osc.LfxO.build.osc=32768L -DUSE_LFXO
+EFM32TG110.menu.osc.hfrc28=HFRCO (28MHz)
+EFM32TG110.menu.osc.hfrc28.build.osc=28000000L  -DUSE_HFRCO
+EFM32TG110.menu.osc.hfrc28.build.f_cpu=28000000L
+EFM32TG110.menu.osc.hfrc21=HFRCO (21MHz)
+EFM32TG110.menu.osc.hfrc21.build.osc=21000000L  -DUSE_HFRCO
+EFM32TG110.menu.osc.hfrc21.build.f_cpu=21000000L
+EFM32TG110.menu.osc.hfrc14=HFRCO (14MHz)
+EFM32TG110.menu.osc.hfrc14.build.osc=14000000L  -DUSE_HFRCO
+EFM32TG110.menu.osc.hfrc14.build.f_cpu=14000000L
+EFM32TG110.menu.osc.hfrc11=HFRCO (11MHz)
+EFM32TG110.menu.osc.hfrc11.build.osc=11000000L  -DUSE_HFRCO
+EFM32TG110.menu.osc.hfrc11.build.f_cpu=11000000L
+#EFM32TG110.menu.osc.lfrc=LFRCO
+#EFM32TG110.menu.osc.lfrc.build.osc=32768L -DUSE_LFRCO
+#EFM32TG110.menu.osc.hfxo=HFXO 32M
+#EFM32TG110.menu.osc.hfxO.build.osc=3200000L -DUSE_HFXO
+#EFM32TG110.menu.osc.Lfxo=LFXO
+#EFM32TG110.menu.osc.LfxO.build.osc=32768L -DUSE_LFXO
 
 EFM32TG110.menu.serial.serial1=USART0(PE10/11) 
 EFM32TG110.menu.serial.serial1.build.extra_flags_serial=-DMENU_SERIAL=Serial1
