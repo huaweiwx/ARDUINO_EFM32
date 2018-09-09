@@ -58,8 +58,12 @@ int readPin  READPIN;
 unsigned long i = 0;
 
 void setup() {
-  Serial.begin(115200);
+
+/* setup alternate location default is 0*/  
+//  Serial.setRouteLoc(1); /*set to 1. the serial port's Alternate LOCATION see datasheet*/
+  Serial.begin(9600); /*for LEUART baudrate is 9600 only */
   delay(5000); // Gives us time to active the serial monitor
+  
   pinMode(writePin, OUTPUT);
   pinMode(readPin, INPUT);
   Serial.println(F(""));

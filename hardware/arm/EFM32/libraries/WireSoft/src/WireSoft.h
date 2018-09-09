@@ -59,7 +59,7 @@
 
 class TwoWireSoft : public WireBase {
  public:
-    uint8_t	i2c_delay;
+    uint8_t	i2c_delay = SOFT_FAST;
     uint8_t	scl_pin;
     uint8_t	sda_pin;
 	
@@ -126,10 +126,11 @@ class TwoWireSoft : public WireBase {
      * Accept pin numbers for SCL and SDA lines. Set the delay needed
      * to create the timing for I2C's Standard Mode and Fast Mode.
      */
-#if  defined(SDA)&&defined(SCL)
- TwoWireSoft(uint8_t sda=SDA, uint8_t scl=SCL, uint8_t delay=SOFT_STANDARD);
-#else
- TwoWireSoft(uint8_t sda, uint8_t scl, uint8_t delay=SOFT_STANDARD);
+    TwoWireSoft();
+#if  defined(SDA)&& defined(SCL)
+    TwoWireSoft(uint8_t sda=SDA, uint8_t scl=SCL, uint8_t delay=SOFT_STANDARD);
+#else	
+    TwoWireSoft(uint8_t sda, uint8_t scl, uint8_t delay=SOFT_STANDARD);
 #endif
 
     /*

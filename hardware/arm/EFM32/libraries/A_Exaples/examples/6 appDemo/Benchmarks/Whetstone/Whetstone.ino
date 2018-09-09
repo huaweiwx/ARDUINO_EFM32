@@ -49,8 +49,12 @@
 */
 
 void setup() {
-  Serial.begin(115200);
-  delay(1000);
+
+/* setup alternate location default is 0*/  
+//  Serial.setRouteLoc(1); /*set to 1. the serial port's Alternate LOCATION see datasheet*/
+  Serial.begin(9600); /*for LEUART baudrate is 9600 only */
+
+  delay(2000);
   while (!Serial) {}
   Serial.println("Whetstone Benchmark, Version 1.2 (Language: C)");
 }

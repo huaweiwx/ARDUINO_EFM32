@@ -8,7 +8,10 @@
 void setup() {
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(LED_BUILTIN, OUTPUT);
-  Serial.begin(115200);
+
+/* setup alternate location default is 0*/  
+//  Serial.setRouteLoc(1); /*set to 1. the serial port's Alternate LOCATION see datasheet*/
+  Serial.begin(9600); /*for LEUART baudrate is 9600 only */
 }
 
 // the loop function runs over and over again forever

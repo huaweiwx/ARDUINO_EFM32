@@ -173,6 +173,13 @@ TwoWireSoft::TwoWireSoft(uint8_t sda, uint8_t scl, uint8_t delay) : i2c_delay(de
     this->sda_pin=sda;
 }
 
+TwoWireSoft::TwoWireSoft() {
+#if  defined(SDA)&& defined(SCL)
+    this->scl_pin=SCL;
+    this->sda_pin=SDA;
+#endif
+}
+
 void TwoWireSoft::begin(uint8_t self_addr) {
     tx_buf_idx = 0;
     tx_buf_overflow = false;
@@ -202,5 +209,5 @@ TwoWireSoft::~TwoWireSoft() {
 }
 
 // Declare the instance that the users of the library can use
-//TwoWireSoft WireSoft(SCL, SDA, SOFT_STANDARD);
+TwoWireSoft WireSoft;
 //TwoWireSoft WireSoft(PB6, PB7, SOFT_STANDARD);
