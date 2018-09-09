@@ -31,6 +31,8 @@ int analogGetReference(void);
 
 int analogReadChannel(ADC_SingleInput_TypeDef adcSingleInputChx,uint8_t diff);
 int analogRead(uint8_t pin);
+float convertToCelsius(int32_t adcSample);
+float convertToFahrenheit(uint32_t adcSample);
 
 #ifdef __cplusplus
 }
@@ -79,7 +81,18 @@ class ADC {
 	  }
 	inline int readTemp(void){
 		return 	analogReadChannel(adcSingleInputTemp,false);
-	 }
+	}
+	
+    float celsiusTemp(void){
+		int temp = readTemp();
+	    return 	convertToCelsius(temp);
+	}
+    float fahrenheitTemp(void){
+		int temp = readTemp();
+	    return 	convertToFahrenheit(temp);
+	}
+	
+
 };
 
 #endif

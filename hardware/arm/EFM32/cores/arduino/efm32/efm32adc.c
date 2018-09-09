@@ -22,14 +22,11 @@
   SOFTWARE.
 */
 
-#include <stdio.h>
-#include "em_device.h"
-#include "em_chip.h"
-#include "em_cmu.h"
-#include "em_adc.h"
-#include "variant.h"
+#include <Arduino.h>
 
-#define adcFreq   13000000
+#ifndef adcFreq
+#define adcFreq   400000
+#endif
 
 //ADC_Res_TypeDef:
 //  adcRes12Bit = _ADC_SINGLECTRL_RES_12BIT, /**< 12 bit sampling. */
@@ -92,10 +89,11 @@ int analogReadChannel(ADC_SingleInput_TypeDef adcSingleInputChx, uint8_t diff){
   ADC_InitSingle_TypeDef initSingle = ADC_INITSINGLE_DEFAULT;
 
   // Modify init structs and initialize
+  init.timebase = ADC_TimebaseCalc(0);
   init.prescale = ADC_PrescaleCalc(adcFreq, 0); // Init to max ADC clock for Series 0
 
-  initSingle.diff       = diff;            // false  single ended /true differential
   initSingle.reference  = readReference;   // internal 2.5V reference
+  initSingle.diff       = diff;            // false  single ended /true differential
   initSingle.resolution = readResolution;  // 12-bit resolution
 
   // Select ADC input. See README for corresponding EXP header pin.
@@ -114,8 +112,42 @@ int analogReadChannel(ADC_SingleInput_TypeDef adcSingleInputChx, uint8_t diff){
   return  ADC_DataSingleGet(ADC0);
 }
 
-int analogRead(uint32_t ulPin) { 
+int analogRead(uint8_t ulPin) { 
 	uint32_t ch = g_Pin2PortMapArray[ulPin].adc_channel;
 	if (ch == NO_ADC) return 0;
 	return analogReadChannel((ADC_SingleInput_TypeDef)ch, false);
+}
+
+float convertToCelsius(int32_t adcSample){
+      float temp;
+  /* Factory calibration temperature from device information page. */
+      float cal_temp_0 = (float)((DEVINFO->CAL & _DEVINFO_CAL_TEMP_MASK)
+                             >> _DEVINFO_CAL_TEMP_SHIFT);
+
+      float cal_value_0 = (float)((DEVINFO->ADC0CAL2
+                               & _DEVINFO_ADC0CAL2_TEMP1V25_MASK)
+                              >> _DEVINFO_ADC0CAL2_TEMP1V25_SHIFT);
+
+  /* Temperature gradient (from datasheet) */
+     float t_grad = -6.27;
+
+    temp = (cal_temp_0 - ((cal_value_0 - adcSample)  / t_grad));
+
+   return temp;
+}
+  
+  /**************************************************************************//**
+ * @brief Convert ADC sample values to fahrenheit
+ * @param adcSample Raw value from ADC to be converted to fahrenheit
+ * @return The temperature in degrees Fahrenheit
+ *****************************************************************************/
+float convertToFahrenheit(uint32_t adcSample)
+{
+  float celsius;
+  float fahrenheit;
+  celsius = convertToCelsius(adcSample);
+
+  fahrenheit =  (celsius * (9.0/5.0)) + 32.0;
+
+  return fahrenheit;
 }

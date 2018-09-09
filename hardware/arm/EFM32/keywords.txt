@@ -17,7 +17,7 @@ setRouteLoc	KEYWORD2
 #dac
 setDacRef	KEYWORD2
 reference	KEYWORD2
-getReference
+getReference	KEYWORD2
 dacValueCalcul	KEYWORD2
 valueCalcul	KEYWORD2
 dacWrite	KEYWORD2
@@ -31,7 +31,10 @@ resolution	KEYWORD2
 getResolution	KEYWORD2
 readTemp	KEYWORD2
 analogReadChannel	KEYWORD2
-
+celsiusTemp	KEYWORD2
+fahrenheitTemp	KEYWORD2
+convertToCelsius	KEYWORD2
+convertToFahrenheit	KEYWORD2
 
 #######################################
 
