@@ -14,11 +14,7 @@
  *
  ******************************************************************************/
 
-#include "em_gpio.h"
-#include "em_core.h"
-#include "gpiointerrupt.h"
-#include "em_assert.h"
-#include "em_common.h"
+#include "arduino.h"
 
 /*******************************************************************************
  ********************************   MACROS   ***********************************
@@ -128,7 +124,7 @@ static void GPIOINT_IRQDispatcher(uint32_t iflags)
     if (callback)
     {
       /* call user callback */
-      callback(irqIdx);
+      callback();
     }
   }
 }
@@ -170,6 +166,28 @@ void GPIO_ODD_IRQHandler(void)
   GPIO_IntClear(iflags);
 
   GPIOINT_IRQDispatcher(iflags);
+}
+
+void attachInterrupt(uint8_t ulPin, GPIOINT_IrqCallbackPtr_t callback, int mode){
+	uint8_t pin = g_Pin2PortMapArray[ulPin].Pin_abstraction;
+	GPIOINT_CallbackRegister(pin, callback);
+	GPIOINT_Init();
+	switch (mode){
+		case RISING:
+		  GPIO_IntConfig(g_Pin2PortMapArray[ulPin].GPIOx_Port, pin, true, 0, true);
+		  break;
+		case FALLING:  
+		  GPIO_IntConfig(g_Pin2PortMapArray[ulPin].GPIOx_Port, pin, 0, true, true);
+		  break;
+		case CHANGE:
+		  GPIO_IntConfig(g_Pin2PortMapArray[ulPin].GPIOx_Port, pin, true, true,true);
+		  break;
+	}
+	GPIO_IntEnable(1<<pin);
+}
+
+void detachInterrupt(uint8_t ulPin) {
+	GPIOINT_CallbackRegister(g_Pin2PortMapArray[ulPin].Pin_abstraction,0);
 }
 
 /** @endcond */
