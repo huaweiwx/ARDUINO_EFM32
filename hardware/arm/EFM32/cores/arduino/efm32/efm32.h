@@ -28,6 +28,7 @@
 
 //mydriver:
 #include "armclock.h"
+#include "gpiointerrupt.h"
 
 #define GPIOA	gpio->P[0]
 #define GPIOB	gpio->P[1]
