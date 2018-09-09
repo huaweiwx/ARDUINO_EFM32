@@ -30,10 +30,9 @@
  #define LED_BUILTIN_MASK	0x01
 #endif
 
-#define A0  PD4
-#define A1  PD5
-#define A2  PD6
-#define A3  PD7
+#define A6  PD6
+#define A7  PD7
+#define Pin2AdcChannel(x) (((x) == A6)?6:(((x) == A7)?7:0xff))
 
 #ifdef __cplusplus
 extern "C"{
