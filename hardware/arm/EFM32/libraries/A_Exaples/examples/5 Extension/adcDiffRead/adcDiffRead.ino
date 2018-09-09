@@ -19,7 +19,12 @@ void setup() {
 // the loop function runs over and over again forever
 void loop() {
   digitalToggle(LED_BUILTIN);   // turn the LED on (HIGH is the voltage level)
-  Serial.print("ADC differential ch0 ch1 read:");
-  Serial.println(adc.read(A0, A1));
-  delay(2000);                  // wait for a second
+#if defined(A4 )&& defined(A5)  /* adc channel see datasheet */
+  Serial.print("ADC differential ch4 ch5 read:");
+  Serial.println(adc.read(A4, A5));
+#else
+  Serial.print("ADC differential ch6 ch7 read:");
+  Serial.println(adc.read(A6, A7));
+#endif  
+  delay(2000);  // wait for 2 seconds
 }
