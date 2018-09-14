@@ -65,6 +65,32 @@ extern void digitalToggle( uint32_t ulPin );
 
 #ifdef __cplusplus
 }
-#endif
+inline void pinMode(__ConstPin cPin, const uint32_t mode){
+	 		GPIO_PinModeSet(cPin.GPIOx_Port,
+							cPin.pin,
+							(GPIO_Mode_TypeDef)mode, 0);
+}
+inline void digitalWrite(__ConstPin cPin, const bool  val )
+{
+	if(val) {
+		GPIO_PinOutSet(cPin.GPIOx_Port,cPin.pin);
+	}else{
+		GPIO_PinOutClear(cPin.GPIOx_Port,cPin.pin);;
+	}
+}
 
+inline int digitalRead(__ConstPin cPin)
+{
+	/* can add a section here to see if pin is readable */	
+	return bitRead(GPIO_PortInGet(cPin.GPIOx_Port),cPin.pin);
+}
+
+inline void digitalToggle(__ConstPin cPin)
+{
+	/* can add a section here to see if pin is readable */
+	GPIO_PinOutToggle(cPin.GPIOx_Port,cPin.pin);
+}
+
+
+#endif
 #endif /* _WIRING_DIGITAL_ */

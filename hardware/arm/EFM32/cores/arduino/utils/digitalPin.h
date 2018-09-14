@@ -278,7 +278,7 @@ inline bool fastDigitalRead(uint8_t pin) {
 #endif  // CORE_TEENSY& STM32GENERIC
 //------------------------------------------------------------------------------
 inline void fastDigitalToggle(uint8_t pin) {
-#ifdef STM32GENERIC  //add by huaweiwx@sina.com 2017.12.24
+#if defined(STM32GENERIC)||defined(EFM32GENERIC)  //add by huaweiwx@sina.com 2018.8.28
   digitalToggle(pin);
 #else
   fastDigitalWrite(pin, !fastDigitalRead(pin));
