@@ -8,12 +8,11 @@ version=1.8.09
 
 compiler.extra_includes="-I{build.path}/sketch"  {includes}  "-I{build.core.path}/efm32" "-I{build.system.path}" "-I{build.system.path}/CMSIS/inc" "-I{build.system.path}/emlib/inc" "-I{build.system.path}/SiliconLabs/{build.series}/Include"
 
-
-compiler.warning_flags=-w -DDEBUG_LEVEL=DEBUG_NONE
-compiler.warning_flags.none=-w -DDEBUG_LEVEL=DEBUG_NONE
-compiler.warning_flags.default=-DDEBUG_LEVEL=DEBUG_NONE
-compiler.warning_flags.more=-Wall -DDEBUG_LEVEL=DEBUG_FAULT
-compiler.warning_flags.all=-Wall -Wextra -DDEBUG_LEVEL=DEBUG_ALL
+compiler.warning_flags=-w 
+compiler.warning_flags.none=-w {build.log_level}
+compiler.warning_flags.default={build.log_level}
+compiler.warning_flags.more=-Wall {build.log_level}
+compiler.warning_flags.all=-Wall -Wextra {build.log_level}
 
 # compiler variables
 # -----------------------------------------------------------------------------------
@@ -29,7 +28,7 @@ compiler.S.cmd=arm-none-eabi-gcc
 compiler.S.flags=-c -g -x assembler-with-cpp -MMD
 
 compiler.cpp.cmd=arm-none-eabi-g++
-compiler.cpp.flags=-c -g -Os -std=gnu++14 {compiler.warning_flags} -MMD -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -DBOARD_{build.variant} -D{build.vect}
+compiler.cpp.flags=-c -g -Os -std=gnu++14 {compiler.warning_flags} -MMD -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -fno-rtti -DBOARD_{build.variant} -D{build.vect}
 
 compiler.ar.cmd=arm-none-eabi-ar
 compiler.ar.flags=rcs

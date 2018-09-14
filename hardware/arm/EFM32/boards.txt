@@ -58,12 +58,12 @@ EFM32G222.menu.osc.hfrc11.build.f_cpu=11000000L
 #EFM32G222.menu.osc.Lfxo=LFXO
 #EFM32G222.menu.osc.LfxO.build.osc=32768L -DUSE_LFXO
 
-EFM32G222.menu.serial.serial1=USART0(PE10/11) 
-EFM32G222.menu.serial.serial1.build.extra_flags_serial=-DMENU_SERIAL=Serial1
-EFM32G222.menu.serial.serial2=USART1(PC0/1)
-EFM32G222.menu.serial.serial2.build.extra_flags_serial=-DMENU_SERIAL=Serial2
-EFM32G222.menu.serial.leserial=LEUART0(9600bps only PD4/5)
-EFM32G222.menu.serial.leserial.build.extra_flags_serial=-DMENU_SERIAL=LESerial0
+EFM32G222.menu.serial.leserial=LEUART0(0#PD4/5,1#PB13/14)
+EFM32G222.menu.serial.leserial.build.extra_flags_serial=-DMENU_SERIAL=SerialLEUART0
+EFM32G222.menu.serial.serial1=USART0(0#PE10/11,2#PC11/10) 
+EFM32G222.menu.serial.serial1.build.extra_flags_serial=-DMENU_SERIAL=SerialUSART0
+EFM32G222.menu.serial.serial2=USART1(0#PC0/1)
+EFM32G222.menu.serial.serial2.build.extra_flags_serial=-DMENU_SERIAL=SerialUSART1
 
 EFM32G222.build.vect=VECT_TAB_OFFSET=0x0000000
 EFM32G222.build.runin=FLASH
@@ -73,18 +73,19 @@ EFM32G222.build.uploadadr=0x00000000
 EFM32G222.menu.log.default=Release(no-exceptions)
 EFM32G222.menu.log.default.build.log_level=-fno-exceptions
 EFM32G222.menu.log.Release=Release(exceptions)
+EFM32G222.menu.log.Release.build.log_level=
 EFM32G222.menu.log.fatal=FATAL
-EFM32G222.menu.log.fatal.build.log_level=-D__LOG_LEVEL=1 -DUSE_FULL_ASSERT
+EFM32G222.menu.log.fatal.build.log_level=-D__LOG_LEVEL=1 -DDEBUG_EFM_USER
 EFM32G222.menu.log.error=ERROR
-EFM32G222.menu.log.error.build.log_level=-D__LOG_LEVEL=2 -DUSE_FULL_ASSERT
+EFM32G222.menu.log.error.build.log_level=-D__LOG_LEVEL=2 -DDEBUG_EFM_USER
 EFM32G222.menu.log.warning=WARNING
-EFM32G222.menu.log.warning.build.log_level=-D__LOG_LEVEL=3 -DUSE_FULL_ASSERT
+EFM32G222.menu.log.warning.build.log_level=-D__LOG_LEVEL=3 -DDEBUG_EFM_USER
 EFM32G222.menu.log.info=INFO
-EFM32G222.menu.log.info.build.log_level=-D__LOG_LEVEL=4 -DUSE_FULL_ASSERT
+EFM32G222.menu.log.info.build.log_level=-D__LOG_LEVEL=4 -DDEBUG_EFM_USER
 EFM32G222.menu.log.debug=DEBUG
-EFM32G222.menu.log.debug.build.log_level=-D__LOG_LEVEL=5 -DUSE_FULL_ASSERT
+EFM32G222.menu.log.debug.build.log_level=-D__LOG_LEVEL=5 -DDEBUG_EFM_USER
 EFM32G222.menu.log.trace=TRACE
-EFM32G222.menu.log.trace.build.log_level=-D__LOG_LEVEL=6 -DUSE_FULL_ASSERT
+EFM32G222.menu.log.trace.build.log_level=-D__LOG_LEVEL=6 -DDEBUG_EFM_USER
 
 EFM32G222.upload.file_type=bin
 EFM32G222.upload.params.quiet=no
@@ -146,16 +147,32 @@ EFM32TG110.menu.osc.hfrc11.build.f_cpu=11000000L
 #EFM32TG110.menu.osc.Lfxo=LFXO
 #EFM32TG110.menu.osc.LfxO.build.osc=32768L -DUSE_LFXO
 
-EFM32TG110.menu.serial.serial1=USART0(PE10/11) 
-EFM32TG110.menu.serial.serial1.build.extra_flags_serial=-DMENU_SERIAL=Serial1
-EFM32TG110.menu.serial.serial2=USART1(PD0/1)
-EFM32TG110.menu.serial.serial2.build.extra_flags_serial=-DMENU_SERIAL=Serial2
-EFM32TG110.menu.serial.leserial=LEUART0(9600bps only PD4/5)
-EFM32TG110.menu.serial.leserial.build.extra_flags_serial=-DMENU_SERIAL=LESerial0
+EFM32TG110.menu.serial.leserial=LEUART0(1#PB13/14,3#PF0/1,4#PF2/PA0)
+EFM32TG110.menu.serial.leserial.build.extra_flags_serial=-DMENU_SERIAL=SerialLEUART0
+EFM32TG110.menu.serial.serial2=USART1(0#PD0/1,2#PD7/6)
+EFM32TG110.menu.serial.serial2.build.extra_flags_serial=-DMENU_SERIAL=SerialUSART1
 
 EFM32TG110.build.vect=VECT_TAB_OFFSET=0x0000000
 EFM32TG110.build.runin=FLASH
 EFM32TG110.build.uploadadr=0x00000000
+
+#-------------------------------------- DEBUG & LOGLEVEL ---------------------------------------#
+EFM32TG110.menu.log.default=Release(no-exceptions)
+EFM32TG110.menu.log.default.build.log_level=-fno-exceptions
+EFM32TG110.menu.log.Release=Release(exceptions)
+EFM32TG110.menu.log.Release.build.log_level=
+EFM32TG110.menu.log.fatal=FATAL
+EFM32TG110.menu.log.fatal.build.log_level=-D__LOG_LEVEL=1 -DDEBUG_EFM_USER
+EFM32TG110.menu.log.error=ERROR
+EFM32TG110.menu.log.error.build.log_level=-D__LOG_LEVEL=2 -DDEBUG_EFM_USER
+EFM32TG110.menu.log.warning=WARNING
+EFM32TG110.menu.log.warning.build.log_level=-D__LOG_LEVEL=3 -DDEBUG_EFM_USER
+EFM32TG110.menu.log.info=INFO
+EFM32TG110.menu.log.info.build.log_level=-D__LOG_LEVEL=4 -DDEBUG_EFM_USER
+EFM32TG110.menu.log.debug=DEBUG
+EFM32TG110.menu.log.debug.build.log_level=-D__LOG_LEVEL=5 -DDEBUG_EFM_USER
+EFM32TG110.menu.log.trace=TRACE
+EFM32TG110.menu.log.trace.build.log_level=-D__LOG_LEVEL=6 -DDEBUG_EFM_USER
 
 #--------------------------UPLOAD METHODS------------------------------
 EFM32TG110.upload.file_type=bin
