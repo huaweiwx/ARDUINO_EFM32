@@ -45,7 +45,6 @@ extern void pinMode( uint32_t ulPin, uint32_t ulMode )
 		break ;
 
     }
-
 }
 
 extern void digitalWrite( uint32_t ulPin, uint32_t ulVal )

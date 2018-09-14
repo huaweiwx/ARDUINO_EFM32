@@ -19,9 +19,9 @@
 #include "em_device.h"
 
 
-#define CHANGE  1
-#define FALLING 2
-#define RISING  3
+//#define CHANGE  1
+//#define FALLING 2
+//#define RISING  3
 
 #ifdef __cplusplus
 extern "C" {

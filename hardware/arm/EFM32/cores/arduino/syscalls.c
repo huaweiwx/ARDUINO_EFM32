@@ -34,7 +34,7 @@ caddr_t _sbrk(int incr)
 {
 	extern char end asm("end");
 	static char *heap_end;
-	char *prev_heap_end,*min_stack_ptr;
+	char *prev_heap_end;
 
 	if (heap_end == 0)
 		heap_end = &end;
@@ -42,6 +42,7 @@ caddr_t _sbrk(int incr)
 	prev_heap_end = heap_end;
 
 #if (FREERTOS >0)
+	char *min_stack_ptr;
 	/* Use the NVIC offset register to locate the main stack pointer. */
 	min_stack_ptr = (char*)(*(unsigned int *)*(unsigned int *)0xE000ED08);
 	/* Locate the STACK bottom address */

@@ -10,10 +10,13 @@
 #ifdef __cplusplus
 
     class __ConstPin {
-    public:
-      constexpr __ConstPin(const int val): val(val) {};
-      constexpr operator int() const { return val; }
-      const int val;
+		public:
+			constexpr __ConstPin(const GPIO_Port_TypeDef GPIOx_Port,const  uint32_t pin, const int val)
+			                    :GPIOx_Port(GPIOx_Port), pin(pin), val(val) {};
+			constexpr operator int() const { return val; }
+            const GPIO_Port_TypeDef GPIOx_Port;
+			const uint32_t pin;
+			const int val;
     };
     #define PIN(a, b) __P##a##b
         enum {
@@ -22,9 +25,10 @@
         };
     #undef PIN
 
-    #define PIN(a, b) P##a##b(__P##a##b)
-      constexpr __ConstPin PIN_LIST __IGNORE(-1);
+    #define PIN(a, b) P##a##b(gpioPort ## a,GPIO_PIN_ ## b, __P##a##b)
+      constexpr __ConstPin PIN_LIST __IGNORE((GPIO_Port_TypeDef)-1,-1,-1);
     #undef PIN
+	
 #else
 
     #define PIN(a, b) P ## a ## b

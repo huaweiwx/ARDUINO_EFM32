@@ -23,20 +23,15 @@
 #include <stddef.h>
 #include "em_device.h"
 #include "efm32_hal/emlib.h"
-#include "efm32_build_defines.h"
-#include "utils/utils_all.h"
 
-//mydriver:
-#include "armclock.h"
-#include "gpiointerrupt.h"
+#define GPIOA	GPIO->P[0]
+#define GPIOB	GPIO->P[1]
+#define GPIOC	GPIO->P[2]
+#define GPIOD	GPIO->P[3]
+#define GPIOE	GPIO->P[4]
+#define GPIOF	GPIO->P[5]
 
-#define GPIOA	gpio->P[0]
-#define GPIOB	gpio->P[1]
-#define GPIOC	gpio->P[2]
-#define GPIOD	gpio->P[3]
-#define GPIOE	gpio->P[4]
-
-//GPIO_PIN
+//GPIO_PIN compatiblet with stm32generic
 enum {
   GPIO_PIN_0,
   GPIO_PIN_1,
@@ -56,18 +51,19 @@ enum {
   GPIO_PIN_15,
 };
 
+#include "avr_emulation.h"
+#include "efm32_build_defines.h"
+#include "utils/utils_all.h"
 
-// #define BUTTON		gpioPortE, 0
-#define LEDx_PORT	    gpioPortD
-#define LED1		    LEDx_PORT, 6
-
-#define HOST_TX2	gpioPortE, 10
-#define HOST_RX2	gpioPortE, 11
-
-#define BUTTON_SETTLE_TIME	10
-
-#define RTC_FREQ    		32768
+//mydriver:
+#include "armclock.h"
+#include "gpiointerrupt.h"
 
 #include "variant.h"
 #include "efm32_pin_list.h"  
+
+#include "efm32adc.h"
+#include "efm32pwm.h"
+#include "efm32dac.h"
+#include "efm32weak.h"
 #endif

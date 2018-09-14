@@ -19,6 +19,28 @@
 
 #ifndef _EFMM32_ADC_H_
 #define _EFMM32_ADC_H_
+
+#define INTERNAL1V25 0
+#define DEFAULT  0
+#define INTERNAL2V5  1
+#define INTERNAL     1
+#define INTERNAL3V3  2
+#define INTERNALVDD  2
+
+#if defined( _ADC_SINGLECTRL_REF_5VDIFF )
+  /** Internal differential 5V reference. */
+#define INTERNAL5VDIFF  adcRef5VDIFF
+#endif
+
+#if defined( _ADC_SINGLECTRL_REF_5V )
+  /** Internal 5V reference. */
+#define INTERNAL5V      adcRef5V
+#endif
+
+#define EXTERNAL          adcRefExtSingle
+#define EXTERNAL2xDIFF    adcRef2xExtDiff
+#define INTERNAL2xVDD     adcRef2xVDD
+
 #ifdef __cplusplus
 extern "C"{
 #endif
@@ -26,7 +48,7 @@ extern "C"{
 void analogReadResolution(ADC_Res_TypeDef resolution);
 int analogGetResolution(void);
 
-void analogReference(uint8_t ref);
+void analogReference(int ref);
 int analogGetReference(void);
 
 int analogReadChannel(ADC_SingleInput_TypeDef adcSingleInputChx,uint8_t diff);
@@ -47,7 +69,7 @@ class ADC {
 		return analogGetResolution();
 	  }
 
-    inline void reference(uint8_t ref){
+    inline void reference(int ref){
         analogReference(ref);
 	  }
 	inline int getReference(void){
@@ -79,8 +101,16 @@ class ADC {
 	    }
 	    return analogReadChannel(dif,true);
 	  }
-	inline int readTemp(void){
-		return 	analogReadChannel(adcSingleInputTemp,false);
+
+	int readTemp(void){
+		int ref = getReference();
+		int res = getResolution();
+		reference(adcRef1V25);   /*must be 1.25V*/
+		resolution(adcRes12Bit); /*must be 12bit*/
+		int rtn = analogReadChannel(adcSingleInputTemp,false);
+		reference(ref);		  /*resave*/
+		resolution((ADC_Res_TypeDef)res);
+		return rtn;
 	}
 	
     float celsiusTemp(void){

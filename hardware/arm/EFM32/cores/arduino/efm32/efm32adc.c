@@ -33,7 +33,6 @@
 //  adcRes8Bit  = _ADC_SINGLECTRL_RES_8BIT,  /**< 8 bit sampling. */
 //  adcRes6Bit  = _ADC_SINGLECTRL_RES_6BIT,  /**< 6 bit sampling. */
 //  adcResOVS   = _ADC_SINGLECTRL_RES_OVS    /**< Oversampling. */
-
 static ADC_Res_TypeDef readResolution = adcRes12Bit;
 void analogReadResolution(ADC_Res_TypeDef resolution) {
     readResolution = resolution;
@@ -48,9 +47,10 @@ int analogGetResolution(void){
 //  adcRefVDD       = _ADC_SINGLECTRL_REF_VDD, /** Buffered VDD. */
 
 static ADC_Ref_TypeDef readReference  = adcRef1V25;
-void   analogReference(uint8_t ref) {
+void   analogReference(int ref) {
     readReference = (ADC_Ref_TypeDef)ref;
 }
+
 int analogGetReference(void){
 	return readReference;
 }
@@ -80,18 +80,21 @@ int analogGetReference(void){
 //  adcSingleInputCh4Ch5   = _ADC_SINGLECTRL_INPUTSEL_CH4CH5,   /**< Positive Ch4, negative Ch5. */
 //  adcSingleInputCh6Ch7   = _ADC_SINGLECTRL_INPUTSEL_CH6CH7,   /**< Positive Ch6, negative Ch7. */
 //  adcSingleInputDiff0    = 4                                  /**< Differential 0. */
-
+static uint8_t adcinited = 0;
 int analogReadChannel(ADC_SingleInput_TypeDef adcSingleInputChx, uint8_t diff){
-  // Enable ADC0 clock
-  CMU_ClockEnable(cmuClock_ADC0, true);
-  // Declare init structs
-  ADC_Init_TypeDef init = ADC_INIT_DEFAULT;
+  
+  if(adcinited == 0){
+	adcinited = 1;
+	ADC_Init_TypeDef init = ADC_INIT_DEFAULT;  // Declare init structs
+	CMU_ClockEnable(cmuClock_ADC0, true);  // Enable ADC0 clock
+
+	// Modify init structs and initialize
+	init.timebase = ADC_TimebaseCalc(0);
+	init.prescale = ADC_PrescaleCalc(adcFreq, 0); // Init to max ADC clock for Series 0
+	ADC_Init(ADC0, &init);
+  }
+  
   ADC_InitSingle_TypeDef initSingle = ADC_INITSINGLE_DEFAULT;
-
-  // Modify init structs and initialize
-  init.timebase = ADC_TimebaseCalc(0);
-  init.prescale = ADC_PrescaleCalc(adcFreq, 0); // Init to max ADC clock for Series 0
-
   initSingle.reference  = readReference;   // internal 2.5V reference
   initSingle.diff       = diff;            // false  single ended /true differential
   initSingle.resolution = readResolution;  // 12-bit resolution
@@ -99,17 +102,12 @@ int analogReadChannel(ADC_SingleInput_TypeDef adcSingleInputChx, uint8_t diff){
   // Select ADC input. See README for corresponding EXP header pin.
   initSingle.input = adcSingleInputChx;
 
-  ADC_Init(ADC0, &init);
   ADC_InitSingle(ADC0, &initSingle);
-  
-      // Start ADC conversion
-  ADC_Start(ADC0, adcStartSingle);
+  ADC_Start(ADC0, adcStartSingle); // Start ADC conversion
 
-    // Wait for conversion to be complete
-  while(!(ADC0->STATUS & _ADC_STATUS_SINGLEDV_MASK));
+  while(!(ADC0->STATUS & _ADC_STATUS_SINGLEDV_MASK)); // Wait for conversion to be complete
 
-    // Get ADC result
-  return  ADC_DataSingleGet(ADC0);
+  return  ADC_DataSingleGet(ADC0);// Get ADC result
 }
 
 int analogRead(uint8_t ulPin) { 
