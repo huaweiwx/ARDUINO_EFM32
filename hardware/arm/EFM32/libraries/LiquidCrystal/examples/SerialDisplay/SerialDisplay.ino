@@ -49,8 +49,10 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 void setup() {
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
-  // initialize the serial communications:
-  Serial.begin(115200);
+  
+/* setup alternate location default is 0# */  
+  Serial.setRouteLoc(1); /*set to 1#. the serial port's Alternate LOCATION(see datasheet)*/
+  Serial.begin(115200);  /*set param: 115200bps 8N1 (default 9600bps 8N1) */
 }
 
 void loop() {

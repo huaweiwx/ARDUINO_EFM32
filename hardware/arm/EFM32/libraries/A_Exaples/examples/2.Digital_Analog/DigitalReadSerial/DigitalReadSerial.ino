@@ -4,10 +4,12 @@
  */
 
 void setup() {
-	Serial1.begin(115200);
 	pinMode(LED_BUILTIN,OUTPUT);
-	
 	pinMode(PA0,INPUT);
+
+/* setup alternate location default is 0# */  
+  Serial.setRouteLoc(1); /*set to 1#. the serial port's Alternate LOCATION(see datasheet)*/
+  Serial.begin(115200);  /*set param: 115200bps 8N1 (default 9600bps 8N1) */
 }
 
 void loop() {

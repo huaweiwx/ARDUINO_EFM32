@@ -24,8 +24,12 @@ static uint16_t myfunc(int i) {
 
 // the setup routine runs once when you press reset:
 void setup() {
-  Serial.begin(115200);
   pinMode(LED_BUILTIN, OUTPUT);
+
+/* setup alternate location default is 0# */  
+  Serial.setRouteLoc(1); /*set to 1#. the serial port's Alternate LOCATION(see datasheet)*/
+  Serial.begin(115200);  /*set param: 115200bps 8N1 (default 9600bps 8N1) */
+  
   delay(2000);
   
   Serial.println("sine wave generate demo...");

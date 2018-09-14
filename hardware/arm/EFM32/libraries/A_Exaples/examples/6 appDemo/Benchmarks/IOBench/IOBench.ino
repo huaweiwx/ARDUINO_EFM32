@@ -59,9 +59,10 @@ unsigned long i = 0;
 
 void setup() {
 
-/* setup alternate location default is 0*/  
-//  Serial.setRouteLoc(1); /*set to 1. the serial port's Alternate LOCATION see datasheet*/
-  Serial.begin(9600); /*for LEUART baudrate is 9600 only */
+/* setup alternate location default is 0# */  
+  Serial.setRouteLoc(1); /*set to 1#. the serial port's Alternate LOCATION(see datasheet)*/
+  Serial.begin(115200);  /*set param: 115200bps 8N1 (default 9600bps 8N1) */
+
   delay(5000); // Gives us time to active the serial monitor
   
   pinMode(writePin, OUTPUT);

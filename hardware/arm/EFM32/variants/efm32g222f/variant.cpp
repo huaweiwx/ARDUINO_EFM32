@@ -29,10 +29,10 @@ extern "C" {
 typedef struct _Pin2PortMapArray
 {
   	GPIO_TypeDef GPIOx_Port; 
-  	uint8_t  pin;   
-    uint32_t  adc_channel;
-    uint32_t  timerNumber;    //Timer1 to Timer4.
-    uint32_t  timerChannelLoc;   //Timer channel (1-4).  
+  	uint8_t      pin;   
+    uint32_t  	 adc_channel;
+    uint32_t  	 timerNumber;    //Timer1 to Timer4.
+    uint32_t     timerChannelLoc;   //Timer channel (1-4).  
 } Pin2PortMapArray ;
 */
 

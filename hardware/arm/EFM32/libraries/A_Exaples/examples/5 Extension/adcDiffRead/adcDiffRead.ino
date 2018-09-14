@@ -10,9 +10,10 @@ void setup() {
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(LED_BUILTIN, OUTPUT);
 
-  /* setup alternate location default is 0*/
-  //  Serial.setRouteLoc(1); /*set to 1. the serial port's Alternate LOCATION see datasheet*/
-  Serial.begin(9600);  /*for LEUART baudrate is 9600 only */
+/* setup alternate location default is 0# */  
+  Serial.setRouteLoc(1); /*set to 1#. the serial port's Alternate LOCATION(see datasheet)*/
+  Serial.begin(115200);
+
   adc.reference(INTERNAL2V5); /* setup ADC reference INTERNAL1V25/INTERNAL2V5/INTERNAL3V3*/
 }
 

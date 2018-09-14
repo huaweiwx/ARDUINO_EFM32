@@ -13,8 +13,9 @@ void setup()
 	lcd.begin();
 	lcd.backlight();
   
-	// Initialize the serial port at a speed of 9600 baud
-	Serial.begin(115200);
+/* setup alternate location default is 0# */  
+  Serial.setRouteLoc(1); /*set to 1#. the serial port's Alternate LOCATION(see datasheet)*/
+  Serial.begin(115200);  /*set param: 115200bps 8N1 (default 9600bps 8N1) */
 }
 
 void loop()
