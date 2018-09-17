@@ -1,5 +1,5 @@
 /*
-  blink_speed.ino arduino gpio speed test example for efm32g222fx
+  gpio_speedTest.ino  arduino gpio speed test example for efm32g222fx
   F_CPU at 29 mHz
     toggle speed:  360 us in cplus mode
                    681 us in use bitband
@@ -8,15 +8,14 @@
   by  huawei <huaweiwx@sina.com> 2019.9.10
 */
 
-#define GPIOMODE 0
+#define GPIOMODE 1   /*please select mode 0/1/2 */
 
 #if GPIOMODE == 2
-#include "utils/bitband.h"
-BB_PIN led(LED_BUILTIN);
-#elif GPIOMODE == 1  /*cplus mode*/
-#define  led LED_BUILTIN
-#else  /*c mode*/
-uint32_t led = LED_BUILTIN;
+    DigitalPin led(LED_BUILTIN);
+#elif GPIOMODE == 1                        /* cplus mode*/
+    ARDUINOPIN_TypeDef led = LED_BUILTIN;  /* led is __ConstPin   type var */
+#else                                      /*c mode */
+    uint32_t led = LED_BUILTIN;           
 #endif
 
 void setup() {
@@ -39,13 +38,14 @@ void setup() {
   Serial.print(" us");
 }
 
+//Measuring toggle frequency with an oscilloscope:
 void loop() {
 #if   GPIOMODE == 2
   led.toggle();
 #else
   digitalToggle(led);
 #endif
-  delay(500);
+//  delay(500);
 }
 
 uint32_t getTimers(uint32_t count) {
