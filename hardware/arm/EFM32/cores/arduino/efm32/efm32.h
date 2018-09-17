@@ -53,15 +53,16 @@ enum {
 
 #include "avr_emulation.h"
 #include "efm32_build_defines.h"
+#include "variant.h"
+#include "efm32_pin_list.h"  
+#include "efm32gpio.h"
+
+//#include "utils/utils_all.h"
 #include "utils/utils_all.h"
 
 //mydriver:
 #include "armclock.h"
 #include "gpiointerrupt.h"
-
-#include "variant.h"
-#include "efm32_pin_list.h"  
-
 #include "efm32adc.h"
 #include "efm32pwm.h"
 #include "efm32dac.h"

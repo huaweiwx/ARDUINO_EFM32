@@ -28,7 +28,9 @@
     #define PIN(a, b) P##a##b(gpioPort ## a,GPIO_PIN_ ## b, __P##a##b)
       constexpr __ConstPin PIN_LIST __IGNORE((GPIO_Port_TypeDef)-1,-1,-1);
     #undef PIN
-	
+
+#define ARDUINOPIN_TypeDef 	__ConstPin
+
 #else
 
     #define PIN(a, b) P ## a ## b

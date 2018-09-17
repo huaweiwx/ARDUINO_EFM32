@@ -30,7 +30,7 @@
 #include "efm32_build_defines.h"
 #include "variant.h"
 #include "wiring_constants.h"
-#include "wiring_digital.h"
+#include "efm32gpio.h"
 
 #ifdef __cplusplus
 extern "C"{

@@ -41,9 +41,6 @@
   #include "bit_constants.h"
 #endif
 
-#include "wiring_digital.h"
-//#include "utils/utils_all.h"
-
 void setup();
 void loop();
 

@@ -31,7 +31,7 @@
 #include "efm32_build_defines.h"
 #include "variant.h"
 #include "wiring_constants.h"
-#include "wiring_digital.h"
+#include "efm32gpio.h"
 
 static uint32_t dacRef = dacRef1V25; /* dacRef1V25 / dacRef2V5 / dacRefVDD;*/
 

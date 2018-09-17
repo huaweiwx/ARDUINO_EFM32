@@ -44,10 +44,9 @@
 class DDRemulation
 {
   public:
-    DDRemulation(const GPIO_Port_TypeDef port,const uint16_t mask): port(port),mask(mask){}
+    DDRemulation(const GPIO_Port_TypeDef port, uint16_t mask): port(port),mask(mask){}
 	const GPIO_Port_TypeDef port;
-	const uint16_t mask;
-    uint16_t save_ddr = 0;
+	uint16_t mask;
 
     void mode(unsigned int pin, GPIO_Mode_TypeDef mode,unsigned int out = 0) {
 		GPIO_PinModeSet(port,pin,mode,out);
@@ -90,6 +89,8 @@ class DDRemulation
 	  }
       return *this;
     }
+  private:
+    uint16_t save_ddr = 0;	
 };
 
 #if  _GPIO_PORT_A_PIN_MASK >0

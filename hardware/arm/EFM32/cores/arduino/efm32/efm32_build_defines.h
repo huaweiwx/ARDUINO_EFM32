@@ -48,7 +48,7 @@
 #endif
 
 #ifndef USE_ERRORBLINK
-#  ifdef USE_FULL_ASSERT
+#  ifdef DEBUG_EFM_USER
     #define USE_ERRORBLINK 1
 #  else
     #define USE_ERRORBLINK 0

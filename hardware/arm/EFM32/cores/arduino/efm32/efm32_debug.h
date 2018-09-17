@@ -1,5 +1,6 @@
 /*
   Copyright (c) 2017 Daniel Fekete
+                2018 huaweiwx@sina.com for efm32
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -51,8 +52,6 @@ void print_log(const char *level, const char *format, const char *file, const in
 //stm32_assert.h use stderr out debug info
 void debug(const char *format, ...);
 void debug_if(int condition, const char *format, ...);
-
-void _Error_Handler(char* file, uint32_t line);
 
 #ifdef __cplusplus
 }
