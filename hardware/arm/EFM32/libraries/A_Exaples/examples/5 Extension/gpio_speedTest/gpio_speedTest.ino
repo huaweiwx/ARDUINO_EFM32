@@ -1,17 +1,22 @@
 /*
   gpio_speedTest.ino  arduino gpio speed test example for efm32g222fx
   F_CPU at 29 mHz
-    toggle speed:  360 us in cplus mode
-                   681 us in use bitband
-                  1290 us in c mode
+    toggle speed:  mode1/3 3640khz 289us in cplus and  LL_PIN
+                   mode2 1547khz   646us in use bitband
+                   mode0 775khz   1290us in c mode
+     write speed:  mode1/3 3640khz 289us in cplus and  LL_PIN
+                   mode2 2320khz   431us in use bitband
+                   mode0 697khz  11433us in c mode
 
   by  huawei <huaweiwx@sina.com> 2019.9.10
 */
 
 #define GPIOMODE 1   /*please select mode 0/1/2 */
 
-#if GPIOMODE == 2
-    DigitalPin led(LED_BUILTIN);
+#if GPIOMODE == 3
+    GPIOPIN led(LED_BUILTIN); /*GPIOPIN is alias of LL_PIN class*/
+#elif GPIOMODE == 2
+    BB_PIN led(LED_BUILTIN);
 #elif GPIOMODE == 1                        /* cplus mode*/
     ARDUINOPIN_TypeDef led = LED_BUILTIN;  /* led is __ConstPin   type var */
 #else                                      /*c mode */
@@ -25,7 +30,7 @@ void setup() {
   Serial.setRouteLoc(1); /*set to 1#. the serial port's Alternate LOCATION(see datasheet)*/
   Serial.begin(115200);  /*set param: 115200bps 8N1 (default 9600bps 8N1) */
   delay(2000);
-#if   GPIOMODE == 2
+#if   GPIOMODE >= 2
   led.mode(OUTPUT);
 #else
   pinMode(led, OUTPUT);
@@ -34,13 +39,13 @@ void setup() {
   Serial.println();
   Serial.print(1000000 / timers);
   Serial.print(" khz  Timer elapsed:");
-  Serial.println(timers);
-  Serial.print(" us");
+  Serial.print(timers);
+  Serial.println(" us");
 }
 
 //Measuring toggle frequency with an oscilloscope:
 void loop() {
-#if   GPIOMODE == 2
+#if   GPIOMODE >= 2
   led.toggle();
 #else
   digitalToggle(led);
@@ -58,10 +63,10 @@ uint32_t getTimers(uint32_t count) {
   loopTimeElapsed = (micros() - timeBegan); // Time taken to do nothing but increment a variable
   i = 0;
   while (i < count) {
-#if   GPIOMODE == 2
-    led.toggle();
+#if   GPIOMODE >= 2
+    led.high();
 #else
-    digitalToggle(led);
+    digitalWrite(led,HIGH);
 #endif
     i++;
   }
