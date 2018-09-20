@@ -48,8 +48,8 @@ double timeElapsed;
 volatile int readResult;
 
 #if defined(EFM32GENERIC)||defined(STM32GENERIC)
-# define writePin WRITEPIN
-# define readPin  READPIN
+#define writePin WRITEPIN
+#define readPin  READPIN
 #else
 int writePin WRITEPIN;
 int readPin  READPIN;

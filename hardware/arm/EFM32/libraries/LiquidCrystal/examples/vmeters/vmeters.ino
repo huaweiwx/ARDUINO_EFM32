@@ -22,23 +22,22 @@
 */
 
 #include <LiquidCrystal.h>
-#include <DirectIO.h>
 
 // initialize the library by associating any needed LCD interface pin
 // with the arduino pin number it is connected to
-const int rs = PD5,
-          rw = PD6,
-          en = PD7,
-          d0 = PB0,
-          d1 = PB1,
-          d2 = PB2,
-          d3 = PB3,
-          d4 = PB4,
-          d5 = PB5,
-          d6 = PB6,
-          d7 = PB7;
+#define rs 	PF3
+#define rw 	PF2
+#define en 	PF1
+#define d0 	PF0
+#define d1 	PC8
+#define d2 	PC9
+#define d3 	PC10
+#define d4 	PC11
+#define d5 	PC13
+#define d6 	PC14
+#define d7 	PC15
 
-Output<PD3> lcd_bkPin;
+GPIOPIN lcd_bkPin(PF4);
 //#define ADC_RENFERENCE_INTERNAL  /*use1.1v/2.56v internal renference*/
 
 typedef struct {
@@ -47,7 +46,7 @@ typedef struct {
 } pos_t;
 
 #define CHS 4
-uint8_t AIN[CHS] = {3, 4,  6 , 7}; /*ADC0/3/6/7*/
+uint8_t AIN[CHS] = {PD4, PD5, PD6 ,PD7};  /*ADC4/5/6/7*/
 uint16_t Ax_MIN[CHS] = {0u, 0u, 0u, 0u};
 
 #ifdef ADC_RENFERENCE_INTERNAL
@@ -68,14 +67,15 @@ pos_t pos[CHS] = {
 };
 
 //LiquidCrystal lcd(rs,en, d4, d5, d6, d7);  //4 bit mode,unused rwPin
-//LiquidCrystal lcd(rs,rw,en, d4, d5, d6, d7);  //4 bit mode
-LiquidCrystal lcd(rs, rw, en, d0, d1, d2, d3, d4, d5, d6, d7); //8 bit mode, unused rwPin
+LiquidCrystal lcd(rs,rw,en, d4, d5, d6, d7);  //4 bit mode
+//LiquidCrystal lcd(rs, rw, en, d0, d1, d2, d3, d4, d5, d6, d7); //8 bit mode, unused rwPin
 //LiquidCrystal<const int> lcd(rs, rw, en, d0, d1, d2, d3, d4, d5, d6, d7); //8 bit mode
 
 void setup() {
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
 
+  lcd_bkPin.mode(OUTPUT);
   lcd_bkPin = HIGH; /*BK ON*/
 
   // Print a message to the LCD.

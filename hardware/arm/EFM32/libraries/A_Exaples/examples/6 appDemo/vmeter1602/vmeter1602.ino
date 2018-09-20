@@ -17,8 +17,7 @@ const int rs = PC13,
           d6 = PF4,
           d7 = PF5;
 
-//#include <utils/digitalPin.h>
-//DigitalPin<PD12> lcd_bkPin;
+DigitalPin<PD12> lcd_bkPin;
 
 #define ADC_RENFERENCE  INTERNAL1V25  /* INTERNAL1V25/INTERNAL2V5/INTERNALVDD use 1.25V/2.5V/VDD3.3V  internal renference*/
 
