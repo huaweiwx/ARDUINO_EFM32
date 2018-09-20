@@ -47,6 +47,10 @@
 # define USE_BITCONSTANTS 1
 #endif
 
+#ifndef  USE_BITBAND
+#define  USE_BITBAND 1
+#endif
+
 #ifndef USE_ERRORBLINK
 #  ifdef DEBUG_EFM_USER
     #define USE_ERRORBLINK 1

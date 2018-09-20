@@ -33,6 +33,7 @@
 #define BITBAND_ADDR(addr, bitnum)   MEM_ADDR(BITBAND((uint32_t)(addr), bitnum)) 
 
 #ifdef __cplusplus
+/*gpio bitband interface class*/
 class BB_PIN{
  public:
      BB_PIN(__ConstPin cpin): cpin(cpin){};
@@ -113,8 +114,13 @@ class BB_PIN{
 	  detachInterrupt(cpin);
   }
 };
-
-#define DigitalPin BB_PIN
 #endif //__cplusplus
 #endif //BITBAND_PER_BASE
+
+#ifdef __cplusplus
+#  ifndef BITBAND_PER_BASE
+#    define BB_PIN  LL_PIN
+#   endif
+#endif //__cplusplus
+
 #endif //__BITBAND_H__

@@ -286,6 +286,22 @@ inline void fastDigitalToggle(uint8_t pin) {
 #endif
 }
 
+#if defined(STM32GENERIC)||defined(EFM32GENERIC)  //add by huaweiwx@sina.com 2018.8.28
+#ifdef  __cplusplus
+inline void fastDigitalWrite(__ConstPin pin, bool value) {
+  digitalWrite(pin, value);
+}
+//------------------------------------------------------------------------------
+inline bool fastDigitalRead(__ConstPin pin) {
+  return digitalRead(pin);
+}
+//------------------------------------------------------------------------------
+inline void fastDigitalToggle(__ConstPin pin) {
+  digitalToggle(pin);
+}
+#endif //__cplusplus
+#endif
+
 #endif
 //------------------------------------------------------------------------------
 inline void fastPinMode(uint8_t pin, uint8_t mode) {

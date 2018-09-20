@@ -26,19 +26,6 @@
 #ifndef __ARREMULATION_H__
 #define __ARREMULATION_H__
 
-#define PORTA  GPIOA.DOUT
-#define  PINA  GPIOA.DIN
-#define PORTB  GPIOB.DOUT
-#define  PINB  GPIOB.DIN
-#define PORTC  GPIOC.DOUT
-#define  PINC  GPIOC.DIN
-#define PORTD  GPIOD.DOUT
-#define  PIND  GPIOD.DIN
-#define PORTE  GPIOE.DOUT
-#define  PINE  GPIOE.DIN
-#define PORTF  GPIOF.DOUT
-#define  PINF  GPIOF.DIN
-
 #ifdef __cplusplus
 
 class DDRemulation
@@ -100,32 +87,78 @@ extern DDRemulation DDRA;
 extern DDRemulation DDRB;
 #endif
 #if  _GPIO_PORT_C_PIN_MASK >0
-extern DDRemulation DDRC;
+extern  DDRemulation DDRC;
 #endif
 #if  _GPIO_PORT_D_PIN_MASK >0
-extern DDRemulation DDRD;
+extern  DDRemulation DDRD;
 #endif
 #if  _GPIO_PORT_E_PIN_MASK >0
-extern DDRemulation DDRE;
+extern  DDRemulation DDRE;
 #endif
 #if  _GPIO_PORT_F_PIN_MASK >0
-extern DDRemulation DDRF;
+extern  DDRemulation DDRF;
 #endif
 #if  _GPIO_PORT_G_PIN_MASK >0
-extern DDRemulation DDRG;
+extern  DDRemulation DDRG;
 #endif
 #if  _GPIO_PORT_H_PIN_MASK >0
-extern DDRemulation DDRH;
+extern  DDRemulation DDRH;
 #endif
 #if  _GPIO_PORT_I_PIN_MASK >0
-extern DDRemulation DDRI;
+extern  DDRemulation DDRI;
 #endif
 #if  _GPIO_PORT_J_PIN_MASK >0
-extern DDRemulation DDRJ;
+extern  DDRemulation DDRJ;
 #endif
 #if  _GPIO_PORT_K_PIN_MASK >0
-extern DDRemulation DDRK;
+extern  DDRemulation DDRK;
 #endif
 
 #endif //__cplusplus
+
+#if  _GPIO_PORT_A_PIN_MASK >0
+#define PORTA  GPIOA.DOUT
+#define  PINA   GPIOA.DIN
+#endif
+#if  _GPIO_PORT_B_PIN_MASK >0
+#define PORTB  GPIOB.DOUT.DOUT
+#define  PINB   GPIOB.DIN
+#endif
+#if  _GPIO_PORT_C_PIN_MASK >0
+#define PORTC   GPIOC.DOUT
+#define  PINC   GPIOC.DIN
+#endif
+#if  _GPIO_PORT_D_PIN_MASK >0
+#define PORTD   GPIOD.DOUT
+#define  PIND   GPIOD.DIN
+#endif
+#if  _GPIO_PORT_E_PIN_MASK >0
+#define PORTE  GPIOE.DOUT
+#define  PINE  GPIOE.DIN
+#endif
+#if  _GPIO_PORT_F_PIN_MASK >0
+#define PORTF  GPIOF.DOUT
+#define  PINF  GPIOF.DIN
+#endif
+#if  _GPIO_PORT_G_PIN_MASK >0
+#define PORTG  GPIOG.DOUT
+#define  PING  GPIOG.DIN
+#endif
+#if  _GPIO_PORT_H_PIN_MASK >0
+#define PORTH  GPIOH.DOUT
+#define  PINH  GPIOH.DIN
+#endif
+#if  _GPIO_PORT_I_PIN_MASK >0
+#define PORTI  GPIOI.DOUT
+#define  PINI  GPIOI.DIN
+#endif
+#if  _GPIO_PORT_J_PIN_MASK >0
+#define PORTJ  GPIOJ.DOUT
+#define  PINJ  GPIOJ.DIN
+#endif
+#if  _GPIO_PORT_K_PIN_MASK >0
+#define PORTK  GPIOK.DOUT
+#define  PINK  GPIOK.DIN
+#endif
+
 #endif //__ARREMULATION_H__

@@ -21,15 +21,43 @@
 #define __EFM32_H__
 
 #include <stddef.h>
+#include "utils/utils_all.h"
 #include "em_device.h"
 #include "efm32_hal/emlib.h"
 
+#if  _GPIO_PORT_A_PIN_MASK >0
 #define GPIOA	GPIO->P[0]
+#endif
+#if  _GPIO_PORT_B_PIN_MASK >0
 #define GPIOB	GPIO->P[1]
+#endif
+#if  _GPIO_PORT_C_PIN_MASK >0
 #define GPIOC	GPIO->P[2]
+#endif
+#if  _GPIO_PORT_D_PIN_MASK >0
 #define GPIOD	GPIO->P[3]
+#endif
+#if  _GPIO_PORT_E_PIN_MASK >0
 #define GPIOE	GPIO->P[4]
+#endif
+#if  _GPIO_PORT_F_PIN_MASK >0
 #define GPIOF	GPIO->P[5]
+#endif
+#if  _GPIO_PORT_G_PIN_MASK >0
+#define GPIOG	GPIO->P[6]
+#endif
+#if  _GPIO_PORT_H_PIN_MASK >0
+#define GPIOH	GPIO->P[7]
+#endif
+#if  _GPIO_PORT_I_PIN_MASK >0
+#define GPIOI	GPIO->P[8]
+#endif
+#if  _GPIO_PORT_J_PIN_MASK >0
+#define GPIOJ	GPIO->P[9]
+#endif
+#if  _GPIO_PORT_K_PIN_MASK >0
+#define GPIOK	GPIO->P[10]
+#endif
 
 //GPIO_PIN compatiblet with stm32generic
 enum {
@@ -55,14 +83,11 @@ enum {
 #include "efm32_build_defines.h"
 #include "variant.h"
 #include "efm32_pin_list.h"  
-#include "efm32gpio.h"
-
-//#include "utils/utils_all.h"
-#include "utils/utils_all.h"
-
-//mydriver:
 #include "armclock.h"
 #include "gpiointerrupt.h"
+#include "efm32gpio.h"
+
+//mydriver:
 #include "efm32adc.h"
 #include "efm32pwm.h"
 #include "efm32dac.h"
