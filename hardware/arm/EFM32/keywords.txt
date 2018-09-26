@@ -6,6 +6,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 ADC	KEYWORD1
+adc	KEYWORD1
 DAC	KEYWORD1
 dac	KEYWORD1
 F	KEYWORD1
@@ -46,8 +47,8 @@ resolution	KEYWORD2
 getResolution	KEYWORD2
 readTemp	KEYWORD2
 analogReadChannel	KEYWORD2
-celsiusTemp	KEYWORD2
-fahrenheitTemp	KEYWORD2
+temperatureCelsius	KEYWORD2
+temperatureFahrenheit	KEYWORD2
 convertToCelsius	KEYWORD2
 convertToFahrenheit	KEYWORD2
 
