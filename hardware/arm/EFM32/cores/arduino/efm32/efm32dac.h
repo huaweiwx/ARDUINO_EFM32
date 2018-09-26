@@ -53,6 +53,9 @@ class DAC {
 	inline void reference(uint32_t ref){
 		setDacRef(ref);
 	}
+	inline void write(unsigned int c,uint32_t v){
+		dacWrite(c,v);
+	}
 	inline void write(uint32_t val){
 		dacWrite(ch,val);
 	}
