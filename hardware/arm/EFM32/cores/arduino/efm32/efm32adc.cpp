@@ -34,23 +34,30 @@
 //  adcRes6Bit  = _ADC_SINGLECTRL_RES_6BIT,  /**< 6 bit sampling. */
 //  adcResOVS   = _ADC_SINGLECTRL_RES_OVS    /**< Oversampling. */
 static ADC_Res_TypeDef readResolution = adcRes12Bit;
-void analogReadResolution(ADC_Res_TypeDef resolution) {
-  readResolution = resolution;
-}
-int analogGetResolution(void) {
-  return readResolution;
-}
 
 //ADC_Ref_TypeDef readReference
 //  adcRef1V25      = _ADC_SINGLECTRL_REF_1V25 /** Internal 1.25V reference. */
 //  adcRef2V5       = _ADC_SINGLECTRL_REF_2V5, /** Internal 2.5V reference. */
 //  adcRefVDD       = _ADC_SINGLECTRL_REF_VDD, /** Buffered VDD. */
-
 static ADC_Ref_TypeDef readReference  = adcRef1V25;
+
+extern "C"
+void analogReadResolution(ADC_Res_TypeDef resolution) {
+  readResolution = resolution;
+}
+
+extern "C"
+int analogGetResolution(void) {
+  return readResolution;
+}
+
+
+extern "C"
 void   analogReference(int ref) {
   readReference = (ADC_Ref_TypeDef)ref;
 }
 
+extern "C"
 int analogGetReference(void) {
   return readReference;
 }
@@ -81,6 +88,8 @@ int analogGetReference(void) {
 //  adcSingleInputCh6Ch7   = _ADC_SINGLECTRL_INPUTSEL_CH6CH7,   /**< Positive Ch6, negative Ch7. */
 //  adcSingleInputDiff0    = 4                                  /**< Differential 0. */
 static uint8_t adcinited = 0;
+
+extern "C"
 int analogReadChannel(ADC_SingleInput_TypeDef adcSingleInputChx, uint8_t diff) {
 
   if (adcinited == 0) {
@@ -110,12 +119,14 @@ int analogReadChannel(ADC_SingleInput_TypeDef adcSingleInputChx, uint8_t diff) {
   return  ADC_DataSingleGet(ADC0);// Get ADC result
 }
 
+extern "C"
 int analogRead(uint8_t ulPin) {
   uint32_t ch = g_Pin2PortMapArray[ulPin].adc_channel;
   if (ch == NO_ADC) return 0;
   return analogReadChannel((ADC_SingleInput_TypeDef)ch, false);
 }
 
+extern "C"
 float convertToCelsius(int32_t adcSample) {
   float temp;
   /* Factory calibration temperature from device information page. */
@@ -139,6 +150,7 @@ float convertToCelsius(int32_t adcSample) {
   @param adcSample Raw value from ADC to be converted to fahrenheit
   @return The temperature in degrees Fahrenheit
 *****************************************************************************/
+extern "C"
 float convertToFahrenheit(uint32_t adcSample)
 {
   float celsius;
@@ -149,3 +161,5 @@ float convertToFahrenheit(uint32_t adcSample)
 
   return fahrenheit;
 }
+
+ADC adc;

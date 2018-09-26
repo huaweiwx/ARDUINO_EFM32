@@ -113,11 +113,11 @@ class ADC {
       return rtn;
     }
 
-    float celsiusTemp(void) {
+    float temperatureCelsius(void) {
       int temp = readTemp();
       return  convertToCelsius(temp);
     }
-    float fahrenheitTemp(void) {
+    float temperatureFahrenheit(void) {
       int temp = readTemp();
       return  convertToFahrenheit(temp);
     }
@@ -125,6 +125,8 @@ class ADC {
 
 };
 
-#endif
+extern ADC adc;
+
+#endif //__cplusplus
 
 #endif //_EFMM32_PWM_H_
