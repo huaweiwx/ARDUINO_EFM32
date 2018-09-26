@@ -37,9 +37,7 @@
 #include "efm32.h"
 
 /*C including option*/
-#if USE_BITCONSTANTS
-  #include "bit_constants.h"
-#endif
+#include "bit_constants.h"
 
 void setup();
 void loop();

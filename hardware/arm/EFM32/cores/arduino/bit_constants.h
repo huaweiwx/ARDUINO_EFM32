@@ -65,6 +65,10 @@
 #define BIT30 (1 << 30)
 #define BIT31 (1 << 31)
 
+/*兼容于已有代码，C++ 14 已支持二进制常数定义,如：
+  val1 = 0b0010'1100；
+*/
+#if USE_BITCONSTANTS >0
 #define B0        0
 #define B00       0
 #define B000      0
@@ -576,4 +580,5 @@
 #define B11111110 254
 #define B11111111 255
 
+#endif
 #endif  /* _BIT_CONSTANTS_H_ */
