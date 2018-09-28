@@ -27,6 +27,7 @@ extern void pinMode( uint32_t dwPin, uint32_t dwMode ) ;
 extern void digitalWrite( uint32_t dwPin, uint32_t dwVal ) ;
 extern int digitalRead( uint32_t ulPin ) ;
 extern void digitalToggle( uint32_t ulPin );
+uint32_t pulseIn( uint32_t ulPin, uint32_t state, uint32_t timeout);
 
 static inline void digitalWriteHigh(uint32_t ulPin)
 {
@@ -144,18 +145,49 @@ class LL_PIN{
 	   attachInterrupt(cpin, callback, mode);
     }
   
-  inline __attribute__((always_inline))
-  void detach(void){
+    inline __attribute__((always_inline))
+    void detach(void){
 	  detachInterrupt(cpin);
-  }
+    }
 };
 
 class InputPin : public LL_PIN{
-	public: 
-	  InputPin(__ConstPin cpin, bool initial_value = 1): LL_PIN(cpin){
+  public: 
+	InputPin(__ConstPin cpin, bool initial_value = 1): LL_PIN(cpin){
 			digitalWrite(cpin,initial_value);
 			pinMode(cpin,INPUT);
-	  }
+	}
+	  
+    inline operator bool (){
+       return read();
+    }
+	uint32_t pulseIn(bool state = false, uint32_t timeout = 1000000L )
+	{
+		// Cache the port and bit of the pin in order to speed up the
+		// pulse width measuring loop and achieve finer resolution.
+		// Calling digitalRead() instead yields much coarser resolution.
+		uint32_t startMicros = micros();
+		
+		// wait for any previous pulse to end
+		while (read() == state) {
+			if (micros()-startMicros > timeout)
+			return 0;
+		}
+		
+		// wait for the pulse to start
+		while (read() != state) {
+			if (micros()-startMicros > timeout)
+			return 0;
+		}
+		
+		uint32_t start = micros();
+		// wait for the pulse to stop
+		while (read() == state) {
+			if (micros()-startMicros > timeout)
+			return 0;
+		}
+		return (micros() - start);
+	}
 };
 
 class OutputPin : public LL_PIN{
@@ -164,6 +196,20 @@ class OutputPin : public LL_PIN{
 			digitalWrite(cpin,initial_value);
 			pinMode(cpin,OUTPUT);
 		}
+
+    void pulse(uint32_t delaycnt = 0, bool value = true) { 
+       this->write(value); 
+	   if(delaycnt){
+		   for(volatile uint32_t i = delaycnt;i>0;i--);
+	   }
+       this->toggle(); 
+    }
+
+    template<typename T>
+    inline OutputPin & operator = (T value) {
+       LL_PIN::write(value);
+       return *this;
+    }
 };
 
 #define GPIOPIN LL_PIN
