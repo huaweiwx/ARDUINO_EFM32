@@ -47,7 +47,7 @@ extern "C"{
 #endif // __cplusplus
 void yield(void);    /*hooks.c*/
 uint32_t shiftIn(uint32_t ulDataPin, uint32_t ulClockPin, uint32_t ulBitOrder );
-void shiftOut( uint32_t ulDataPin, uint32_t ulClockPin, uint32_t ulBitOrder, uint32_t ulVal );
+void shiftOut( uint32_t ulDataPin, uint32_t ulClockPin, uint32_t ulBitOrder, uint8_t uVal );
 
 #ifdef __cplusplus
 }

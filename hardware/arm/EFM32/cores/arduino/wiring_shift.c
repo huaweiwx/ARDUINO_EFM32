@@ -46,7 +46,7 @@ uint32_t shiftIn(uint32_t ulDataPin, uint32_t ulClockPin, uint32_t ulBitOrder )
 	return value ;
 }
 
-void shiftOut( uint32_t ulDataPin, uint32_t ulClockPin, uint32_t ulBitOrder, uint32_t ulVal )
+void shiftOut( uint32_t ulDataPin, uint32_t ulClockPin, uint32_t ulBitOrder, uint8_t uVal )
 {
 	uint8_t i ;
 
@@ -54,11 +54,11 @@ void shiftOut( uint32_t ulDataPin, uint32_t ulClockPin, uint32_t ulBitOrder, uin
     {
 		if (ulBitOrder == LSBFIRST )
         {
-			digitalWrite(ulDataPin, !!(ulVal & (1 << i)) ) ;
+			digitalWrite(ulDataPin, !!(uVal & (1 << i)) ) ;
         }
 		else	
         {
-			digitalWrite(ulDataPin, !!(ulVal & (1 << (7 - i))) ) ;
+			digitalWrite(ulDataPin, !!(uVal & (1 << (7 - i))) ) ;
         }
 
 		digitalWrite(ulClockPin, HIGH ) ;
