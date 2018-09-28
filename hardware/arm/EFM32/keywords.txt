@@ -6,9 +6,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 ADC	KEYWORD1
-adc	KEYWORD1
 DAC	KEYWORD1
-dac	KEYWORD1
 F	KEYWORD1
 
 #######################################
@@ -40,8 +38,10 @@ dacWrite	KEYWORD2
 enable	KEYWORD2
 pause	KEYWORD2
 resume	KEYWORD2
+dac	KEYWORD2
 
 #adc
+adc	KEYWORD2
 analogReadResolution	KEYWORD2
 resolution	KEYWORD2
 getResolution	KEYWORD2
@@ -56,9 +56,11 @@ convertToFahrenheit	KEYWORD2
 BB_PIN	KEYWORD1
 LL_PIN	KEYWORD1
 GPIOPIN	KEYWORD1
-high	KEYWORD1
-low	KEYWORD1
-mode	KEYWORD1
+high	KEYWORD2
+low	KEYWORD2
+mode	KEYWORD2
+pulse	KEYWORD2
+pulseIn	KEYWORD2
 
 #######################################
 
