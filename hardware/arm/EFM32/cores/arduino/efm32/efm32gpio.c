@@ -68,6 +68,31 @@ extern void digitalToggle( uint32_t ulPin )
 	GPIO_PinOutToggle(g_Pin2PortMapArray[ulPin].GPIOx_Port,g_Pin2PortMapArray[ulPin].Pin_abstraction);
 }
 
+extern uint32_t pulseIn( uint32_t ulPin, uint32_t state, uint32_t timeout )
+{
+  uint32_t startMicros = micros();
+
+  // wait for any previous pulse to end
+  while (digitalRead(ulPin) == (int)state) {
+    if (micros() - startMicros > timeout)
+      return 0;
+  }
+
+  // wait for the pulse to start
+  while (digitalRead(ulPin) != (int)state) {
+    if (micros() - startMicros > timeout)
+      return 0;
+  }
+
+  uint32_t start = micros();
+  // wait for the pulse to stop
+  while (digitalRead(ulPin) == (int)state) {
+    if (micros() - startMicros > timeout)
+      return 0;
+  }
+  return (micros() - start);
+}
+
 #ifdef __cplusplus
 }
 #endif
