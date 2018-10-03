@@ -20,6 +20,8 @@
 #ifndef EFM32_BUILD_DEFINES_H
 #define EFM32_BUILD_DEFINES_H
 
+#define  ARDUINO_EXTEND 1
+
 #if __has_include("HAL_Conf.h")
 # include "HAL_Conf.h"
 #elif __has_include("configs/HAL_Conf.h")
