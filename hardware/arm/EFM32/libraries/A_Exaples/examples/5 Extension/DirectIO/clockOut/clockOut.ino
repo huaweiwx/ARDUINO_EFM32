@@ -15,7 +15,7 @@
 //#define TEST_INPUT
 
 #ifdef TEST_INPUT
-ClockedInput<>  sinp(PA0,PA2);
+ClockedInput<>  sinp(PA0,PA1);
 #else
 ClockedOutput<> sout(PA0,PA1);
 #endif
@@ -32,9 +32,11 @@ void setup() {
 
 void loop() {
 #ifdef TEST_INPUT
-  uint8_t indate = sinp;
+  uint8_t indate = sinp;  /*use operate ()*/
   Serial.print("input is: ");
   Serial.println(indate,HEX);
+#else  
+  sout = 0x55;   /*use operate =*/
 #endif
   delay(1000);
   digitalToggle(LED_BUILTIN);

@@ -2,7 +2,7 @@
    direct_io.ino
    efm32 stm32  class LL_PIN is built in and GPIOPIN is it's an alias.
    OutputPin and  InputPin is a derived class of LL_PIN.
-   avr serials included in the DirectIO lib
+   avr series included in the DirectIO lib
 
    class func list:
      high()

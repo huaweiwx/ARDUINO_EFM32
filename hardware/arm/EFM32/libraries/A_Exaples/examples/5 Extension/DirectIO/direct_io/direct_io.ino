@@ -1,8 +1,8 @@
 /*
    direct_io.ino
-   efm32 stm32  class LL_PIN is built in and GPIOPIN is it's an alias.
+   efm32/stm32  class LL_PIN is built in and GPIOPIN is it's an alias.
    OutputPin and  InputPin is a derived class of LL_PIN.
-   avr serials included in the DirectIO lib.
+   avr series included in the DirectIO lib.
 
    class func list:
      high()
@@ -17,7 +17,7 @@
 */
 
 //Check the Environment
-#if defined(EFM32GENERIC)||defined(STM32GENERIC)
+#if ARDUINO_EXTEND >0
 OutputPin pin(LED_BUILTIN);
 
 #elif defined(__AVR__)
@@ -33,9 +33,9 @@ void setup() {
 }
 
 void loop() {
-  pin = HIGH; //equivalent pin.high() or pin.write(HIGH)
+  pin = HIGH;
   delay(500);
-  pin = LOW; //equivalent pin.high() or pin.write(HIGH)
+  pin = LOW;
   delay(500);
 }
 
