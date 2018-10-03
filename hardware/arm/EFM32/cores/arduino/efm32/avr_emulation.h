@@ -35,6 +35,14 @@ class DDRemulation
 	const GPIO_Port_TypeDef port;
 	uint16_t mask;
 
+	inline void setMsk(uint16_t val){
+		mask = val;
+	}
+
+	inline uint16_t getMask(void){
+		return mask;
+	}
+
     void mode(unsigned int pin, GPIO_Mode_TypeDef mode,unsigned int out = 0) {
 		GPIO_PinModeSet(port,pin,mode,out);
     }

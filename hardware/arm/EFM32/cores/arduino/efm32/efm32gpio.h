@@ -169,9 +169,11 @@ class InputPin : public LL_PIN {
       config(INPUT, initial_value);
     }
 
-    inline operator bool () {
+    template<typename T = bool>
+    inline operator T () {
       return read();
     }
+
     uint32_t pulseIn(bool state = false, uint32_t timeout = 1'000'000L )
     {
       // Cache the port and bit of the pin in order to speed up the
@@ -303,6 +305,22 @@ class ClockedOutput {
       return *this;
     }
 };
+
+// This macro lets you temporarily set an output to a value, 
+// and toggling back at the end of the code block. For example:
+// 
+// Output<2> cs;
+// Output<3> data;
+// with(cs, LOW) {
+//     data = HIGH;
+// }
+// 
+// is equivalent to:
+// cs = LOW;
+// data = HIGH;
+// cs = HIGH;
+
+#define with(pin, val) for(boolean _loop_##pin=((pin=val),true);_loop_##pin; _loop_##pin=((pin=!val), false))
 
 #define GPIOPIN LL_PIN
 
