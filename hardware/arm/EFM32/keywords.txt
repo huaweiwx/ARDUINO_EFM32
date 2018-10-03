@@ -12,6 +12,8 @@ F	KEYWORD1
 #######################################
 # Methods and Functions (KEYWORD2)
 digitalToggle	KEYWORD2 gpio
+digitalWriteHigh	KEYWORD2 gpio
+digitalWriteLow	KEYWORD2 gpio
 setRouteLoc	KEYWORD2 gpio
 __ConstPin	KEYWORD1
 
@@ -65,6 +67,9 @@ low	KEYWORD2
 mode	KEYWORD2
 pulse	KEYWORD2
 pulseIn	KEYWORD2
+setMsk	KEYWORD2
+getMsk	KEYWORD2
+with	KEYWORD2
 
 #######################################
 
@@ -323,6 +328,7 @@ SCK	LITERAL1
 CS	LITERAL1
 
 #config and port
+ARDUINO_EXTEND	LITERAL1
 USE_ARDUINOSTREAMING	LITERAL1
 DEBUG_EFM_USER	LITERAL1
 USE_ERRORBLINK	LITERAL1
