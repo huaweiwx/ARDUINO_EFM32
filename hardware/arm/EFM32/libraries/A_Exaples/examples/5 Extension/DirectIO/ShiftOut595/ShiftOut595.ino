@@ -1,14 +1,31 @@
+/*
+  74595/74164 series output demo
+  huaweiwx@sina.com 2018.9.28
+*/
 
-ClockedOutput<> sout595(PF2, PF3);
-OutputPin  storageCLK(PF4);
-//OutputPin outputEnable(PF5);
+
+#define DS_PIN   PF2
+#define SHCP_PIN PF3
+#define STCP_PIN PF4
+//#define nOE_PIN   PF5   //connet to GND
+//#define nMR_PIN   PF6   //connet to VCC 
+
+ClockedOutput<> sout595(DS_PIN, SHCP_PIN);
+OutputPin       storageCLK(STCP_PIN);
+
+#ifdef OE_PIN
+OutputPin outputEnable(nOE_PIN);
+#endif
 
 void write595(uint8_t val) {
   sout595.write(val);
   storageCLK.pulse();
 }
+
 void setup() {
-  //outputEnable = HIGH;
+#ifdef OE_PIN
+  outputEnable = LOW;
+#endif
 }
 
 void loop() {
