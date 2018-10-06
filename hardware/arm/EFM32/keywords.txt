@@ -67,8 +67,8 @@ low	KEYWORD2
 mode	KEYWORD2
 pulse	KEYWORD2
 pulseIn	KEYWORD2
-setMsk	KEYWORD2
-getMsk	KEYWORD2
+setMask	KEYWORD2
+getMask	KEYWORD2
 with	KEYWORD2
 
 #######################################

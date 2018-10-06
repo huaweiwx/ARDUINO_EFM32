@@ -35,7 +35,7 @@ class DDRemulation
 	const GPIO_Port_TypeDef port;
 	uint16_t mask;
 
-	inline void setMsk(uint16_t val){
+	inline void setMask(uint16_t val){
 		mask = val;
 	}
 
