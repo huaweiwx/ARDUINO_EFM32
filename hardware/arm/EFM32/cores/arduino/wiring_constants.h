@@ -26,7 +26,7 @@ extern "C"{
 #define HIGH 0x1
 #define LOW  0x0
 
-#define INPUT        _GPIO_P_MODEL_MODE0_INPUT
+#define INPUT        gpioModeInput
 #define OUTPUT       gpioModePushPull
 #define INPUT_PULLUP gpioModeInputPull
 
