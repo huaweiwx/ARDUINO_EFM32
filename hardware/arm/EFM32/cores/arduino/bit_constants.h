@@ -69,6 +69,7 @@
   val1 = 0b0010'1100；
 */
 #if USE_BITCONSTANTS >0
+#warnning "for C++14 replace with 0bxxxxxxxx"
 #define B0        0
 #define B00       0
 #define B000      0

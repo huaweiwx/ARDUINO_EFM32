@@ -44,11 +44,6 @@
 # define BOOTLOADER  0
 #endif
 
-//core
-#ifndef USE_BITCONSTANTS  /* some libraries are incompatible so can not included it */
-# define USE_BITCONSTANTS 0
-#endif
-
 #ifndef  USE_BITBAND
 #define  USE_BITBAND 1
 #endif

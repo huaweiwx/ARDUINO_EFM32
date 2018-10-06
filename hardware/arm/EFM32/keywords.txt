@@ -5,6 +5,7 @@
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
+__ConstPin	KEYWORD1
 ADC	KEYWORD1
 DAC	KEYWORD1
 F	KEYWORD1
@@ -15,7 +16,6 @@ digitalToggle	KEYWORD2 gpio
 digitalWriteHigh	KEYWORD2 gpio
 digitalWriteLow	KEYWORD2 gpio
 setRouteLoc	KEYWORD2 gpio
-__ConstPin	KEYWORD1
 
 #serial
 SerialLEUART0	KEYWORD2	Serial	DATA_TYPE
@@ -26,8 +26,8 @@ SerialUSART2	KEYWORD2	Serial	DATA_TYPE
 SerialUSART3	KEYWORD2	Serial	DATA_TYPE
 SerialUSART4	KEYWORD2	Serial	DATA_TYPE
 SerialUSART5	KEYWORD2	Serial	DATA_TYPE
-SerialUART0	KEYWORD2	serial
-SerialUART1	KEYWORD2	serial
+SerialUART0	KEYWORD2	serial	DATA_TYPE
+SerialUART1	KEYWORD2	serial	DATA_TYPE
 serialEvent	KEYWORD2	Serial	DATA_TYPE
 
 #dac
@@ -77,7 +77,7 @@ with	KEYWORD2
 # Constants (LITERAL1)
 EFM32GENERIC	LITERAL1
 STM32GENERIC	LITERAL1
-_BV	LITERAL1
+BV	LITERAL1
 
 ARDUINO_ARCH_EFM32	LITERAL1
 #ARDUINO_{board}

@@ -26,15 +26,10 @@ extern "C"{
 #define HIGH 0x1
 #define LOW  0x0
 
-#if 0
-#define INPUT 0x0
-#define OUTPUT 0x1
-#define INPUT_PULLUP 0x2
-#else
-#define INPUT _GPIO_P_MODEL_MODE0_INPUT
-#define OUTPUT gpioModePushPull
+#define INPUT        _GPIO_P_MODEL_MODE0_INPUT
+#define OUTPUT       gpioModePushPull
 #define INPUT_PULLUP gpioModeInputPull
-#endif
+
 //#define true 0x1
 //#define false 0x0
 
@@ -85,10 +80,10 @@ enum BitOrder {
 #define lowByte(w) ((uint8_t) ((w) & 0xff))
 #define highByte(w) ((uint8_t) ((w) >> 8))
 
-#define bitRead(value, bit) (((value) >> (bit)) & 0x01)
-#define bitSet(value, bit) ((value) |= (1UL << (bit)))
-#define bitClear(value, bit) ((value) &= ~(1UL << (bit)))
-#define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
+#define bitRead(value, b) (((value) >> (b)) & 0x01)
+#define bitSet(value, b) ((value) |= (1UL << (b)))
+#define bitClear(value, b) ((value) &= ~(1UL << (b)))
+#define bitWrite(value, b, bitvalue) (bitvalue ? bitSet(value, b) : bitClear(value, b))
 
 // avr-libc defines _NOP() since 1.6.2
 #ifndef _NOP
