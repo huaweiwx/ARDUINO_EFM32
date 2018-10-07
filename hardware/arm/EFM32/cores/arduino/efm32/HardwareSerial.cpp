@@ -515,14 +515,11 @@ void HardwareSerial::initPort(void) {
 #endif
 }
 
-void HardwareSerial::end(void) {
-
-}
+void HardwareSerial::end(void) {}
 
 int HardwareSerial::available(void)
 {
-  if (buf->rxEnd >= buf->rxStart) return (buf->rxEnd - buf->rxStart); /*0~ SERIAL_RX_BUFFER_SIZE-1*/
-  return SERIAL_RX_BUFFER_SIZE + buf->rxEnd - buf->rxStart;
+  return ((unsigned int)(SERIAL_RX_BUFFER_SIZE + buf->rxEnd - buf->rxStart)) % SERIAL_RX_BUFFER_SIZE;
 }
 
 int HardwareSerial::availableForWrite(void)
@@ -534,7 +531,7 @@ int HardwareSerial::availableForWrite(void)
 int HardwareSerial::peek(void)
 {
   if (available()) {
-    return buf->rxBuffer[buf->rxStart % SERIAL_RX_BUFFER_SIZE];
+    return buf->rxBuffer[buf->rxStart];
   } else {
     return -1;
   }
