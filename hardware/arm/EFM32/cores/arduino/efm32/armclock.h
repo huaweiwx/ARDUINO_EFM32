@@ -60,5 +60,4 @@ inline void delayMicroseconds(uint32_t microseconds){
 #ifdef __cplusplus
 }  //extern "C"{
 #endif /* __cplusplus*/
-
 #endif /*__ARMCLOCK_H__*/

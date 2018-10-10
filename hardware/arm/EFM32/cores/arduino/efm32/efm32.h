@@ -92,4 +92,5 @@ enum {
 #include "efm32pwm.h"
 #include "efm32dac.h"
 #include "efm32weak.h"
+#include "core_callback.h"
 #endif

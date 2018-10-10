@@ -1,4 +1,5 @@
 /*
+  efm32arduino efm32dac.h
   Copyright (c) 2018 huaweiwx@sina.com 2018.7.1
 
   This library is free software; you can redistribute it and/or

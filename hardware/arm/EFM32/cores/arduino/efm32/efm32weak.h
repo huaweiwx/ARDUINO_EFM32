@@ -29,10 +29,12 @@
 extern "C"{
 #endif
 
-void HAL_SYSTICK_Callback(void);
+void systicCallback(void);
 
 #ifdef __cplusplus
 }
 #endif
+
+#define HAL_SYSTICK_Callback	systicCallback    /*as stm32 hal*/   
 
 #endif //_EFMM32_WEAK_H_
