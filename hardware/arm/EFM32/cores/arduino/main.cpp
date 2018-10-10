@@ -34,7 +34,13 @@ int main()
 	setup();
     while(1)
     {
-		loop();
+#if USE_CORECALLBACK > 0
+      coreCallback();
+#endif
+	  loop();
+#if USE_SERIALEVENTRUN > 0	
+      if (serialEventRun) serialEventRun();
+#endif
     }
 //	return 1; //
 }
