@@ -1,32 +1,67 @@
 /*
-  EMF32ARDUINO  avr_emulation.h
+  EMF32 ARDUINO  avr_emulation.h
   
   Copyright (c) 2018 huaweiwx@sina.com 2018.9.1
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
 
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-  SOFTWARE.
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 
-#ifndef __ARREMULATION_H__
-#define __ARREMULATION_H__
+#ifndef __AVREMULATION_H__
+#define __AVREMULATION_H__
 
 #ifdef __cplusplus
+
+class PINemulation 
+{
+  public:
+	PINemulation(const GPIO_Port_TypeDef port): port(port){}
+	const GPIO_Port_TypeDef port;
+
+    inline  operator uint32_t () const __attribute__((always_inline)){
+		return GPIO->P[port].DIN;
+    }
+};
+
+class PORTemulation 
+{
+  public:
+	PORTemulation(const GPIO_Port_TypeDef port): port(port){}
+	const GPIO_Port_TypeDef port;
+	
+    inline  operator uint32_t () const __attribute__((always_inline)){
+		return GPIO->P[port].DOUT;
+    }
+
+    inline PORTemulation& operator = (uint16_t val) __attribute__((always_inline)){
+        GPIO->P[port].DOUT = val;
+        return *this;
+	}
+    inline PORTemulation& operator |= (uint16_t val) __attribute__((always_inline)) {
+		GPIO_PortOutSet(port,val);
+        return *this;
+	}
+    inline PORTemulation& operator &= (uint16_t val) __attribute__((always_inline)) {
+		GPIO_PortOutClear(port,~val);
+        return *this;
+	}
+    inline PORTemulation& operator ^= (uint16_t val) __attribute__((always_inline)) {
+		GPIO_PortOutToggle(port,val);
+        return *this;
+	}
+};
 
 class DDRemulation
 {
@@ -43,12 +78,20 @@ class DDRemulation
 		return mask;
 	}
 
-    void mode(unsigned int pin, GPIO_Mode_TypeDef mode,unsigned int out = 0) {
-		GPIO_PinModeSet(port,pin,mode,out);
+	inline void lock(uint16_t pinMask){
+		this->mask &= ~pinMask;
+	}
+
+	inline void unLock(uint16_t pinMask){
+		this->mask |= pinMask;
+	}
+
+    void mode(unsigned int pinMask, GPIO_Mode_TypeDef mode, unsigned int out = 0) {
+		GPIO_PinModeSet(port,pinMask,mode,out);
     }
 
-    operator int () const __attribute__((always_inline)) {
-		return save_ddr;
+    inline operator int () __attribute__((always_inline)) {
+		return this->save_ddr;
     }
 
     DDRemulation& operator = (uint16_t val){
@@ -61,7 +104,7 @@ class DDRemulation
       return *this;
     }
 
-    inline DDRemulation& operator |= (int val) __attribute__((always_inline)) {
+    inline DDRemulation& operator |= (uint16_t val) __attribute__((always_inline)) {
 	  for(uint8_t i = 0;i<16;i++){
 		  if((bitRead(mask,i))&(~save_ddr)){
 			 if(bitRead(val,i)){
@@ -73,7 +116,7 @@ class DDRemulation
       return *this;
     }
 	
-    inline DDRemulation& operator &= (int val) __attribute__((always_inline)) {
+    inline DDRemulation& operator &= (uint16_t val) __attribute__((always_inline)) {
 	  for(uint8_t i = 0;i<16;i++){
 		  if(bitRead((save_ddr & mask),i)){
 			 if(!bitRead(val,i)){
@@ -89,43 +132,65 @@ class DDRemulation
 };
 
 #if  _GPIO_PORT_A_PIN_MASK >0
-extern DDRemulation DDRA;
+extern	DDRemulation	DDRA;
+extern	PINemulation	PINA;
+extern  PORTemulation	PORTA;
 #endif
 #if  _GPIO_PORT_B_PIN_MASK >0
-extern DDRemulation DDRB;
+extern	DDRemulation	DDRB;
+extern	PINemulation	PINB;
+extern	PORTemulation	PORTB;
 #endif
 #if  _GPIO_PORT_C_PIN_MASK >0
-extern  DDRemulation DDRC;
+extern  DDRemulation	DDRC;
+extern	PINemulation 	PINC;
+extern  PORTemulation	PORTC;
 #endif
 #if  _GPIO_PORT_D_PIN_MASK >0
-extern  DDRemulation DDRD;
+extern  DDRemulation	DDRD;
+extern	PINemulation	PIND;
+extern  PORTemulation	PORTD;
 #endif
 #if  _GPIO_PORT_E_PIN_MASK >0
-extern  DDRemulation DDRE;
+extern  DDRemulation	DDRE;
+extern	PINemulation	PINE;
+extern  PORTemulation	PORTE;
 #endif
 #if  _GPIO_PORT_F_PIN_MASK >0
-extern  DDRemulation DDRF;
+extern  DDRemulation	DDRF;
+extern	PINemulation	PINF;
+extern  PORTemulation	PORTF;
 #endif
 #if  _GPIO_PORT_G_PIN_MASK >0
-extern  DDRemulation DDRG;
+extern  DDRemulation	DDRG;
+extern	PINemulation	PING;
+extern  PORTemulation	PORTG;
 #endif
 #if  _GPIO_PORT_H_PIN_MASK >0
-extern  DDRemulation DDRH;
+extern  DDRemulation	DDRH;
+extern	PINemulation	PINH;
+extern  PORTemulation	PORTH;
 #endif
 #if  _GPIO_PORT_I_PIN_MASK >0
-extern  DDRemulation DDRI;
+extern  DDRemulation	DDRI;
+extern	PINemulation	PINI;
+extern  PORTemulation	PORTI;
 #endif
 #if  _GPIO_PORT_J_PIN_MASK >0
-extern  DDRemulation DDRJ;
+extern  DDRemulation	DDRJ;
+extern	PINemulation	PINJ;
+extern  PORTemulation	PORTJ;
 #endif
 #if  _GPIO_PORT_K_PIN_MASK >0
-extern  DDRemulation DDRK;
+extern  DDRemulation	DDRK;
+extern  PINemulation	PINK;
+extern  PORTemulation	PORTK;
 #endif
 
-#endif //__cplusplus
+#else  /*c mode*/
 
 #if  _GPIO_PORT_A_PIN_MASK >0
-#define PORTA  GPIOA.DOUT
+#define PORTA   GPIOA.DOUT
 #define  PINA   GPIOA.DIN
 #endif
 #if  _GPIO_PORT_B_PIN_MASK >0
@@ -169,4 +234,5 @@ extern  DDRemulation DDRK;
 #define  PINK  GPIOK.DIN
 #endif
 
-#endif //__ARREMULATION_H__
+#endif //__cplusplus
+#endif //__AVREMULATION_H__

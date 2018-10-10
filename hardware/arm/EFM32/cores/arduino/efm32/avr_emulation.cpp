@@ -3,57 +3,76 @@
   
   Copyright (c) 2018 huaweiwx@sina.com 2018.9.1
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
 
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-  SOFTWARE.
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
 */
 
 #include "Arduino.h"
 
 #if  _GPIO_PORT_A_PIN_MASK >0
-DDRemulation DDRA(gpioPortA,_GPIO_PORT_A_PIN_MASK);
+DDRemulation   DDRA(gpioPortA,_GPIO_PORT_A_PIN_MASK);
+PINemulation   PINA(gpioPortA);
+PORTemulation PORTA(gpioPortA);
 #endif
 #if  _GPIO_PORT_B_PIN_MASK >0
 DDRemulation DDRB(gpioPortB,_GPIO_PORT_B_PIN_MASK);
+PINemulation   PINB(gpioPortB);
+PORTemulation PORTB(gpioPortB);
 #endif
 #if  _GPIO_PORT_C_PIN_MASK >0
 DDRemulation DDRC(gpioPortC,_GPIO_PORT_C_PIN_MASK);
+PINemulation   PINC(gpioPortC);
+PORTemulation PORTC(gpioPortC);
 #endif
 #if  _GPIO_PORT_D_PIN_MASK >0
-DDRemulation DDRD(gpioPortD,_GPIO_PORT_D_PIN_MASK);
+DDRemulation  DDRD(gpioPortD,_GPIO_PORT_D_PIN_MASK);
+PINemulation   PIND(gpioPortD);
+PORTemulation PORTD(gpioPortD);
 #endif
 #if  _GPIO_PORT_E_PIN_MASK >0
 DDRemulation DDRE(gpioPortE,_GPIO_PORT_E_PIN_MASK);
+PINemulation   PINE(gpioPortE);
+PORTemulation PORTE(gpioPortE);
 #endif
 #if  _GPIO_PORT_F_PIN_MASK >0
 DDRemulation DDRF(gpioPortF,_GPIO_PORT_F_PIN_MASK);
+PINemulation   PINF(gpioPortF);
+PORTemulation PORTF(gpioPortF);
 #endif
 #if  _GPIO_PORT_G_PIN_MASK >0
-DDRemulation DDRA(gpioPortG,_GPIO_PORT_G_PIN_MASK);
+DDRemulation DDRG(gpioPortG,_GPIO_PORT_G_PIN_MASK);
+PINemulation   PING(gpioPortG);
+PORTemulation PORTG(gpioPortG);
 #endif
 #if  _GPIO_PORT_H_PIN_MASK >0
 DDRemulation DDRH(gpioPortH,_GPIO_PORT_H_PIN_MASK);
+PINemulation   PINH(gpioPortH);
+PORTemulation PORTH(gpioPortH);
 #endif
 #if  _GPIO_PORT_I_PIN_MASK >0
 DDRemulation DDRI(gpioPortI,_GPIO_PORT_I_PIN_MASK);
+PINemulation   PINI(gpioPortI);
+PORTemulation PORTI(gpioPortI);
 #endif
 #if  _GPIO_PORT_J_PIN_MASK >0
 DDRemulation DDRJ(gpioPortJ,_GPIO_PORT_J_PIN_MASK);
+PINemulation   PINJ(gpioPortJ);
+PORTemulation PORTJ(gpioPortJ);
 #endif
 #if  _GPIO_PORT_K_PIN_MASK >0
 DDRemulation DDRK(gpioPortK,_GPIO_PORT_K_PIN_MASK);
+PINemulation   PINK(gpioPortK);
+PORTemulation PORTK(gpioPortK);
 #endif
