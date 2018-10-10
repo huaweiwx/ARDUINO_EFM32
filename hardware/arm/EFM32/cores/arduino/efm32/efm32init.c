@@ -26,14 +26,14 @@ uint16_t CRC_calc(uint8_t *start, uint8_t *end);
 
 volatile uint32_t msTicks;
 
-void HAL_SYSTICK_Callback(void)  __attribute__ ((weak));
-void HAL_SYSTICK_Callback(void){}
+void systicCallback(void)  __attribute__ ((weak));
+void systicCallback(void){}
 
 #if (FREERTOS == 0)
 void SysTick_Handler(void)
 {
 	++msTicks;
-	HAL_SYSTICK_Callback(); /*as stm32 hal*/      
+	systicCallback();   
 }
 #endif
 
