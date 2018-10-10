@@ -48,6 +48,14 @@
 #define  USE_BITBAND 1
 #endif
 
+#ifndef USE_CORECALLBACK
+#define USE_CORECALLBACK 0
+#endif
+
+#ifndef USE_AVREMULATION
+#define USE_AVREMULATION 1
+#endif
+
 #ifndef USE_ERRORBLINK
 #  ifdef DEBUG_EFM_USER
     #define USE_ERRORBLINK 1
