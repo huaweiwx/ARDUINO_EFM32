@@ -1,17 +1,26 @@
 /*
-   AVR emulate DDRx PORTx and PINx demo
-   test pin is PD6
-   by huaweiwx <huaweiwx@sina.com> 2018.09.08
+  avr_emulation.ino: avr registers PORTx PINx DDRx emulation demo
+  efm32g222f128 LED_BUILTIN is PD6
+  EFM32/STM32  avr emulation is build in; huaweiwx@sina.com 2018.8.10
 */
 
+#define LED_DDR   DDRD
+#define LED_PORT  PORTD
+#define pinMask   bit(6)
+
 void setup() {
-  DDRD |= bit(6); //  pinMode(LED_BUILTIN,OUTPUT);
+  LED_DDR |= pinMask; // set PD6  OUTPUT,  pinMode(LED_BUILTIN,OUTPUT);
 }
 
 void loop() {
-  PORTD |= bit(6);  /* PD6 set   */
+#if 1
+  LED_PORT ^=  pinMask;   /* PD6 toggle */
+  delay(1000);
+#else
+  LED_PORT |=  pinMask;   /* PD6 set   */
   delay(500);
-  PORTD &= ~bit(6); /* PD6 clear */
+  LED_PORT &= ~pinMask;   /* PD6 clear */
   delay(500);
+#endif
 }
 

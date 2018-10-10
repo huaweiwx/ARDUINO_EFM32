@@ -13,7 +13,7 @@
 ClockedOutput<> sout595(DS_PIN, SHCP_PIN);
 OutputPin       storageCLK(STCP_PIN);
 
-#ifdef OE_PIN
+#ifdef nOE_PIN
 OutputPin outputEnable(nOE_PIN);
 #endif
 
@@ -23,7 +23,7 @@ void write595(uint8_t val) {
 }
 
 void setup() {
-#ifdef OE_PIN
+#ifdef nOE_PIN
   outputEnable = LOW;
 #endif
 }
