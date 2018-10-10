@@ -16,6 +16,9 @@ digitalToggle	KEYWORD2 gpio
 digitalWriteHigh	KEYWORD2 gpio
 digitalWriteLow	KEYWORD2 gpio
 setRouteLoc	KEYWORD2 gpio
+systicCallback	KEYWORD2 clock
+registerCoreCallback	KEYWORD2 core
+unregisterCoreCallback	KEYWORD2 core
 
 #serial
 SerialLEUART0	KEYWORD2	Serial	DATA_TYPE
