@@ -28,6 +28,7 @@ extern "C"{
 
 #define INPUT        gpioModeInput
 #define OUTPUT       gpioModePushPull
+#define OUTPUT_OD    gpioModeWiredAndPullUp
 #define INPUT_PULLUP gpioModeInputPull
 
 //#define true 0x1

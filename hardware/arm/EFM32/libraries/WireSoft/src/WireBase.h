@@ -83,9 +83,9 @@ class WireBase
 // Allow derived classes to overwrite begin function
 //    virtual void begin(uint8_t self_addr= 0x00);
 #if USE_WAREINIT >0
-    void Init(uint8_t self_addr = 0)
+    void Init(uint8_t self_addr = 0){
 #else
-    void begin(uint8_t self_addr = 0)
+    void begin(uint8_t self_addr = 0){
 #endif
       tx_buf_idx = 0;
       tx_buf_overflow = false;
