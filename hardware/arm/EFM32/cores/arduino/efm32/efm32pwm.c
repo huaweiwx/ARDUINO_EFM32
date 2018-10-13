@@ -174,12 +174,12 @@ static void initTimer(TIMER_TypeDef* TIMERx, unsigned int ch, unsigned int route
 #endif
 }
 
-void analogWrite(uint32_t ulPin, uint32_t val)
+void analogWrite(uint8_t ucPin, uint32_t val)
 {
-  TIMER_TypeDef *timer  = g_Pin2PortMapArray[ulPin].pTimer;
+  TIMER_TypeDef *timer  = g_Pin2PortMapArray[ucPin].pTimer;
 //  if((uint32_t*)timer == NO_PWM) return;
-  uint32_t chLoc  = g_Pin2PortMapArray[ulPin].timerChannelLoc;
-  pinMode(ulPin,OUTPUT);
+  uint32_t chLoc  = g_Pin2PortMapArray[ucPin].timerChannelLoc;
+  pinMode(ucPin,OUTPUT);
   int duty = val * 100 / 0xfff;
   initTimer(timer, chLoc&0x0f, chLoc >> 4, duty);
 }

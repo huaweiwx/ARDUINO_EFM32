@@ -25,19 +25,19 @@
 extern "C" {
 #endif
 
-extern void pinMode( uint32_t dwPin, uint32_t dwMode ) ;
-extern void digitalWrite( uint32_t dwPin, uint32_t dwVal ) ;
-extern int digitalRead( uint32_t ulPin ) ;
-extern void digitalToggle( uint32_t ulPin );
-uint32_t pulseIn( uint32_t ulPin, uint32_t state, uint32_t timeout);
+extern void pinMode( uint8_t ucPin, uint32_t dwMode ) ;
+extern void digitalWrite( uint8_t ucPin, uint8_t dwVal ) ;
+extern int digitalRead( uint8_t ucPin ) ;
+extern void digitalToggle( uint8_t ucPin );
+uint32_t pulseIn( uint8_t ucPin, uint8_t state, uint32_t timeout);
 
-static inline void digitalWriteHigh(uint32_t ulPin)
+static inline void digitalWriteHigh(uint8_t ucPin)
 {
-  GPIO_PinOutSet(g_Pin2PortMapArray[ulPin].GPIOx_Port, g_Pin2PortMapArray[ulPin].Pin_abstraction);
+  GPIO_PinOutSet(g_Pin2PortMapArray[ucPin].GPIOx_Port, g_Pin2PortMapArray[ucPin].Pin_abstraction);
 }
-static inline void digitalWriteLow(uint32_t ulPin)
+static inline void digitalWriteLow(uint8_t ucPin)
 {
-  GPIO_PinOutClear(g_Pin2PortMapArray[ulPin].GPIOx_Port, g_Pin2PortMapArray[ulPin].Pin_abstraction);
+  GPIO_PinOutClear(g_Pin2PortMapArray[ucPin].GPIOx_Port, g_Pin2PortMapArray[ucPin].Pin_abstraction);
 }
 
 #ifdef __cplusplus

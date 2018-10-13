@@ -79,6 +79,9 @@ enum {
   GPIO_PIN_15,
 };
 
+#define NO_ADC      0xffffffff
+#define NO_PWM      0x00000000
+
 #include "avr_emulation.h"
 #include "efm32_build_defines.h"
 #include "variant.h"

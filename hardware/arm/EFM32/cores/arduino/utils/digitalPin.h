@@ -216,7 +216,7 @@ void fastDigitalWrite(uint8_t pin, bool value) {
  */
 static inline __attribute__((always_inline))
 bool fastDigitalRead(uint8_t pin) {
-  return g_APinDescription[pin].pPort->PIO_PDSR & g_APinDescription[pin].ulPin;
+  return g_APinDescription[pin].pPort->PIO_PDSR & g_APinDescription[pin].ucPin;
 }
 //------------------------------------------------------------------------------
 /** Set pin value
@@ -226,9 +226,9 @@ bool fastDigitalRead(uint8_t pin) {
 static inline __attribute__((always_inline))
 void fastDigitalWrite(uint8_t pin, bool value) {
   if (value) {
-    g_APinDescription[pin].pPort->PIO_SODR = g_APinDescription[pin].ulPin;
+    g_APinDescription[pin].pPort->PIO_SODR = g_APinDescription[pin].ucPin;
   } else {
-    g_APinDescription[pin].pPort->PIO_CODR = g_APinDescription[pin].ulPin;
+    g_APinDescription[pin].pPort->PIO_CODR = g_APinDescription[pin].ucPin;
   }
 }
 #elif defined(ESP8266)
@@ -268,7 +268,7 @@ bool fastDigitalRead(uint8_t pin) {
   return 0;
 }
 
-#else  // CORE_TEENSY & STM32GENERIC
+#else  // CORE_TEENSY & STM/EFM32GENERIC
 //------------------------------------------------------------------------------
 inline void fastDigitalWrite(uint8_t pin, bool value) {
   digitalWrite(pin, value);
@@ -280,29 +280,29 @@ inline bool fastDigitalRead(uint8_t pin) {
 //------------------------------------------------------------------------------
 inline void fastDigitalToggle(uint8_t pin) {
 #if defined(STM32GENERIC)||defined(EFM32GENERIC)  //add by huaweiwx@sina.com 2018.8.28
-  digitalToggle(pin);
+	digitalToggle(pin);
 #else
-  fastDigitalWrite(pin, !fastDigitalRead(pin));
+	fastDigitalWrite(pin, !fastDigitalRead(pin));
 #endif
-}
+}  
 
 #if defined(STM32GENERIC)||defined(EFM32GENERIC)  //add by huaweiwx@sina.com 2018.8.28
 #ifdef  __cplusplus
-inline void fastDigitalWrite(__ConstPin pin, bool value) {
+inline void fastDigitalWrite(ARDUINOPIN_TypeDef pin, bool value) {
   digitalWrite(pin, value);
 }
 //------------------------------------------------------------------------------
-inline bool fastDigitalRead(__ConstPin pin) {
+inline bool fastDigitalRead(ARDUINOPIN_TypeDef pin) {
   return digitalRead(pin);
 }
 //------------------------------------------------------------------------------
-inline void fastDigitalToggle(__ConstPin pin) {
+inline void fastDigitalToggle(ARDUINOPIN_TypeDef pin) {
   digitalToggle(pin);
 }
 #endif //__cplusplus
-#endif
+#endif //STM/EFM32GENERIC
 
-#endif
+#endif 
 //------------------------------------------------------------------------------
 inline void fastPinMode(uint8_t pin, uint8_t mode) {
   pinMode(pin, mode);

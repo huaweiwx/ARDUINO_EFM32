@@ -22,71 +22,71 @@
 extern "C" {
 #endif
 
-extern void pinMode( uint32_t ulPin, uint32_t ulMode )
+extern void pinMode(uint8_t ucPin, uint32_t ulMode )
 {
   switch ( ulMode )
   {
     case INPUT:
-      GPIO_PinModeSet(g_Pin2PortMapArray[ulPin].GPIOx_Port,
-                      g_Pin2PortMapArray[ulPin].Pin_abstraction,
+      GPIO_PinModeSet(g_Pin2PortMapArray[ucPin].GPIOx_Port,
+                      g_Pin2PortMapArray[ucPin].Pin_abstraction,
                       gpioModeInput, 0);
       break ;
 
     case INPUT_PULLUP:
-      GPIO_PinModeSet(g_Pin2PortMapArray[ulPin].GPIOx_Port,
-                      g_Pin2PortMapArray[ulPin].Pin_abstraction,
+      GPIO_PinModeSet(g_Pin2PortMapArray[ucPin].GPIOx_Port,
+                      g_Pin2PortMapArray[ucPin].Pin_abstraction,
                       gpioModeInputPull, 0);
       break ;
 
     case OUTPUT:
-      GPIO_PinModeSet(g_Pin2PortMapArray[ulPin].GPIOx_Port,
-                      g_Pin2PortMapArray[ulPin].Pin_abstraction,
+      GPIO_PinModeSet(g_Pin2PortMapArray[ucPin].GPIOx_Port,
+                      g_Pin2PortMapArray[ucPin].Pin_abstraction,
                       gpioModePushPull, 0);
       break ;
 
   }
 }
 
-extern void digitalWrite( uint32_t ulPin, uint32_t ulVal )
+extern void digitalWrite( uint8_t ucPin, uint8_t ulVal )
 {
   if (ulVal) {
-    GPIO_PinOutSet(g_Pin2PortMapArray[ulPin].GPIOx_Port, g_Pin2PortMapArray[ulPin].Pin_abstraction);
+    GPIO_PinOutSet(g_Pin2PortMapArray[ucPin].GPIOx_Port, g_Pin2PortMapArray[ucPin].Pin_abstraction);
   } else {
-    GPIO_PinOutClear(g_Pin2PortMapArray[ulPin].GPIOx_Port, g_Pin2PortMapArray[ulPin].Pin_abstraction);
+    GPIO_PinOutClear(g_Pin2PortMapArray[ucPin].GPIOx_Port, g_Pin2PortMapArray[ucPin].Pin_abstraction);
   }
 }
 
-extern int digitalRead( uint32_t ulPin )
+extern int digitalRead(uint8_t ucPin )
 {
   /* can add a section here to see if pin is readable */
-  return bitRead(GPIO_PortInGet(g_Pin2PortMapArray[ulPin].GPIOx_Port), g_Pin2PortMapArray[ulPin].Pin_abstraction);
+  return bitRead(GPIO_PortInGet(g_Pin2PortMapArray[ucPin].GPIOx_Port), g_Pin2PortMapArray[ucPin].Pin_abstraction);
 }
 
-extern void digitalToggle( uint32_t ulPin )
+extern void digitalToggle(uint8_t ucPin )
 {
   /* can add a section here to see if pin is readable */
-  GPIO_PinOutToggle(g_Pin2PortMapArray[ulPin].GPIOx_Port, g_Pin2PortMapArray[ulPin].Pin_abstraction);
+  GPIO_PinOutToggle(g_Pin2PortMapArray[ucPin].GPIOx_Port, g_Pin2PortMapArray[ucPin].Pin_abstraction);
 }
 
-extern uint32_t pulseIn( uint32_t ulPin, uint32_t state, uint32_t timeout )
+extern uint32_t pulseIn(uint8_t ucPin, uint8_t state, uint32_t timeout )
 {
   uint32_t startMicros = micros();
 
   // wait for any previous pulse to end
-  while (digitalRead(ulPin) == (int)state) {
+  while (digitalRead(ucPin) == (int)state) {
     if (micros() - startMicros > timeout)
       return 0;
   }
 
   // wait for the pulse to start
-  while (digitalRead(ulPin) != (int)state) {
+  while (digitalRead(ucPin) != (int)state) {
     if (micros() - startMicros > timeout)
       return 0;
   }
 
   uint32_t start = micros();
   // wait for the pulse to stop
-  while (digitalRead(ulPin) == (int)state) {
+  while (digitalRead(ucPin) == (int)state) {
     if (micros() - startMicros > timeout)
       return 0;
   }

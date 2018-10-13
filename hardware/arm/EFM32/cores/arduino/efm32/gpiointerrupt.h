@@ -29,8 +29,8 @@ extern "C" {
 
 typedef void (*GPIOINT_IrqCallbackPtr_t)(void);
 
-void attachInterrupt(uint8_t ulPin, GPIOINT_IrqCallbackPtr_t callback, int mode);
-void detachInterrupt(uint8_t ulPin);
+void attachInterrupt(uint8_t ucPin, GPIOINT_IrqCallbackPtr_t callback, int mode);
+void detachInterrupt(uint8_t ucPin);
 
 /** @} (end addtogroup GPIOINT */
 /** @} (end addtogroup emdrv) */

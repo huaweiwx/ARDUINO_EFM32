@@ -120,8 +120,8 @@ int analogReadChannel(ADC_SingleInput_TypeDef adcSingleInputChx, uint8_t diff) {
 }
 
 extern "C"
-int analogRead(uint8_t ulPin) {
-  uint32_t ch = g_Pin2PortMapArray[ulPin].adc_channel;
+int analogRead(uint8_t ucPin) {
+  uint32_t ch = g_Pin2PortMapArray[ucPin].adc_channel;
   if (ch == NO_ADC) return 0;
   return analogReadChannel((ADC_SingleInput_TypeDef)ch, false);
 }

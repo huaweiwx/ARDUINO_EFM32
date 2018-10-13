@@ -168,24 +168,24 @@ void GPIO_ODD_IRQHandler(void)
   GPIOINT_IRQDispatcher(iflags);
 }
 
-void attachInterrupt(uint8_t ulPin, GPIOINT_IrqCallbackPtr_t callback, int mode){
-	uint8_t pin = g_Pin2PortMapArray[ulPin].Pin_abstraction;
+void attachInterrupt(uint8_t ucPin, GPIOINT_IrqCallbackPtr_t callback, int mode){
+	uint8_t pin = g_Pin2PortMapArray[ucPin].Pin_abstraction;
 	GPIOINT_CallbackRegister(pin, callback);
 	GPIOINT_Init();
 	switch (mode){
 		case RISING:
-		  GPIO_IntConfig(g_Pin2PortMapArray[ulPin].GPIOx_Port, pin, true, 0, true);
+		  GPIO_IntConfig(g_Pin2PortMapArray[ucPin].GPIOx_Port, pin, true, 0, true);
 		  break;
 		case FALLING:  
-		  GPIO_IntConfig(g_Pin2PortMapArray[ulPin].GPIOx_Port, pin, 0, true, true);
+		  GPIO_IntConfig(g_Pin2PortMapArray[ucPin].GPIOx_Port, pin, 0, true, true);
 		  break;
 		case CHANGE:
-		  GPIO_IntConfig(g_Pin2PortMapArray[ulPin].GPIOx_Port, pin, true, true,true);
+		  GPIO_IntConfig(g_Pin2PortMapArray[ucPin].GPIOx_Port, pin, true, true,true);
 		  break;
 	}
 	GPIO_IntEnable(1<<pin);
 }
 
-void detachInterrupt(uint8_t ulPin) {
-	GPIOINT_CallbackRegister(g_Pin2PortMapArray[ulPin].Pin_abstraction,0);
+void detachInterrupt(uint8_t ucPin) {
+	GPIOINT_CallbackRegister(g_Pin2PortMapArray[ucPin].Pin_abstraction,0);
 }
