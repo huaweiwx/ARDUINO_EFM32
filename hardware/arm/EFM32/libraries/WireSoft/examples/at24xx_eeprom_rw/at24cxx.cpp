@@ -25,14 +25,12 @@
 #include "Arduino.h"
 #include "at24cxx.h"
 
-EXTEEPROM::EXTEEPROM(uint8_t sda, uint8_t scl, uint8_t delay): WARE(sda, scl, delay) {
-  WARE::begin();
-}
 
 void EXTEEPROM::begin(uint8_t devAdr, uint16_t devType)
 {
   this->_devAdr  = devAdr;
   this->_devType = devType;
+  WARE::begin(devAdr);
 }
 
 uint8_t EXTEEPROM::read(uint16_t address)

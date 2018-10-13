@@ -1,157 +1,201 @@
 /******************************************************************************
- * The MIT License
- *
- * Copyright (c) 2010 LeafLabs LLC.
- *
- * Permission is hereby granted, free of charge, to any person
- * obtaining a copy of this software and associated documentation
- * files (the "Software"), to deal in the Software without
- * restriction, including without limitation the rights to use, copy,
- * modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+   The MIT License
+
+   Copyright (c) 2010 LeafLabs LLC.
+
+   Permission is hereby granted, free of charge, to any person
+   obtaining a copy of this software and associated documentation
+   files (the "Software"), to deal in the Software without
+   restriction, including without limitation the rights to use, copy,
+   modify, merge, publish, distribute, sublicense, and/or sell copies
+   of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be
+   included in all copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
  *****************************************************************************/
 
 /**
- * @file Wire.h
- * @author Trystan Jones <crenn6977@gmail.com>
- * @brief Wire library, uses the WireBase to create the primary interface
- *        while keeping low level interactions invisible to the user.
- */
+   @file Wire.h
+   @author Trystan Jones <crenn6977@gmail.com>
+   @brief Wire library, uses the WireBase to create the primary interface
+          while keeping low level interactions invisible to the user.
 
-/*
- * Library updated by crenn to follow new Wire system.
- * Code was derived from the original Wire for maple code by leaflabs and the
- * modifications by gke and ala42.
- */
+   Library for EFM32GENERIC/STM32GENERIC by huaweiwx@sina.com 2017.10 
+*/
 
 #ifndef _WIRESOFT_H_
 #define _WIRESOFT_H_
 
-#if __has_include("configs/i2cEepromConfig.h")
-#  include "configs/i2cEepromConfig.h"
-#endif
-
+#include "Arduino.h"
 #include "WireBase.h"
-
 
 #define SOFT_STANDARD 27
 #define SOFT_FAST 0
 
+#define SOFTI2C_WRITE 0
+#define SOFTI2C_READ  1
 
-//#define I2C_DELAY(x) {uint32 time=micros(); while(time>(micros()+x));}
 #define I2C_DELAY(x) do{for(int i=0;i<x;i++) {asm volatile("nop");}}while(0)
-
 #define BUFFER_LENGTH 32
 
-
 class TwoWireSoft : public WireBase {
- public:
-    uint8_t	i2c_delay = SOFT_FAST;
-    uint8_t	scl_pin;
-    uint8_t	sda_pin;
+  public:
+    ARDUINOPIN_TypeDef sda;
+	ARDUINOPIN_TypeDef scl;
+    uint8_t i2c_delay;
 	
-    void setPins(uint8_t sda,uint8_t scl){
-		 sda_pin = sda;
-	     scl_pin = scl;
-		};
-    /*
-     * Sets the SCL line to HIGH/LOW and allow for clock stretching by slave
-     * devices
-     */
-    void sclPin(bool);
-
-    /*
-     * 
-     */
-    void sdaPin(bool);//Sets the SDA line to HIGH/LOW
-
-    /*
-     * Creates a Start condition on the bus
-     */
-    void i2c_start();
-
-    /*
-     * Creates a Stop condition on the bus
-     */
-    void  i2c_stop();
-
-    /*
-     * Gets an ACK condition from a slave device on the bus
-     */
-    bool i2c_get_ack();
-
-    /*
-     * Creates a ACK condition on the bus
-     */
-    void i2c_send_ack();
-
-    /*
-     * Creates a NACK condition on the bus
-     */
-    void i2c_send_nack();
-
-    /*
-     * Shifts in the data through SDA and clocks SCL for the slave device
-     */
-    uint8_t i2c_shift_in();
-
-    /*
-     * Shifts out the data through SDA and clocks SCL for the slave device
-     */
-    void i2c_shift_out(uint8_t);
+    TwoWireSoft(ARDUINOPIN_TypeDef  sda,
+                ARDUINOPIN_TypeDef  scl, 
+	            uint8_t i2c_delay = SOFT_STANDARD)
+                : sda(sda), scl(scl), i2c_delay(i2c_delay) {};
+ 
+    void begin(uint8_t self_addr = 0) {
+      WireBase::begin(self_addr);
+      pinMode(this->scl, OUTPUT_OD);
+      pinMode(this->sda, OUTPUT_OD);
+      sclPin(HIGH);
+      sdaPin(HIGH);
+    }
+    
+    void end(){
+      if (this->scl) pinMode(this->scl, INPUT);	  
+      if (this->sda) pinMode(this->sda, INPUT);
+    }
 	
+    ~TwoWireSoft() {}
+    
+	void setPins(uint8_t _sda,uint8_t _scl){} /* nothing to do */
 	
+    void sclPin(bool state) {
+      I2C_DELAY(this->i2c_delay);
+      digitalWrite(this->scl, state);
+      //Allow for clock stretching - dangerous currently
+      if (state == HIGH) {
+        while (digitalRead(this->scl) == 0);
+      }
+    }
 
+    void sdaPin(bool state) {
+      I2C_DELAY(this->i2c_delay);
+      digitalWrite(this->sda, state);
+    }
+    void i2c_start() {
+      sdaPin(LOW);
+      sclPin(LOW);
+    }
+    void  i2c_stop() {
+      sdaPin(LOW);
+      sclPin(HIGH);
+      sdaPin(HIGH);
+    }
+    /*
+       Gets an ACK condition from a slave device on the bus
+    */
+    bool i2c_get_ack() {
+      sclPin(LOW);
+      sdaPin(HIGH);
+      sclPin(HIGH);
+
+      bool ret = !digitalRead(this->sda);
+      sclPin(LOW);
+      return ret;
+    }
+
+    /*
+       Creates a ACK condition on the bus
+    */
+    void i2c_send_ack() {
+      sdaPin(LOW);
+      sclPin(HIGH);
+      sclPin(LOW);
+    }
 	
- protected:
-    /*
-     * Processes the incoming I2C message defined by WireBase
-     */
-    uint8_t process();
- public:
-    /*
-     * Accept pin numbers for SCL and SDA lines. Set the delay needed
-     * to create the timing for I2C's Standard Mode and Fast Mode.
-     */
-    TwoWireSoft();
-#if  defined(SDA)&& defined(SCL)
-    TwoWireSoft(uint8_t sda=SDA, uint8_t scl=SCL, uint8_t delay=SOFT_STANDARD);
-#else	
-    TwoWireSoft(uint8_t sda, uint8_t scl, uint8_t delay=SOFT_STANDARD);
-#endif
+    void i2c_send_nack() {
+      sdaPin(HIGH);
+      sclPin(HIGH);
+      sclPin(LOW);
+    }
 
-    /*
-     * Sets pins SDA and SCL to OUPTUT_OPEN_DRAIN, joining I2C bus as
-     * master. This function overwrites the default behaviour of
-     * .begin(uint8_t) in WireBase
-     */
-    void begin(uint8_t = 0x00);
+    uint8_t i2c_shift_in() {
+      uint8_t data = 0;
+      sdaPin(HIGH);
+      int i;
+      for (i = 0; i < 8; i++) {
+        sclPin(HIGH);
+        data |= digitalRead(this->sda) << (7 - i);
+        sclPin(LOW);
+      }
 
+      return data;
+    }
+
+    void i2c_shift_out(uint8_t val) {
+      int i;
+      for (i = 0; i < 8; i++) {
+        sdaPin(!!(val & (1 << (7 - i)) ) );
+        sclPin(HIGH);
+        sclPin(LOW);
+      }
+    }
+
+
+  protected:
     /*
-     * Sets pins SDA and SCL to INPUT
-     */
-	void end();	
-	
-    /*
-     * If object is destroyed, set pin numbers to 0.
-     */
-    ~TwoWireSoft();
+       Processes the incoming I2C message defined by WireBase
+    */
+    uint8_t process() {
+      itc_msg.xferred = 0;
+
+      uint8_t sla_addr = (itc_msg.adr << 1);
+      if (itc_msg.flags == I2C_MSG_READ) {
+         sla_addr |= SOFTI2C_READ;
+      }
+	  
+      i2c_start();
+      // shift out the address we're transmitting to
+      i2c_shift_out(sla_addr);
+      if (!i2c_get_ack()){
+        i2c_stop();// Roger Clark. 20141110 added to set clock high again, as it will be left in a low state otherwise
+        return ENACKADDR;
+      }
+	  
+      // Recieving
+      if (itc_msg.flags == I2C_MSG_READ) {
+        while (itc_msg.xferred < itc_msg.length) {
+          itc_msg.data[itc_msg.xferred++] = i2c_shift_in();
+          if (itc_msg.xferred < itc_msg.length){
+            i2c_send_ack();
+          }else{
+            i2c_send_nack();
+          }
+        }
+      }
+      // Sending
+      else {
+        for (uint8_t i = 0; i < itc_msg.length; i++) {
+          i2c_shift_out(itc_msg.data[i]);
+          if (!i2c_get_ack()){
+            i2c_stop();  // Roger Clark. 20141110 added to set clock high again, as it will be left in a low state otherwise
+            return ENACKTRNS;
+          }
+          itc_msg.xferred++;
+        }
+      }
+      i2c_stop();
+      return SUCCESS;
+    }
 };
 
-extern TwoWireSoft WireSoft;
+//extern TwoWireSoft WireSoft;
 
 #endif // _WIRE_H_
-

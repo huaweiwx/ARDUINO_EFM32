@@ -16,7 +16,7 @@
 
 #define  USE_ARDUINOSTREAMING   1
 #define  USE_WARESOFT           1
-#ifdef USE_FULL_ASSERT /*DEBUG*/
+#ifdef DEBUG_EFM_USER /*DEBUG*/
 /* ------------------------------------------------------------------
    set USE_ERRORBLINK 1 enable blink a err code for debug
    blink err code:
@@ -29,7 +29,7 @@
      others          __LINE__   (err line from assert_failed or _Error_Handler )
 */
 #define USE_ERRORBLINK 1
-#endif /* USE_FULL_ASSERT */
+#endif /* DEBUG_EFM_USER */
 
 
 #endif

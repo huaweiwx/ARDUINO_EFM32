@@ -47,13 +47,14 @@
 
 class EXTEEPROM : public WARE {
   public:
-    EXTEEPROM(uint8_t sda = SDA, uint8_t scl = SCL, uint8_t delay = SOFT_STANDARD);
+    EXTEEPROM(__ConstPin sda = SDA, __ConstPin scl = SCL, uint8_t delay = SOFT_STANDARD):WARE(sda,scl,delay){}
+	
     void begin(uint8_t devAdr = 0x50, uint16_t devType = AT24C02);
     uint8_t read(uint16_t address);
     void write(uint16_t address, uint8_t value);
 
     ~EXTEEPROM();
-    uint8_t 		_devAdr;
+    uint8_t 	_devAdr;
     uint16_t    _devType;
 };
 
