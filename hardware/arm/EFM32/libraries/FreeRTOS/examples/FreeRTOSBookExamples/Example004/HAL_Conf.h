@@ -18,10 +18,11 @@
 
 #define FREERTOS    1
 
-#define  USE_ARDUINOSTREAMING 0
+#define  USE_ARDUINOSTREAMING 1
 
 /*select Release or Release(exceptions) from menu should be closed the DEBUG auto*/
-#ifdef DEBUG_EFM_USER
+#ifdef USE_FULL_ASSERT
+#define portINFO 1  /* Displaying port information at compiling*/
 /* ------------------------------------------------------------------
  * set USE_ERRORBLINK 1 enable blink a err code for debug 
  * blink err code:
@@ -34,28 +35,28 @@
  *   others          __LINE__   (err line from assert_failed or _Error_Handler )
  */
 #define USE_ERRORBLINK 1
-#define portINFO 1  /* Displaying port information at compiling*/
 
 #define configUSE_MALLOC_FAILED_HOOK   1
 #define configCHECK_FOR_STACK_OVERFLOW 1
 
-#endif /* DEBUG_EFM_USER */
+#endif /* USE_FULL_ASSERT */
 
-//---------------------------------------- for FreeRTOS overload ---------------------------------------------------------
-
-#if 0
+//---------------------------------------- for FreeRTOS overload ----------------------------
 
 #undef  configUSE_COUNTING_SEMAPHORES
 #define configUSE_COUNTING_SEMAPHORES   1
 
+#if 0
+
 #undef  INCLUDE_vTaskDelayUntil
 #define INCLUDE_vTaskDelayUntil 1
 
-#undef  configUSE_IDLE_HOOK 
-#define configUSE_IDLE_HOOK 1
+#undef   configUSE_IDLE_HOOK 
+#define  configUSE_IDLE_HOOK 1
 
 #undef  configUSE_TICK_HOOK
 #define configUSE_TICK_HOOK  1
 
 #endif  /* 0 */
 #endif  /*__HALSPECELCONFIG_H__*/
+#endif

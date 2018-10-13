@@ -74,7 +74,7 @@
  * Include the generic headers required for the FreeRTOS port being used.
  */
 #include <stddef.h>
-
+#include "EFM32/efm32_build_defines.h"
 /*
  * If stdint.h cannot be located then:
  *   + If using GCC ensure the -nostdint options is *not* being used.
@@ -95,7 +95,7 @@ extern "C" {
 #endif
 
 /* Application specific configuration options. */
-#include "FreeRTOSConfig.h"
+#include "default/FreeRTOSConfig.h"
 
 /* Basic FreeRTOS definitions. */
 #include "projdefs.h"

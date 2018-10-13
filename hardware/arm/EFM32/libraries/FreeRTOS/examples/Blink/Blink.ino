@@ -16,8 +16,10 @@ static void myTask1(void __attribute__ ((unused)) *argument)
   /*Task1 setup*/
   uint32_t i = 0;
   
+#ifdef EFM32GENERIC
 /* setup alternate location default is 0# */  
   Serial.setRouteLoc(1); /*set to 1#. the serial port's Alternate LOCATION(see datasheet)*/
+#endif
   Serial.begin(115200);  /*set param: 115200bps 8N1 (default 9600bps 8N1) */
 
   /* Infinite loop */
