@@ -18,21 +18,21 @@ EFM32G222.build.mcu=-mthumb -mcpu=cortex-m3
 
 EFM32G222.menu.device_variant.128=EFM32G222F128
 EFM32G222.menu.device_variant.128.build.board=efm32g222f128
-EFM32G222.menu.device_variant.128.build.cpu_flags=-DARM_MATH_CM3 -DEFM32G222F128
+EFM32G222.menu.device_variant.128.build.cpu_flags=-DARM_MATH_CM3 -DEFM32G222F128 -DRAMSIZE={upload.maximum_data_size}
 EFM32G222.menu.device_variant.128.build.ldscript=ld/efm32g222f128.ld
 EFM32G222.menu.device_variant.128.upload.maximum_size=131072
 EFM32G222.menu.device_variant.128.upload.maximum_data_size=16384
 
 EFM32G222.menu.device_variant.64=EFM32G222F64
 EFM32G222.menu.device_variant.64.build.board=efm32g222f64
-EFM32G222.menu.device_variant.64.build.cpu_flags=-DARM_MATH_CM3 -DEFM32G222F64
+EFM32G222.menu.device_variant.64.build.cpu_flags=-DARM_MATH_CM3 -DEFM32G222F64 -DRAMSIZE={upload.maximum_data_size}
 EFM32G222.menu.device_variant.64.build.ldscript=ld/efm32g222f64.ld
 EFM32G222.menu.device_variant.64.upload.maximum_size=65536
 EFM32G222.menu.device_variant.64.upload.maximum_data_size=16384
 
 EFM32G222.menu.device_variant.32=EFM32G222F32
 EFM32G222.menu.device_variant.32.build.board=efm32g222f32
-EFM32G222.menu.device_variant.32.build.cpu_flags=-DARM_MATH_CM3 -DEFM32G222F32
+EFM32G222.menu.device_variant.32.build.cpu_flags=-DARM_MATH_CM3 -DEFM32G222F32 -DRAMSIZE={upload.maximum_data_size}
 EFM32G222.menu.device_variant.32.build.ldscript=ld/efm32g222f32.ld
 EFM32G222.menu.device_variant.32.upload.maximum_size=32768
 EFM32G222.menu.device_variant.32.upload.maximum_data_size=8192
