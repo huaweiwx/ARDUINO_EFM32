@@ -28,16 +28,16 @@
 #  define ledport PORTD
 #elif GPIOMODE == 3
   GPIOPIN led(LED_BUILTIN); /*GPIOPIN is alias of LL_PIN class*/
-  GPIOPIN inp(PA0);
+  GPIOPIN inp(PA_0);
 #elif GPIOMODE == 2
   BB_PIN led(LED_BUILTIN);
-  BB_PIN inp(PA0);
+  BB_PIN inp(PA_0);
 #elif GPIOMODE == 1                        /* cplus mode*/
   ARDUINOPIN_TypeDef led = LED_BUILTIN;  /* led is __ConstPin   type var */
-  ARDUINOPIN_TypeDef inp = PA0;
+  ARDUINOPIN_TypeDef inp = PA_0;
 #else                                      /*c mode */
   uint32_t led = LED_BUILTIN;
-  uint32_t inp = PA0;
+  uint32_t inp = PA_0;
 #endif
 
 void setup() {
