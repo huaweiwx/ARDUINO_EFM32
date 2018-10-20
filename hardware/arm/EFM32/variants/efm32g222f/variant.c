@@ -9,15 +9,15 @@ void SystemClock_Config(void) {
 #elif defined(USE_HFRCO) /*as default*/
 	/* Using HFRCO at 14MHz as high frequency clock, HFCLK */
 	CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFRCO);
-#if    F_CPU > 21000000L	
+# if    F_CPU > 21000000L	
 	CMU_HFRCOBandSet(cmuHFRCOBand_28MHz);
-#elif  F_CPU > 14000000L
+# elif  F_CPU > 14000000L
 	CMU_HFRCOBandSet(cmuHFRCOBand_21MHz);
-#elif  F_CPU < 14000000L
+# elif  F_CPU < 14000000L
 	CMU_HFRCOBandSet(cmuHFRCOBand_11MHz);
-#else	
+# else	
 //	CMU_HFRCOBandSet(cmuHFRCOBand_14MHz); default 14M
-#endif
+# endif
 	/* Enable peripheral clock */
 	CMU_ClockEnable(cmuClock_HFPER, true);  
 #else/*default mode*/

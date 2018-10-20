@@ -20,10 +20,6 @@
  *        Headers
  *----------------------------------------------------------------------------*/
 
-#define NO_ADC      0xffffffff
-#define NO_PWM      0x00000000
-
-
 #ifndef LED_BUILTIN
  #define BOARD_NR_LED  1
  #define LED_BUILTIN PA0
