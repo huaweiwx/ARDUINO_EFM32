@@ -22,9 +22,9 @@
 extern "C" {
 #endif
 
-extern void pinMode(uint8_t ucPin, uint32_t ulMode )
+extern void pinMode(uint8_t ucPin, uint32_t u32Mode )
 {
-  switch ( ulMode )
+  switch ( u32Mode )
   {
     case INPUT:
       GPIO_PinModeSet(g_Pin2PortMapArray[ucPin].GPIOx_Port,
@@ -47,9 +47,9 @@ extern void pinMode(uint8_t ucPin, uint32_t ulMode )
   }
 }
 
-extern void digitalWrite( uint8_t ucPin, uint8_t ulVal )
+extern void digitalWrite( uint8_t ucPin, uint8_t u32Val )
 {
-  if (ulVal) {
+  if (u32Val) {
     GPIO_PinOutSet(g_Pin2PortMapArray[ucPin].GPIOx_Port, g_Pin2PortMapArray[ucPin].Pin_abstraction);
   } else {
     GPIO_PinOutClear(g_Pin2PortMapArray[ucPin].GPIOx_Port, g_Pin2PortMapArray[ucPin].Pin_abstraction);
@@ -68,26 +68,26 @@ extern void digitalToggle(uint8_t ucPin )
   GPIO_PinOutToggle(g_Pin2PortMapArray[ucPin].GPIOx_Port, g_Pin2PortMapArray[ucPin].Pin_abstraction);
 }
 
-extern uint32_t pulseIn(uint8_t ucPin, uint8_t state, uint32_t timeout )
+extern uint32_t pulseIn(uint8_t ucPin, uint8_t ucState, uint32_t u32Timeout )
 {
   uint32_t startMicros = micros();
 
   // wait for any previous pulse to end
-  while (digitalRead(ucPin) == (int)state) {
-    if (micros() - startMicros > timeout)
+  while (digitalRead(ucPin) == (int)ucState) {
+    if (micros() - startMicros > u32Timeout)
       return 0;
   }
 
   // wait for the pulse to start
-  while (digitalRead(ucPin) != (int)state) {
-    if (micros() - startMicros > timeout)
+  while (digitalRead(ucPin) != (int)ucState) {
+    if (micros() - startMicros > u32Timeout)
       return 0;
   }
 
   uint32_t start = micros();
   // wait for the pulse to stop
-  while (digitalRead(ucPin) == (int)state) {
-    if (micros() - startMicros > timeout)
+  while (digitalRead(ucPin) == (int)ucState) {
+    if (micros() - startMicros > u32Timeout)
       return 0;
   }
   return (micros() - start);

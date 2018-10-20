@@ -49,19 +49,29 @@ enum {
 constexpr __ConstPin PIN_LIST;
 #undef PIN
 
+#define PIN(a, b) P##a##_##b(gpioPort ## a,GPIO_PIN_ ## b, __P##a##b)
+constexpr __ConstPin PIN_LIST;
+#undef PIN
+
 #define ARDUINOPIN_TypeDef  __ConstPin
 
 #else  /*c mode*/
 
 #define ARDUINOPIN_TypeDef  uint8_t
 
-#define PIN(a, b) P ## a ## b
+#define PIN(a, b) P##a##b
 enum {
   PIN_LIST,
   NUM_DIGITAL_PINS,
 };
 #undef PIN
-#endif /*__cplusplus*/
 
+#define PIN(a, b) P##a##_##b
+enum {
+  PIN_LIST,
+};
+#undef PIN
+
+#endif /*__cplusplus*/
 
 #endif

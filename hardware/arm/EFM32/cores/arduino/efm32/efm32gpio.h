@@ -51,7 +51,7 @@ inline void digitalWriteHigh(__ConstPin cPin) {
 }
 
 inline void digitalWriteLow(__ConstPin cPin) {
-  GPIO_PinOutClear(cPin.GPIOx_Port, cPin.pin);;
+  GPIO_PinOutClear(cPin.GPIOx_Port, cPin.pin);
 }
 
 template<typename T>
@@ -60,7 +60,7 @@ inline void digitalWrite(__ConstPin cPin, T val )
   if (val) {
     GPIO_PinOutSet(cPin.GPIOx_Port, cPin.pin);
   } else {
-    GPIO_PinOutClear(cPin.GPIOx_Port, cPin.pin);;
+    GPIO_PinOutClear(cPin.GPIOx_Port, cPin.pin);
   }
 }
 

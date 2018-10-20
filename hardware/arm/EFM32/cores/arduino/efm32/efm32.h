@@ -82,8 +82,10 @@ enum {
 #define NO_ADC      0xffffffff
 #define NO_PWM      0x00000000
 
-#include "avr_emulation.h"
 #include "efm32_build_defines.h"
+#if USE_AVREMULATION > 0
+# include "avr_emulation.h"
+#endif
 #include "variant.h"
 #include "efm32_pin_list.h"  
 #include "armclock.h"
