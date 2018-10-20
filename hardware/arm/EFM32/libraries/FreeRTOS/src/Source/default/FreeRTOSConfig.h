@@ -103,6 +103,7 @@ extern "C" {
 #ifndef configSLEEP_MODE
 #define configSLEEP_MODE           ( 1 )
 #endif
+
 /* Definition used only if configUSE_TICKLESS_IDLE == 0 */
 #ifndef configUSE_SLEEP_MODE_IN_IDLE
 #define configUSE_SLEEP_MODE_IN_IDLE       ( 1 )
@@ -140,28 +141,36 @@ extern "C" {
 #ifndef configMAX_PRIORITIES
 #define configMAX_PRIORITIES                      ( 3 )
 #endif
+
 #ifndef configMINIMAL_STACK_SIZE
 #define configMINIMAL_STACK_SIZE                  (( unsigned short ) 140)
 #endif
+
 #ifndef configTOTAL_HEAP_SIZE
 //#define configTOTAL_HEAP_SIZE                     (( size_t )((unsigned)SRAM_SIZE)/4)
 #define configTOTAL_HEAP_SIZE                     (SRAM_SIZE/4)
 #endif
+
 #ifndef configMAX_TASK_NAME_LEN
 #define configMAX_TASK_NAME_LEN                   ( 10 )
 #endif
+
 #ifndef configUSE_TRACE_FACILITY
 #define configUSE_TRACE_FACILITY                  ( 0 )
 #endif
+
 #ifndef configUSE_16_BIT_TICKS
 #define configUSE_16_BIT_TICKS                    ( 0 )
 #endif
+
 #ifndef configIDLE_SHOULD_YIELD
 #define configIDLE_SHOULD_YIELD                   ( 0 )
 #endif
+
 #ifndef configUSE_MUTEXES
 #define configUSE_MUTEXES                         ( 1 )
 #endif
+
 #ifndef configUSE_RECURSIVE_MUTEXES
 #define configUSE_RECURSIVE_MUTEXES               ( 0 )
 #endif

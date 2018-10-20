@@ -43,11 +43,11 @@
 
 #undef  configUSE_COUNTING_SEMAPHORES
 #define configUSE_COUNTING_SEMAPHORES   1
+#define INCLUDE_vTaskDelayUntil 1
 
 #if 0
 
 #undef  INCLUDE_vTaskDelayUntil
-#define INCLUDE_vTaskDelayUntil 1
 
 #undef   configUSE_IDLE_HOOK 
 #define  configUSE_IDLE_HOOK 1

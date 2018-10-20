@@ -59,4 +59,3 @@
 
 #endif  /* 0 */
 #endif  /*__HALSPECELCONFIG_H__*/
-#endif
