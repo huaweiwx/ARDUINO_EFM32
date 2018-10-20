@@ -1,12 +1,15 @@
-# Map of EFM32xx drivers
-# configured by huaweiwx@sina.com 2016
+
+# EFM32 ARM Core and platform.
+# ------------------------------
+#
 # For more info:
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification
 
-name=EFM32 GECKO
-version=1.8.09
+name=EFM32(HAL & LL)
+version=1.8.5
 
-compiler.extra_includes="-I{build.path}/sketch"  {includes}  "-I{build.core.path}/efm32" "-I{build.system.path}" "-I{build.system.path}/CMSIS/inc" "-I{build.system.path}/emlib/inc" "-I{build.system.path}/SiliconLabs/{build.series}/Include"
+# STM compile variables
+# ----------------------
 
 compiler.warning_flags=-w 
 compiler.warning_flags.none=-w {build.log_level}
@@ -14,78 +17,83 @@ compiler.warning_flags.default={build.log_level}
 compiler.warning_flags.more=-Wall {build.log_level}
 compiler.warning_flags.all=-Wall -Wextra {build.log_level}
 
-# compiler variables
-# -----------------------------------------------------------------------------------
+# Default "compiler.path" is correct, change only if you want to override the initial value
+#compiler.path={runtime.hardware.path}/../tools/arm-none-eabi/5.4.1-2016q2/bin/
 compiler.path={runtime.tools.arm-none-eabi-gcc.path}/bin/
 
-compiler.c.cmd=arm-none-eabi-gcc
-compiler.c.flags=-c -g -Os -std=gnu11 {compiler.warning_flags} -MMD -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -D{build.vect} 
-
-compiler.c.elf.cmd=arm-none-eabi-g++
-compiler.c.elf.flags=-Os -Wl,--gc-sections
-
 compiler.S.cmd=arm-none-eabi-gcc
-compiler.S.flags=-c -g -x assembler-with-cpp -MMD
-
+compiler.c.cmd=arm-none-eabi-gcc
 compiler.cpp.cmd=arm-none-eabi-g++
-compiler.cpp.flags=-c -g -Os -std=gnu++14 {compiler.warning_flags} -MMD -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -fno-rtti -D{build.vect}
-
 compiler.ar.cmd=arm-none-eabi-ar
-compiler.ar.flags=rcs
-
+compiler.c.elf.cmd=arm-none-eabi-gcc
 compiler.objcopy.cmd=arm-none-eabi-objcopy
 compiler.objcopy.eep.flags=-O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0
-
 compiler.elf2hex.flags=-O binary
 compiler.elf2hex.flags2=-O ihex
 compiler.elf2hex.cmd=arm-none-eabi-objcopy
-
-compiler.ldflags=
 compiler.size.cmd=arm-none-eabi-size
-compiler.define=-DARDUINO=                            
+compiler.ldflags=
+
+compiler.S.flags=-c -g -x assembler-with-cpp
+compiler.c.flags=-c -g -Os {compiler.warning_flags} -std=gnu11 -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -Dprintf=iprintf -MMD
+compiler.cpp.flags=-c -g -Os {compiler.warning_flags} -std=gnu++14 -fpermissive -ffunction-sections -fdata-sections -nostdlib -fno-threadsafe-statics --param max-inline-insns-single=500 -fno-rtti -Dprintf=iprintf -MMD
+compiler.ar.flags=rcs
+compiler.c.elf.flags=-mcpu={build.mcu} -mthumb -Os -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--entry=Reset_Handler -Wl,--unresolved-symbols=report-all -Wl,--warn-common
+
+compiler.extra_flags=-mcpu={build.mcu} -mthumb -DF_CPU={build.f_cpu} -D{build.series} -DEFM32GENERIC -DRAM_LENGTH={upload.maximum_data_size} -DFLASH_LENGTH={upload.maximum_size}
+compiler.define=-DARDUINO=
+compiler.combine.flags=-u _sbrk -u link -u _close -u _fstat -u _isatty -u _lseek -u _read -u _write -u _exit -u kill -u _getpid
+
 
 # this can be overriden in boards.txt
-# this is the static library built by the gun ar tool
-# build.variant_system_lib=libmaple.a
+build.log_level=
+build.extra_flags=
+build.extra_flags_usb=
+build.extra_flags_serial=
+build.extra_flags_serial_auto=
+build.extra_flags_jtag=
+build.extra_flags_os=
+build.extra_flags_menu={compiler.extra_flags} {build.extra_flags_usb} {build.extra_flags_serial} {build.extra_flags_serial_auto} {build.extra_flags_jtag} {build.extra_flags_os}
+build.ldscript=ld/ldscript.ld
+build.extra_lib=
+build.spacil_includes=
 
-build.cpu_flags=
-build.hs_flag=
-build.common_flags=
-build.extra_flags= {build.mcu} {build.cpu_flags} {build.hs_flag} {build.common_flags} -DF_CPU={build.f_cpu} -DOSC={build.osc} -DARDUINO={runtime.ide.version} -DEFM32GENERIC -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {build.extra_flags_serial}
+compiler.extra_includes="-I{build.path}/sketch"  {includes}  "-I{build.core.path}/efm32" "-I{build.system.path}" "-I{build.system.path}/CMSIS/inc" "-I{build.system.path}/emlib/inc" "-I{build.system.path}/SiliconLabs/{build.series}/Include"  {build.spacil_includes}
 
 # These can be overridden in platform.local.txt
 compiler.c.extra_flags=
-compiler.c.elf.extra_flags="-L{build.variant.path}/ld"
-compiler.cpp.extra_flags= 
+compiler.c.elf.extra_flags=
+compiler.cpp.extra_flags=
 compiler.S.extra_flags=
 compiler.ar.extra_flags=
 compiler.elf2hex.extra_flags=
 
-## Compiler include paths  
-# sheepdoll a better more generic library include paths
-compiler.libs.c.flags={compiler.extra_includes}
+# USB Flags
+# ---------
+build.usb_flags=-DUSBD_VID={build.vid} -DUSBD_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}'
 
-# build patterns
+# Default usb manufacturer will be replaced at compile time using
+# numeric vendor ID if available or by board's specific value.
+build.usb_manufacturer="Unknown"
+
+
+# compile patterns
 # ---------------------
 
 ## Compile c files
-recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} {build.extra_flags} {compiler.c.extra_flags} {compiler.libs.c.flags}  "{source_file}" -o "{object_file}"
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {build.extra_flags_menu} {compiler.extra_includes} "{source_file}" -o "{object_file}"
 
 ## Compile c++ files
-recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} {build.extra_flags} {compiler.cpp.extra_flags} {compiler.libs.c.flags} "{source_file}" -o "{object_file}"
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.cpp.extra_flags} {build.extra_flags} {build.extra_flags_menu} {compiler.extra_includes} "{source_file}" -o "{object_file}"
 
 ## Compile S files
-recipe.S.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.S.flags} {build.extra_flags} {compiler.S.extra_flags} {compiler.libs.c.flags} "{source_file}" -o "{object_file}"
- 
+recipe.S.o.pattern="{compiler.path}{compiler.S.cmd}" {compiler.S.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.S.extra_flags} {build.extra_flags} {compiler.extra_includes} "{source_file}" -o "{object_file}"
+
 ## Create archives
-archive_file_path={build.path}/{archive_file}
 recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{archive_file_path}" "{object_file}"
 
 ## Combine gc-sections, archives, and objects
-recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {build.mcu} {compiler.c.elf.flags} "-T{build.variant.path}\{build.ldscript}" "-Wl,-Map,{build.path}/{build.project_name}.map" {compiler.c.elf.extra_flags} -o "{build.path}/{build.project_name}.elf" "-L{build.path}" -lm -lgcc -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-unresolved-symbols -Wl,--entry=Reset_Handler -Wl,--start-group {object_files} -Wl,--whole-archive "{archive_file_path}" -Wl,--no-whole-archive -Wl,--end-group
-
-## Create eeprom
-recipe.objcopy.eep.pattern=
+recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} "-T{build.variant.path}/{build.ldscript}" "-Wl,-Map,{build.path}/{build.project_name}.map" {compiler.c.elf.extra_flags} -o "{build.path}/{build.project_name}.elf" "-L{build.path}" -Wl,--start-group {compiler.combine.flags} {object_files} "{build.extra_lib}" "{build.path}/{archive_file}" -lstdc++ -lc -Wl,--end-group -lm -lgcc --specs=nano.specs
 
 ## Create bin
 recipe.objcopy.bin.pattern="{compiler.path}{compiler.elf2hex.cmd}" {compiler.elf2hex.flags} {compiler.elf2hex.extra_flags} "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
@@ -93,23 +101,30 @@ recipe.objcopy.bin.pattern="{compiler.path}{compiler.elf2hex.cmd}" {compiler.elf
 ## Create hex
 recipe.objcopy.hex.pattern="{compiler.path}{compiler.elf2hex.cmd}" {compiler.elf2hex.flags2} {compiler.elf2hex.extra_flags} "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.hex"
 
-## Save Compiled Binary
+## Save hex or bin
 recipe.output.tmp_file.bin={build.project_name}.bin
 recipe.output.save_file.bin={build.project_name}.{build.variant}.bin
 recipe.output.tmp_file.hex={build.project_name}.hex
 recipe.output.save_file.hex={build.project_name}.{build.variant}.hex
 recipe.output.tmp_file.elf={build.project_name}.elf
 recipe.output.save_file.elf={build.project_name}.{build.variant}.elf
+recipe.output.tmp_file.map={build.project_name}.map
+recipe.output.save_file.map={build.project_name}.{build.variant}.map
 
 ## Compute size
-# ---------------------
 recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -A "{build.path}/{build.project_name}.elf"
+#recipe.size.regex=^(?:\.text|\.data|\.rodata|\.isr_vector)\s+([0-9]+).*
 recipe.size.regex=^(?:\.text|\.data|\.rodata)\s+([0-9]+).*
 recipe.size.regex.data=^(?:\.data|\.bss|\._user_heap_stack)\s+([0-9]+).*
 recipe.size.regex.eeprom=^(?:\.eeprom)\s+([0-9]+).*
 
-# Uploader tools
+
+# Uploader tool
 # -------------------
+
+# this can be overriden in boards.txt
+upload.altID=unknown
+upload.usbID=unknown
 
 # serial upload
 tools.serial_upload.cmd=serial_upload
@@ -134,8 +149,8 @@ tools.upload_router.upload.params.verbose=-d
 tools.upload_router.upload.params.quiet=
 tools.upload_router.upload.pattern="{path}/{cmd}" {serial.port.file} {upload.altID} {upload.usbID} "{build.path}/{build.project_name}" {upload.protocol} {build.debuggingMode} "{runtime.ide.path}/hardware/tools/{build.gcc_ver}/bin/"
 
-# jLINK/V21 upload
-tools.jlink_upload.cmd=jlink_upload
+# jLINKOB  upload
+tools.jlink_upload.cmd=jlinkob_upload
 tools.jlink_upload.cmd.windows=jlinkob_upload.bat
 tools.jlink_upload.path.windows={runtime.ide.path}/hardware/tools/win
 tools.jlink_upload.path.macosx={runtime.ide.path}/hardware/tools/macosx
@@ -144,6 +159,18 @@ tools.jlink_upload.path.linux={runtime.ide.path}/hardware/tools/linux
 tools.jlink_upload.upload.params.verbose=-d
 tools.jlink_upload.upload.params.quiet=
 tools.jlink_upload.upload.pattern="{path}/{cmd}" {serial.port.file} {upload.altID} {upload.usbID} "{build.path}/{build.project_name}.hex" {upload.device} {build.uploadadr} {build.vect} 
+
+
+# jLINKOB/V21 upload
+tools.jlinkob_upload.cmd=jlinkob_upload
+tools.jlinkob_upload.cmd.windows=jlinkob_upload.bat
+tools.jlinkob_upload.path.windows={runtime.ide.path}/hardware/tools/win
+tools.jlinkob_upload.path.macosx={runtime.ide.path}/hardware/tools/macosx
+tools.jlinkob_upload.path.linux={runtime.ide.path}/hardware/tools/linux
+
+tools.jlinkob_upload.upload.params.verbose=-d
+tools.jlinkob_upload.upload.params.quiet=
+tools.jlinkob_upload.upload.pattern="{path}/{cmd}" {serial.port.file} {upload.altID} {upload.usbID} "{build.path}/{build.project_name}.hex" {upload.device} {build.uploadadr} {build.vect} 
  
 # blackmagic probe upload
 tools.bmp_upload.cmd=arm-none-eabi-gdb
