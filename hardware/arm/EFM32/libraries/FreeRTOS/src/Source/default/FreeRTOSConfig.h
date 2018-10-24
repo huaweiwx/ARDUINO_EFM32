@@ -146,6 +146,11 @@ extern "C" {
 #define configMINIMAL_STACK_SIZE                  (( unsigned short ) 140)
 #endif
 
+
+#ifndef portUSE_HEAP
+#define portUSE_HEAP 0  /* use heap_useNewlib */
+#endif
+
 #ifndef configTOTAL_HEAP_SIZE
 //#define configTOTAL_HEAP_SIZE                     (( size_t )((unsigned)SRAM_SIZE)/4)
 #define configTOTAL_HEAP_SIZE                     (SRAM_SIZE/4)

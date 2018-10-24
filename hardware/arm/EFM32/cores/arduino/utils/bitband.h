@@ -56,24 +56,17 @@ class BB_PIN{
        this->write(value);
        return *this;
      }
+ 	 template<typename T>
+     inline BB_PIN & operator ^= (T value){
+       if(value)this->toggle();
+       return *this;
+     }
   
      BB_PIN& operator = (BB_PIN& rhs) {
        this->write(rhs.read());
        return *this;
      }
   
- 	 template<typename T>
-     inline BB_PIN & operator << (T value){
-       this->write(value);
-       return *this;
-     }
-
-    template<typename T> 
-    inline BB_PIN & operator >> (T &value){
-       value = this->read();
-       return *this;
-    }
-
     inline __attribute__((always_inline))
     void high(){MEM_ADDR(this->bb_outadr) = 0x1U;}
 

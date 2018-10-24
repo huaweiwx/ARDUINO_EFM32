@@ -20,9 +20,9 @@
 #define EFM32_PIN_LIST_H
 
 #ifdef VARIANT_PIN_LIST
-#define PIN_LIST VARIANT_PIN_LIST
+	#define PIN_LIST VARIANT_PIN_LIST
 #else
-#define PIN_LIST CHIP_PIN_LIST
+	#define PIN_LIST CHIP_PIN_LIST
 #endif
 
 #ifdef __cplusplus
@@ -45,10 +45,12 @@ enum {
 };
 #undef PIN
 
+/*Compatible with stm32 arduino core*/
 #define PIN(a, b) P##a##b(gpioPort ## a,GPIO_PIN_ ## b, __P##a##b)
 constexpr __ConstPin PIN_LIST;
 #undef PIN
 
+/*Compatible with Nuvoton arduino core*/
 #define PIN(a, b) P##a##_##b(gpioPort ## a,GPIO_PIN_ ## b, __P##a##b)
 constexpr __ConstPin PIN_LIST;
 #undef PIN
@@ -59,6 +61,7 @@ constexpr __ConstPin PIN_LIST;
 
 #define ARDUINOPIN_TypeDef  uint8_t
 
+/*Compatible with stm32 arduino core*/
 #define PIN(a, b) P##a##b
 enum {
   PIN_LIST,
@@ -66,6 +69,7 @@ enum {
 };
 #undef PIN
 
+/*Compatible with Nuvoton arduino core*/
 #define PIN(a, b) P##a##_##b
 enum {
   PIN_LIST,

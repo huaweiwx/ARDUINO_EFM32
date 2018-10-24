@@ -55,8 +55,8 @@ void shiftOut( uint32_t ulDataPin, uint32_t ulClockPin, uint32_t ulBitOrder, uin
 long random(long);
 long random(long, long);
 void randomSeed(unsigned long);
-
 long map(long, long, long, long, long);
+
 #include <efm32/HardwareSerial.h>
 
 #if USE_ARDUINOSTREAMING >0

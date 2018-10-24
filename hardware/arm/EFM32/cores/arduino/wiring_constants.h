@@ -23,8 +23,8 @@
 extern "C"{
 #endif // __cplusplus
 
-#define HIGH 0x1
 #define LOW  0x0
+#define HIGH 0x1
 
 #define INPUT         gpioModeInput
 #define OUTPUT        gpioModePushPull
@@ -49,11 +49,11 @@ enum BitOrder {
 	MSBFIRST = 1
 };
 
-//      LOW 0
-//      HIGH 1
-#define CHANGE 2
+//      LOW     0
+//      HIGH    1
+#define CHANGE  2
 #define FALLING 3
-#define RISING 4
+#define RISING  4
 
 
 // undefine stdlib's abs if encountered
@@ -63,7 +63,7 @@ enum BitOrder {
 #endif // min
 
 #ifndef max
-#define max(a,b) ((a)>(b)?(a):(b))
+  #define max(a,b) ((a)>(b)?(a):(b))
 #endif // max
 
 #ifdef abs
@@ -85,14 +85,14 @@ enum BitOrder {
 #define bitSet(value, b) ((value) |= (1UL << (b)))
 #define bitClear(value, b) ((value) &= ~(1UL << (b)))
 #define bitWrite(value, b, bitvalue) (bitvalue ? bitSet(value, b) : bitClear(value, b))
+#define bit(b) (1UL << (b))
 
 // avr-libc defines _NOP() since 1.6.2
 #ifndef _NOP
-# define _NOP() do { __asm__ volatile ("nop"); } while (0)
+  #define _NOP() do { __asm__ volatile ("nop"); } while (0)
 #endif
 
 typedef unsigned int word;
-#define bit(b) (1UL << (b))
 typedef bool boolean;
 typedef uint8_t byte;
 

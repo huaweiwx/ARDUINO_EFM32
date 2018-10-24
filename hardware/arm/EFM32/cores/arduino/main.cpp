@@ -24,6 +24,12 @@
 
 #include "arduino.h"
 
+// Declared weak in Arduino.h to allow user redefinitions.
+int atexit(void (* /*func*/ )()) { return 0; }
+
+void initVariant() __weak;
+void initVariant() { }
+
 extern "C" void init(void);
 extern void setup(void);
 extern void  loop(void);
@@ -31,6 +37,9 @@ extern void  loop(void);
 int main()
 {
 	init();
+
+	initVariant();
+
 	setup();
     while(1)
     {

@@ -30,6 +30,7 @@ extern void digitalWrite( uint8_t ucPin, uint8_t dwVal ) ;
 extern int digitalRead( uint8_t ucPin ) ;
 extern void digitalToggle( uint8_t ucPin );
 uint32_t pulseIn( uint8_t ucPin, uint8_t state, uint32_t timeout);
+#define  pulseInLong  pulseIn
 
 static inline void digitalWriteHigh(uint8_t ucPin)
 {
@@ -80,7 +81,7 @@ inline void digitalToggle(__ConstPin cPin)
 /*gpio low layer interface class*/
 class LL_PIN {
   public:
-    LL_PIN(__ConstPin cpin): cpin(cpin) {};
+    constexpr LL_PIN(__ConstPin cpin): cpin(cpin) {};
     __ConstPin cpin;
 
     template<typename T = bool>
@@ -98,21 +99,14 @@ class LL_PIN {
       this->write(value);
       return *this;
     }
+    template<typename T>
+    inline LL_PIN & operator ^= (T value) {
+      if(value) this->toggle();
+      return *this;
+    }
 
     LL_PIN& operator = (LL_PIN& rhs) {
       this->write(rhs.read());
-      return *this;
-    }
-
-    template<typename T>
-    inline LL_PIN & operator << (T value) {
-      this->write(value);
-      return *this;
-    }
-
-    template<typename T>
-    inline LL_PIN & operator >> (T &value) {
-      value = this->read();
       return *this;
     }
 
@@ -165,7 +159,7 @@ class LL_PIN {
 
 class InputPin : public LL_PIN {
   public:
-    InputPin(__ConstPin cpin, bool initial_value = 1): LL_PIN(cpin) {
+    constexpr InputPin(__ConstPin cpin, bool initial_value = 1): LL_PIN(cpin) {
       config(INPUT, initial_value);
     }
 
@@ -205,7 +199,7 @@ class InputPin : public LL_PIN {
 
 class OutputPin : public LL_PIN {
   public:
-    OutputPin(__ConstPin cpin, bool initial_value = 0): LL_PIN(cpin) {
+    constexpr OutputPin(__ConstPin cpin, bool initial_value = 0): LL_PIN(cpin) {
       config(OUTPUT, initial_value);
     }
 
@@ -216,10 +210,24 @@ class OutputPin : public LL_PIN {
       }
       this->toggle();
     }
+	
+    template<typename T>
+    inline operator T () {
+      return read();
+    }
 
+    inline void operator  !() __attribute__((always_inline)) {
+       toggle();
+	}
+	
     template<typename T>
     inline OutputPin & operator = (T value) {
-      LL_PIN::write(value);
+      write(value);
+      return *this;
+    }
+    template<typename T>
+    inline OutputPin & operator ^= (T value) {
+      if(value) toggle();
       return *this;
     }
 };
@@ -231,7 +239,7 @@ class ClockedInput {
   public:
     // Define a type large enough to hold nbits bits (see base.h)
     typedef bits_type(nbits) bits_t;
-    ClockedInput(__ConstPin data_pin, __ConstPin clock_pin , bool pullup = true) : data(data_pin, pullup), clock(clock_pin) {}
+    constexpr ClockedInput(__ConstPin data_pin, __ConstPin clock_pin , bool pullup = true) : data(data_pin, pullup), clock(clock_pin) {}
     InputPin data;
     OutputPin clock;
 
@@ -279,7 +287,7 @@ class ClockedOutput {
     // Define a type large enough to hold nbits bits (see base.h)
     typedef bits_type(nbits) bits_t;
 
-    ClockedOutput(__ConstPin data_pin, __ConstPin clock_pin): data(data_pin), clock(clock_pin) {};
+    constexpr ClockedOutput(__ConstPin data_pin, __ConstPin clock_pin): data(data_pin), clock(clock_pin) {};
     OutputPin data;
     OutputPin clock;
 

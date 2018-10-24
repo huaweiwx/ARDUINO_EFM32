@@ -30,6 +30,7 @@ extern int __io_getchar(void) __attribute__((weak));
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"  
 
+__attribute__((weak))
 caddr_t _sbrk(int incr)
 {
 	extern char end asm("end");

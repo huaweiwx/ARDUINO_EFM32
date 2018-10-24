@@ -105,7 +105,11 @@ extern "C" {
 
 /* Must be defaulted before configUSE_NEWLIB_REENTRANT is used below. */
 #ifndef configUSE_NEWLIB_REENTRANT
+#if portUSE_HEAP >0
 	#define configUSE_NEWLIB_REENTRANT 0
+#else
+	#define configUSE_NEWLIB_REENTRANT 1
+#endif
 #endif
 
 /* Required if struct _reent is used. */
