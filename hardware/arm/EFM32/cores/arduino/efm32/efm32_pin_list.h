@@ -29,14 +29,14 @@
 
 class __ConstPin {
   public:
-    constexpr __ConstPin(const GPIO_Port_TypeDef GPIOx_Port, const  uint16_t pin, const uint8_t val)
-      : GPIOx_Port(GPIOx_Port), pin(pin), val(val) {};
+    constexpr __ConstPin(const GPIO_Port_TypeDef GPIOx_Port, const  uint16_t pinMask, const uint8_t ucPin)
+      : GPIOx_Port(GPIOx_Port), pinMask(pinMask), ucPin(ucPin) {};
     constexpr operator uint8_t() const {
-      return val;
+      return ucPin;
     }
     const GPIO_Port_TypeDef GPIOx_Port;
-    const uint16_t pin;
-    const uint8_t val;
+    const uint16_t pinMask;
+    const uint8_t ucPin;
 };
 #define PIN(a, b) __P##a##b
 enum {

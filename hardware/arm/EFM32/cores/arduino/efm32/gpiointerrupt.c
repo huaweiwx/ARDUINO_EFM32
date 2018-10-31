@@ -29,7 +29,7 @@
 typedef struct
 {
   /* Pin number in range of 0 to 15 */
-  uint32_t pin;
+  uint8_t ucPin;
 
   /* Pointer to the callback function */
   GPIOINT_IrqCallbackPtr_t callback;

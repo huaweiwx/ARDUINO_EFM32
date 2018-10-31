@@ -26,7 +26,7 @@
 extern "C"{
 #endif
 
-void analogWrite(uint32_t pin,uint32_t val);
+void analogWrite(uint8_t ucPin,uint32_t val);
 
 #ifdef __cplusplus
 }

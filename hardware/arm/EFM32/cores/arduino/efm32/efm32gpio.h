@@ -43,55 +43,55 @@ static inline void digitalWriteLow(uint8_t ucPin)
 
 #ifdef __cplusplus
 }
-inline void pinMode(__ConstPin cPin, const uint32_t mode) {
-  GPIO_PinModeSet(cPin.GPIOx_Port, cPin.pin, (GPIO_Mode_TypeDef)mode, 0);
+inline void pinMode(__ConstPin CPin, const uint32_t mode) {
+  GPIO_PinModeSet(CPin.GPIOx_Port, CPin.pinMask, (GPIO_Mode_TypeDef)mode, 0);
 }
 
-inline void digitalWriteHigh(__ConstPin cPin) {
-  GPIO_PinOutSet(cPin.GPIOx_Port, cPin.pin);
+inline void digitalWriteHigh(__ConstPin CPin) {
+  GPIO_PinOutSet(CPin.GPIOx_Port, CPin.pinMask);
 }
 
-inline void digitalWriteLow(__ConstPin cPin) {
-  GPIO_PinOutClear(cPin.GPIOx_Port, cPin.pin);
+inline void digitalWriteLow(__ConstPin CPin) {
+  GPIO_PinOutClear(CPin.GPIOx_Port, CPin.pinMask);
 }
 
 template<typename T>
-inline void digitalWrite(__ConstPin cPin, T val )
+inline void digitalWrite(__ConstPin CPin, T val )
 {
   if (val) {
-    GPIO_PinOutSet(cPin.GPIOx_Port, cPin.pin);
+    GPIO_PinOutSet(CPin.GPIOx_Port, CPin.pinMask);
   } else {
-    GPIO_PinOutClear(cPin.GPIOx_Port, cPin.pin);
+    GPIO_PinOutClear(CPin.GPIOx_Port, CPin.pinMask);
   }
 }
 
 template<typename T>
-inline T digitalRead(__ConstPin cPin)
+inline T digitalRead(__ConstPin CPin)
 {
   /* can add a section here to see if pin is readable */
-  return bitRead(GPIO_PortInGet(cPin.GPIOx_Port), cPin.pin);
+  return bitRead(GPIO_PortInGet(CPin.GPIOx_Port), CPin.pinMask);
 }
 
-inline void digitalToggle(__ConstPin cPin)
+inline void digitalToggle(__ConstPin CPin)
 {
   /* can add a section here to see if pin is readable */
-  GPIO_PinOutToggle(cPin.GPIOx_Port, cPin.pin);
+  GPIO_PinOutToggle(CPin.GPIOx_Port, CPin.pinMask);
 }
 
 /*gpio low layer interface class*/
 class LL_PIN {
   public:
-    constexpr LL_PIN(__ConstPin cpin): cpin(cpin) {};
-    __ConstPin cpin;
+    constexpr LL_PIN(__ConstPin CPin): CPin(CPin) {};
+    __ConstPin CPin;
 
     template<typename T = bool>
     inline  T read() {
-      return digitalRead(cpin);
+      return digitalRead(CPin);
     }
 
     template<typename T>
     inline void write(T value) {
-      digitalWrite(cpin, value);
+      digitalWrite(CPin, value);
     }
 
     template<typename T>
@@ -112,12 +112,12 @@ class LL_PIN {
 
     inline __attribute__((always_inline))
     void high() {
-      digitalWriteHigh(cpin);
+      digitalWriteHigh(CPin);
     }
 
     inline __attribute__((always_inline))
     void low() {
-      digitalWriteLow(cpin);
+      digitalWriteLow(CPin);
     }
 
     template<typename T>
@@ -132,7 +132,7 @@ class LL_PIN {
     /*----- comptabled with DigitalPin ----------*/
     inline __attribute__((always_inline))
     void toggle() {
-      digitalToggle(cpin);
+      digitalToggle(CPin);
     }
 
     inline __attribute__((always_inline))
@@ -143,23 +143,23 @@ class LL_PIN {
 
     inline __attribute__((always_inline))
     void mode(uint32_t mode) {
-      pinMode(cpin, mode);
+      pinMode(CPin, mode);
     }
 
     inline __attribute__((always_inline))
     void attach(voidFuncPtr callback, uint32_t mode) {
-      attachInterrupt(cpin, callback, mode);
+      attachInterrupt(CPin.ucPin, callback, mode);
     }
 
     inline __attribute__((always_inline))
     void detach(void) {
-      detachInterrupt(cpin);
+      detachInterrupt(CPin.ucPin);
     }
 };
 
 class InputPin : public LL_PIN {
   public:
-    constexpr InputPin(__ConstPin cpin, bool initial_value = 1): LL_PIN(cpin) {
+    constexpr InputPin(__ConstPin CPin, bool initial_value = 1): LL_PIN(CPin) {
       config(INPUT, initial_value);
     }
 
@@ -199,7 +199,7 @@ class InputPin : public LL_PIN {
 
 class OutputPin : public LL_PIN {
   public:
-    constexpr OutputPin(__ConstPin cpin, bool initial_value = 0): LL_PIN(cpin) {
+    constexpr OutputPin(__ConstPin CPin, bool initial_value = 0): LL_PIN(CPin) {
       config(OUTPUT, initial_value);
     }
 
