@@ -50,7 +50,7 @@ extern "C" {
 /** @endcond */
 #endif
 
-#if defined(DEBUG_EFM) || defined(DEBUG_EFM_USER)
+#if defined(DEBUG_EFM) || defined(USE_FULL_ASSERT)
 /***************************************************************************//**
  * @addtogroup ASSERT
  * @brief Error checking module.
@@ -67,10 +67,10 @@ extern "C" {
  * be used. This is implemented as a simple while(true) loop. @ref DEBUG_EFM is not
  * defined by default.
  *
- * @li If DEBUG_EFM_USER is defined instead, the user must provide their own
+ * @li If USE_FULL_ASSERT is defined instead, the user must provide their own
  * implementation of the assertEFM() function.
  *
- * @li If both @ref DEBUG_EFM and DEBUG_EFM_USER are undefined then all EFM_ASSERT()
+ * @li If both @ref DEBUG_EFM and USE_FULL_ASSERT are undefined then all EFM_ASSERT()
  * statements are no operation.
  *
  * @note
@@ -88,7 +88,7 @@ void assertEFM(const char *file, int line);
 /** Default assertion is no operation */
 #define EFM_ASSERT(expr)    ((void)(expr))
 
-#endif /* defined(DEBUG_EFM) || defined(DEBUG_EFM_USER) */
+#endif /* defined(DEBUG_EFM) || defined(USE_FULL_ASSERT) */
 
 /** @} (end addtogroup ASSERT) */
 /** @} (end addtogroup emlib) */

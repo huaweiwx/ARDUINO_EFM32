@@ -116,11 +116,11 @@ MSC_RAMFUNC_DEFINITION_END
 
 /* Undef the define from em_assert.h and redirect to local ramfunc version. */
 #undef  EFM_ASSERT
-#if defined(DEBUG_EFM) || defined(DEBUG_EFM_USER)
+#if defined(DEBUG_EFM) || defined(USE_FULL_ASSERT)
 #define EFM_ASSERT(expr)    ((expr) ? ((void)0) : mscRfAssertEFM(__FILE__, __LINE__))
 #else
 #define EFM_ASSERT(expr)    ((void)(expr))
-#endif /* defined(DEBUG_EFM) || defined(DEBUG_EFM_USER) */
+#endif /* defined(DEBUG_EFM) || defined(USE_FULL_ASSERT) */
 
 #endif /* !EM_MSC_RUN_FROM_FLASH */
 

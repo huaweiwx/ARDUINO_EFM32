@@ -53,7 +53,7 @@
  *
  *   This implementation simply enters an indefinite loop, allowing
  *   the use of a debugger to determine cause of failure. By defining
- *   DEBUG_EFM_USER to the preprocessor for all files, a user defined version
+ *   USE_FULL_ASSERT to the preprocessor for all files, a user defined version
  *   of this function must be defined and will be invoked instead, possibly
  *   providing output of assertion location.
  *
