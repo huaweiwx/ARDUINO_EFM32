@@ -80,17 +80,17 @@ EFM32G222.menu.log.default.build.log_level=-fno-exceptions
 EFM32G222.menu.log.Release=Release(exceptions)
 EFM32G222.menu.log.Release.build.log_level=
 EFM32G222.menu.log.fatal=FATAL
-EFM32G222.menu.log.fatal.build.log_level=-D__LOG_LEVEL=1 -DDEBUG_EFM_USER
+EFM32G222.menu.log.fatal.build.log_level=-D__LOG_LEVEL=1 -DUSE_ASSERT
 EFM32G222.menu.log.error=ERROR
-EFM32G222.menu.log.error.build.log_level=-D__LOG_LEVEL=2 -DDEBUG_EFM_USER
+EFM32G222.menu.log.error.build.log_level=-D__LOG_LEVEL=2 -DUSE_ASSERT
 EFM32G222.menu.log.warning=WARNING
-EFM32G222.menu.log.warning.build.log_level=-D__LOG_LEVEL=3 -DDEBUG_EFM_USER
+EFM32G222.menu.log.warning.build.log_level=-D__LOG_LEVEL=3 -DUSE_ASSERT
 EFM32G222.menu.log.info=INFO
-EFM32G222.menu.log.info.build.log_level=-D__LOG_LEVEL=4 -DDEBUG_EFM_USER
+EFM32G222.menu.log.info.build.log_level=-D__LOG_LEVEL=4 -DUSE_ASSERT
 EFM32G222.menu.log.debug=DEBUG
-EFM32G222.menu.log.debug.build.log_level=-D__LOG_LEVEL=5 -DDEBUG_EFM_USER
+EFM32G222.menu.log.debug.build.log_level=-D__LOG_LEVEL=5 -DUSE_ASSERT
 EFM32G222.menu.log.trace=TRACE
-EFM32G222.menu.log.trace.build.log_level=-D__LOG_LEVEL=6 -DDEBUG_EFM_USER
+EFM32G222.menu.log.trace.build.log_level=-D__LOG_LEVEL=6 -DUSE_ASSERT
 
 EFM32G222.upload.file_type=bin
 EFM32G222.upload.params.quiet=no
@@ -168,17 +168,17 @@ EFM32TG110.menu.log.default.build.log_level=-fno-exceptions
 EFM32TG110.menu.log.Release=Release(exceptions)
 EFM32TG110.menu.log.Release.build.log_level=
 EFM32TG110.menu.log.fatal=FATAL
-EFM32TG110.menu.log.fatal.build.log_level=-D__LOG_LEVEL=1 -DDEBUG_EFM_USER
+EFM32TG110.menu.log.fatal.build.log_level=-D__LOG_LEVEL=1 -DUSE_ASSERT
 EFM32TG110.menu.log.error=ERROR
-EFM32TG110.menu.log.error.build.log_level=-D__LOG_LEVEL=2 -DDEBUG_EFM_USER
+EFM32TG110.menu.log.error.build.log_level=-D__LOG_LEVEL=2 -DUSE_ASSERT
 EFM32TG110.menu.log.warning=WARNING
-EFM32TG110.menu.log.warning.build.log_level=-D__LOG_LEVEL=3 -DDEBUG_EFM_USER
+EFM32TG110.menu.log.warning.build.log_level=-D__LOG_LEVEL=3 -DUSE_ASSERT
 EFM32TG110.menu.log.info=INFO
-EFM32TG110.menu.log.info.build.log_level=-D__LOG_LEVEL=4 -DDEBUG_EFM_USER
+EFM32TG110.menu.log.info.build.log_level=-D__LOG_LEVEL=4 -DUSE_ASSERT
 EFM32TG110.menu.log.debug=DEBUG
-EFM32TG110.menu.log.debug.build.log_level=-D__LOG_LEVEL=5 -DDEBUG_EFM_USER
+EFM32TG110.menu.log.debug.build.log_level=-D__LOG_LEVEL=5 -DUSE_ASSERT
 EFM32TG110.menu.log.trace=TRACE
-EFM32TG110.menu.log.trace.build.log_level=-D__LOG_LEVEL=6 -DDEBUG_EFM_USER
+EFM32TG110.menu.log.trace.build.log_level=-D__LOG_LEVEL=6 -DUSE_ASSERT
 
 #--------------------------UPLOAD METHODS------------------------------
 EFM32TG110.upload.file_type=bin
