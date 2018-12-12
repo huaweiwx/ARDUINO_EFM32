@@ -133,61 +133,39 @@ class DDRemulation
 
 #if  _GPIO_PORT_A_PIN_MASK >0
 extern	DDRemulation	DDRA;
-extern	PINemulation	PINA;
-extern  PORTemulation	PORTA;
 #endif
 #if  _GPIO_PORT_B_PIN_MASK >0
 extern	DDRemulation	DDRB;
-extern	PINemulation	PINB;
-extern	PORTemulation	PORTB;
 #endif
 #if  _GPIO_PORT_C_PIN_MASK >0
 extern  DDRemulation	DDRC;
-extern	PINemulation 	PINC;
-extern  PORTemulation	PORTC;
 #endif
 #if  _GPIO_PORT_D_PIN_MASK >0
 extern  DDRemulation	DDRD;
-extern	PINemulation	PIND;
-extern  PORTemulation	PORTD;
 #endif
 #if  _GPIO_PORT_E_PIN_MASK >0
 extern  DDRemulation	DDRE;
-extern	PINemulation	PINE;
-extern  PORTemulation	PORTE;
 #endif
 #if  _GPIO_PORT_F_PIN_MASK >0
 extern  DDRemulation	DDRF;
-extern	PINemulation	PINF;
-extern  PORTemulation	PORTF;
 #endif
 #if  _GPIO_PORT_G_PIN_MASK >0
 extern  DDRemulation	DDRG;
-extern	PINemulation	PING;
-extern  PORTemulation	PORTG;
 #endif
 #if  _GPIO_PORT_H_PIN_MASK >0
 extern  DDRemulation	DDRH;
-extern	PINemulation	PINH;
-extern  PORTemulation	PORTH;
 #endif
 #if  _GPIO_PORT_I_PIN_MASK >0
 extern  DDRemulation	DDRI;
-extern	PINemulation	PINI;
-extern  PORTemulation	PORTI;
 #endif
 #if  _GPIO_PORT_J_PIN_MASK >0
 extern  DDRemulation	DDRJ;
-extern	PINemulation	PINJ;
-extern  PORTemulation	PORTJ;
 #endif
 #if  _GPIO_PORT_K_PIN_MASK >0
 extern  DDRemulation	DDRK;
-extern  PINemulation	PINK;
-extern  PORTemulation	PORTK;
 #endif
 
-#else  /*c mode*/
+#endif //__cplusplus
 
 #if  _GPIO_PORT_A_PIN_MASK >0
 #define PORTA   GPIOA.DOUT
@@ -234,5 +212,4 @@ extern  PORTemulation	PORTK;
 #define  PINK  GPIOK.DIN
 #endif
 
-#endif //__cplusplus
 #endif //__AVREMULATION_H__

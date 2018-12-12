@@ -44,8 +44,8 @@
 extern "C" {
 #endif
 
-void errorLedBlink(int n);
-
+void errorLedBlink(char* file, uint32_t n);
+void _Error_Handler(char* file, uint32_t line);
 // Internal: use PRINT_XXX instead
 void print_log(const char *level, const char *format, const char *file, const int line, ...);
 

@@ -54,7 +54,7 @@
   #include "tpaste.h"
   #include "stringz.h"
   #include "mrepeat.h"
- 
+  #include "delay.h"
 
  /**
  * \def UNUSED

@@ -99,7 +99,7 @@ class HardwareSerial : public Stream {
     /* Pin accessors */	
     void setRouteLoc(uint8_t route = 0);
 
-    void begin(const uint32_t baud, uint8_t config = SERIAL_8N1);
+    void begin(const uint32_t baud=115200, uint8_t config = SERIAL_8N1);
 	void begin(USART_Mode_TypeDef mode = SERIAL_MODE);
     void end();
     virtual int available(void);

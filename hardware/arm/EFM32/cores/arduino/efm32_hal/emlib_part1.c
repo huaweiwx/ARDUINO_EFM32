@@ -1,7 +1,10 @@
 #include "emlib/src/em_acmp.c"
 #include "emlib/src/em_adc.c"
 #include "emlib/src/em_aes.c"
-#include "emlib/src/em_assert.c"
+
+/* void assertEFM(const char* file, int line) move to debug.c huaweiwx@sina.com */
+//#include "emlib/src/em_assert.c" 
+
 #include "emlib/src/em_burtc.c"
 #include "emlib/src/em_cmu.c"
 #include "emlib/src/em_core.c"

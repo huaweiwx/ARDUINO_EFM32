@@ -30,6 +30,13 @@
 # include "configs/HAL_Conf.h"
 #endif
 
+/*EFM/STM32 Compatibility definition */
+#ifdef USE_FULL_ASSERT
+#  ifndef USE_ASSERT
+#    define USE_ASSERT
+#  endif
+#endif
+
 //default defines,  overriden by HAL_Conf.h  in path sketch or path valiants/valiant/configs/
 /***************  HAL_Conf default here ******************/
 
@@ -58,11 +65,11 @@
 #define USE_AVREMULATION 1
 #endif
 
-#ifndef USE_ERRORBLINK
-#  ifdef DEBUG_EFM_USER
-    #define USE_ERRORBLINK 1
+#ifndef USE_ERRORCALLBACK
+#  ifdef USE_FULL_ASSERT
+    #define USE_ERRORCALLBACK 1
 #  else
-    #define USE_ERRORBLINK 0
+    #define USE_ERRORCALLBACK 0
 #  endif
 #endif	
 

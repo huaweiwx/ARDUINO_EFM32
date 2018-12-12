@@ -66,7 +66,7 @@ long map(long, long, long, long, long);
 #endif // __cplusplus
 
 #if USE_BITBAND > 0
-#include "utils/bitband.h"
+#include "util/bitband.h"
 #endif
 
 #endif

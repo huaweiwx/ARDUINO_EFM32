@@ -36,14 +36,14 @@
 /*gpio bitband interface class*/
 class BB_PIN{
  public:
-     BB_PIN(__ConstPin cpin): cpin(cpin){};
-       __ConstPin cpin;
+     BB_PIN(__ConstPin CPin): CPin(CPin){};
+       __ConstPin CPin;
 
-	 const uint32_t inReg  =(const uint32_t)&GPIO->P[cpin.GPIOx_Port].DIN;
-	 const uint32_t outReg =(const uint32_t)&GPIO->P[cpin.GPIOx_Port].DOUT;
+	 const uint32_t inReg  =(const uint32_t)&GPIO->P[CPin.GPIOx_Port].DIN;
+	 const uint32_t outReg =(const uint32_t)&GPIO->P[CPin.GPIOx_Port].DOUT;
 	 
-     const uint32_t bb_inadr = BITBAND(inReg,cpin.pin);
-     const uint32_t bb_outadr = BITBAND(outReg,cpin.pin);
+     const uint32_t bb_inadr = BITBAND(inReg,CPin.pinMask);
+     const uint32_t bb_outadr = BITBAND(outReg,CPin.pinMask);
 	 
  	 template<typename T = bool>
      inline  T read() {return MEM_ADDR(bb_inadr);}
@@ -94,17 +94,17 @@ class BB_PIN{
 
     inline __attribute__((always_inline))
     void mode(uint32_t mode){
-           pinMode(cpin,mode);
+           pinMode(CPin,mode);
 	}
 	  
     inline __attribute__((always_inline))
     void attach(voidFuncPtr callback, uint32_t mode){
-	   attachInterrupt(cpin, callback, mode);
+	   attachInterrupt(CPin, callback, mode);
     }
   
   inline __attribute__((always_inline))
   void detach(void){
-	  detachInterrupt(cpin);
+	  detachInterrupt(CPin);
   }
 };
 #endif //__cplusplus

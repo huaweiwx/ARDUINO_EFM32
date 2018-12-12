@@ -19,7 +19,7 @@
 #ifndef __EFM32GPIO_H__
 #define __EFM32GPIO_H__
 
-#include "utils/base.h"
+#include "util/base.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -159,15 +159,24 @@ class LL_PIN {
 
 class InputPin : public LL_PIN {
   public:
+    uint32_t ulDelayCnt = F_CPU / 10'000'000;  
     constexpr InputPin(__ConstPin CPin, bool initial_value = 1): LL_PIN(CPin) {
       config(INPUT, initial_value);
     }
 
     template<typename T = bool>
     inline operator T () {
+      /*Waiting for stability*/
+      if (ulDelayCnt) {                           
+        for (volatile uint32_t i = ulDelayCnt; i > 0; i--);
+      }
       return read();
     }
-
+	
+    inline void setWaitTime(uint32_t time){
+		ulDelayCnt = time;
+	}
+	
     uint32_t pulseIn(bool state = false, uint32_t timeout = 1'000'000L )
     {
       // Cache the port and bit of the pin in order to speed up the
@@ -199,19 +208,28 @@ class InputPin : public LL_PIN {
 
 class OutputPin : public LL_PIN {
   public:
+    uint32_t ulDelayCnt = F_CPU / 10'000'000; /* pulse_widch*/
+
     constexpr OutputPin(__ConstPin CPin, bool initial_value = 0): LL_PIN(CPin) {
       config(OUTPUT, initial_value);
     }
+	
+    inline void setWaitTime(uint32_t time){
+		ulDelayCnt = time;
+	}
 
-    void pulse(uint32_t delaycnt = F_CPU / 10'000'000, bool value = true) {
+    void pulse(bool value = true) {
+      if (ulDelayCnt) {
+        for (volatile uint32_t i = ulDelayCnt; i > 0; i--);
+      }
       this->write(value);
-      if (delaycnt) {
-        for (volatile uint32_t i = delaycnt; i > 0; i--);
+      if (ulDelayCnt) {
+        for (volatile uint32_t i = ulDelayCnt; i > 0; i--);
       }
       this->toggle();
     }
-	
-    template<typename T>
+
+    template<typename T = bool>
     inline operator T () {
       return read();
     }
@@ -219,7 +237,7 @@ class OutputPin : public LL_PIN {
     inline void operator  !() __attribute__((always_inline)) {
        toggle();
 	}
-	
+
     template<typename T>
     inline OutputPin & operator = (T value) {
       write(value);
@@ -232,28 +250,36 @@ class OutputPin : public LL_PIN {
     }
 };
 
-template < uint8_t nbits = 8, uint8_t bit_order = MSBFIRST, uint32_t delaycnt = F_CPU / 10'000'000 >
+template < uint8_t nbits = 8, uint8_t bit_order = MSBFIRST>
 class ClockedInput {
     // A DirectIO implementation of shiftIn. Also supports
     // a variable number of bits (1-32); shiftIn is always 8 bits.
   public:
     // Define a type large enough to hold nbits bits (see base.h)
     typedef bits_type(nbits) bits_t;
+	
+    uint32_t ulDelayCnt = F_CPU / 10'000'000;
+
     constexpr ClockedInput(__ConstPin data_pin, __ConstPin clock_pin , bool pullup = true) : data(data_pin, pullup), clock(clock_pin) {}
-    InputPin data;
+    InputPin  data;
     OutputPin clock;
+	
+    inline void setWaitTime(uint32_t time){
+		ulDelayCnt = time;
+	}
 
     bits_t read() {
       // read nbits bits from the input pin and pack them
       // into a value of type bits_t.
-
       bits_t value = 0;
       bits_t mask = (bit_order == LSBFIRST) ? 1 : (bits_t(1) << (nbits - 1));
 
+      data.setWaitTime(0);  /*use this ulDelayCnt*/
+
       for (uint8_t i = 0; i < nbits; i++) {
         clock = HIGH;
-        if (delaycnt) {
-          for (volatile uint32_t i = delaycnt; i > 0; i--);
+        if (ulDelayCnt) {
+          for (volatile uint32_t  i = ulDelayCnt; i > 0; i--);
         }
 
         if (data) {
@@ -267,8 +293,8 @@ class ClockedInput {
         else {
           mask >>= 1;
         }
-        if (delaycnt) {
-          for (volatile uint32_t i = delaycnt; i > 0; i--);
+        if (ulDelayCnt) {
+          for (volatile uint32_t i = ulDelayCnt; i > 0; i--);
         }
       }
       return value;
@@ -279,25 +305,32 @@ class ClockedInput {
     }
 };
 
-template < uint8_t nbits = 8, uint8_t bit_order = MSBFIRST, uint32_t delaycnt = F_CPU / 10'000'000 >
+template < uint8_t nbits = 8, uint8_t bit_order = MSBFIRST>
 class ClockedOutput {
     // A DirectIO implementation of shiftOut. Also supports
     // a variable number of bits (1-32); shiftOut is always 8 bits.
   public:
     // Define a type large enough to hold nbits bits (see base.h)
     typedef bits_type(nbits) bits_t;
-
+    uint32_t ulDelayCnt = F_CPU / 10'000'000;
+	
     constexpr ClockedOutput(__ConstPin data_pin, __ConstPin clock_pin): data(data_pin), clock(clock_pin) {};
     OutputPin data;
     OutputPin clock;
 
-    void write(bits_t val) {
+    inline void setWaitTime(uint32_t time){
+		ulDelayCnt = time;
+	}
+	
+    void write(bits_t val, bool level = HIGH) {
       // write nbits bits to the output pin
       bits_t mask = (bit_order == LSBFIRST) ? 1 : (bits_t(1) << (nbits - 1));
 
+      clock.setWaitTime(ulDelayCnt);  /*setup clock.pulse width*/
+
       for (uint8_t i = 0; i < nbits; i++) {
         data = (val & mask);
-        clock.pulse(delaycnt);
+        clock.pulse(level);
 
         if (bit_order == LSBFIRST) {
           mask <<= 1;

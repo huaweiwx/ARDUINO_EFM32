@@ -21,7 +21,7 @@
 #define __EFM32_H__
 
 #include <stddef.h>
-#include "utils/utils_all.h"
+#include "util/utils_all.h"
 #include "em_device.h"
 #include "efm32_hal/emlib.h"
 
@@ -98,4 +98,5 @@ enum {
 #include "efm32dac.h"
 #include "efm32weak.h"
 #include "core_callback.h"
+#include "debug.h"
 #endif

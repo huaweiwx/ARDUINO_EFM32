@@ -60,4 +60,8 @@ inline void delayMicroseconds(uint32_t microseconds){
 #ifdef __cplusplus
 }  //extern "C"{
 #endif /* __cplusplus*/
+
+/*10 cycle*/
+#define _delay_loop_2(x)  do{for(uint32_t i=0;i<x;i++) {asm volatile("nop");}}while(0)
+
 #endif /*__ARMCLOCK_H__*/

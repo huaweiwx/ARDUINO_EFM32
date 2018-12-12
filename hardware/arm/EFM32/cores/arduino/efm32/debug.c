@@ -22,7 +22,7 @@
 */
 
 #include "Arduino.h"
-#include "efm32_debug.h"
+#include "debug.h"
 
 #pragma GCC diagnostic ignored "-Wformat-zero-length"
 #pragma GCC diagnostic ignored "-Wformat"
@@ -30,11 +30,8 @@
 
 //------------------------------------------------------------------------------
 /** calibration factor for delayMS */
-#if defined(STM32F7)||defined(STM32H7)
-# define CAL_FACTOR (F_CPU/2000)
-#else
 # define CAL_FACTOR (F_CPU/7000)
-#endif
+
 /** delay between led error flashes
  * \param[in] millis milliseconds to delay
  */
@@ -62,8 +59,8 @@ static void nblink(int n, int l){
   }
 }
 
-extern "C"
-void errorLedBlink(int n) {
+void errorLedBlink(char* file, uint32_t n) {
+  UNUSED(file);	
   noInterrupts();
   pinMode(LED_BUILTIN, OUTPUT);
 #if (LED_BUILTIN_MASK & 0x01)
@@ -91,8 +88,9 @@ void errorLedBlink(int n) {
   }
 }
 
+void errorCallback(char* file, uint32_t n) __attribute__ ((weak, alias("errorLedBlink")));
+
 //debug_if add by huaweiwx@sina.com  2017.12.8
-extern "C"
 void debug(const char *format, ...) {
     va_list args;
     va_start(args, format);
@@ -102,7 +100,6 @@ void debug(const char *format, ...) {
 
 
 //debug_if add by huaweiwx@sina.com  2017.12.8
-extern "C"
 void debug_if(int condition, const char *format, ...) {	
     if (condition) {
        va_list args;
@@ -112,7 +109,6 @@ void debug_if(int condition, const char *format, ...) {
     }
 }
 
-extern "C"
 void print_log(const char *level, const char *format, const char *file, const int line, ...) {
 
     uint32_t m = micros();
@@ -128,69 +124,90 @@ void print_log(const char *level, const char *format, const char *file, const in
     va_end(argList);
 }
 
-#ifdef DEBUG_EFM_USER
-// huaweiwx@sina.com  2018.9.8
-extern "C"
+//_Error_Handler() created by CubeMX. huaweiwx@sina.com  2017.12.8
+void _Error_Handler(char* file, uint32_t line) __weak;
+void _Error_Handler(char* file, uint32_t line){
+#if USE_ASSERT
+  #if USE_ERRORCALLBACK
+	errorCallback(file,line);
+  #else	  
+	debug("\r\nFailed! File:'%s' on Line:%d",file,line);
+  #endif
+#endif
+	while(1)
+		yield();	
+}
+
+#if defined(DEBUG_EFM)
+/***************************************************************************//**
+ * @brief
+ *   EFM internal assert handling.
+ *
+ *   This function is invoked through EFM_ASSERT() macro usage only, it should
+ *   not be used explicitly.
+ *
+ *   This implementation simply enters an indefinite loop, allowing
+ *   the use of a debugger to determine cause of failure. By defining
+ *   USE_FULL_ASSERT to the preprocessor for all files, a user defined version
+ *   of this function must be defined and will be invoked instead, possibly
+ *   providing output of assertion location.
+ *
+ * @note
+ *   This function is not used unless @ref DEBUG_EFM is defined
+ *   during preprocessing of EFM_ASSERT() usage.
+ *
+ * @param[in] file
+ *   Name of source file where assertion failed.
+ *
+ * @param[in] line
+ *   Line number in source file where assertion failed.
+ ******************************************************************************/
+// redefine in em_assert.c   huaweiwx@sina.com  2018.9.8
 void assertEFM(const char* file, int line)
 {
-#if USE_ERRORBLINK
-    errorLedBlink(line);
+#if USE_ERRORCALLBACK
+    errorLedBlink(file,line);
 #else	
 	debug("\r\nAssert failed! File: '%s' on Line:%d",(char *)file,line);
+#endif
 	while(1)
 		yield();
-#endif
 };
-#endif
+
 
  /**
 * @brief This function handles Hard fault interrupt.
 */
-extern "C"
 void HardFault_Handler(void)
 {
-#if USE_ERRORBLINK
-	errorLedBlink(31);
-#else
-    while(1);	
-#endif
+	errorCallback("HardFault",31);
+    while(1);
 }
 
 /**
 * @brief This function handles Memory management fault.
 */
-extern "C"
 void MemManage_Handler(void)
 {
-#if USE_ERRORBLINK
-	errorLedBlink(32);
-#else
-    while(1);	
-#endif
+	errorCallback("MemFault",32);
+    while(1);
 }
 
 /**
 * @brief This function handles Pre-fetch fault, memory access fault.
 */
-extern "C"
 void BusFault_Handler(void)
 {
-#if USE_ERRORBLINK
-	errorLedBlink(33);
-#else
-    while(1);	
-#endif
+	errorCallback("BusFault",33);
+    while(1);
 }
 
 /**
 * @brief This function handles Undefined instruction or illegal state.
 */
-extern "C"
 void UsageFault_Handler(void)
 {
-#if USE_ERRORBLINK
-	errorLedBlink(34);
-#else
-    while(1);	
-#endif
+	errorCallback("UsageFault",34);
+    while(1);
 }
+#endif

@@ -23,56 +23,34 @@
 
 #if  _GPIO_PORT_A_PIN_MASK >0
 DDRemulation   DDRA(gpioPortA,_GPIO_PORT_A_PIN_MASK);
-PINemulation   PINA(gpioPortA);
-PORTemulation PORTA(gpioPortA);
 #endif
 #if  _GPIO_PORT_B_PIN_MASK >0
 DDRemulation DDRB(gpioPortB,_GPIO_PORT_B_PIN_MASK);
-PINemulation   PINB(gpioPortB);
-PORTemulation PORTB(gpioPortB);
 #endif
 #if  _GPIO_PORT_C_PIN_MASK >0
 DDRemulation DDRC(gpioPortC,_GPIO_PORT_C_PIN_MASK);
-PINemulation   PINC(gpioPortC);
-PORTemulation PORTC(gpioPortC);
 #endif
 #if  _GPIO_PORT_D_PIN_MASK >0
 DDRemulation  DDRD(gpioPortD,_GPIO_PORT_D_PIN_MASK);
-PINemulation   PIND(gpioPortD);
-PORTemulation PORTD(gpioPortD);
 #endif
 #if  _GPIO_PORT_E_PIN_MASK >0
 DDRemulation DDRE(gpioPortE,_GPIO_PORT_E_PIN_MASK);
-PINemulation   PINE(gpioPortE);
-PORTemulation PORTE(gpioPortE);
 #endif
 #if  _GPIO_PORT_F_PIN_MASK >0
 DDRemulation DDRF(gpioPortF,_GPIO_PORT_F_PIN_MASK);
-PINemulation   PINF(gpioPortF);
-PORTemulation PORTF(gpioPortF);
 #endif
 #if  _GPIO_PORT_G_PIN_MASK >0
 DDRemulation DDRG(gpioPortG,_GPIO_PORT_G_PIN_MASK);
-PINemulation   PING(gpioPortG);
-PORTemulation PORTG(gpioPortG);
 #endif
 #if  _GPIO_PORT_H_PIN_MASK >0
 DDRemulation DDRH(gpioPortH,_GPIO_PORT_H_PIN_MASK);
-PINemulation   PINH(gpioPortH);
-PORTemulation PORTH(gpioPortH);
 #endif
 #if  _GPIO_PORT_I_PIN_MASK >0
 DDRemulation DDRI(gpioPortI,_GPIO_PORT_I_PIN_MASK);
-PINemulation   PINI(gpioPortI);
-PORTemulation PORTI(gpioPortI);
 #endif
 #if  _GPIO_PORT_J_PIN_MASK >0
 DDRemulation DDRJ(gpioPortJ,_GPIO_PORT_J_PIN_MASK);
-PINemulation   PINJ(gpioPortJ);
-PORTemulation PORTJ(gpioPortJ);
 #endif
 #if  _GPIO_PORT_K_PIN_MASK >0
 DDRemulation DDRK(gpioPortK,_GPIO_PORT_K_PIN_MASK);
-PINemulation   PINK(gpioPortK);
-PORTemulation PORTK(gpioPortK);
 #endif
