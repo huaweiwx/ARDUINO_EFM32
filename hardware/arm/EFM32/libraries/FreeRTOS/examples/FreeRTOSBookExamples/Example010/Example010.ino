@@ -48,7 +48,7 @@ void setup( void )
 /* setup alternate location default is 0# */  
   Serial.setRouteLoc(1); /*set to 1#. the serial port's Alternate LOCATION(see datasheet)*/
 #endif
-  Serial.begin(115200);  /*set param: 115200bps 8N1 (default 9600bps 8N1) */
+  Serial.begin(115200);  /*set param: 115200bps 8N1 (default 115200bps 8N1) */
     /* The queue is created to hold a maximum of 5 long values. */
     xQueue = xQueueCreate( 5, sizeof( long ) );
 

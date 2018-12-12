@@ -1,5 +1,7 @@
 
 #include <Arduino.h>
+#include <stdio.h>
+#include <stdarg.h>
 #include "FreeRTOS_ARM.h"
 
 //------------------------------------------------------------------------------
@@ -18,14 +20,6 @@ void  __attribute__((weak)) vApplicationIdleHook( void ) {
   void loop();
   loop();
 }
-/** assertBlink
- * Blink one short pulse every two seconds if configASSERT fails.
-*/
-extern void errorLedBlink(int n);
-
-//void assertBlink() {
-//  errorLedBlink(1);
-//}
 
 void vApplicationMallocFailedHook( void )
 {
@@ -33,27 +27,18 @@ void vApplicationMallocFailedHook( void )
     configUSE_MALLOC_FAILED_HOOK is set to 1 in FreeRTOSConfig.h.  It is a hook
     function that will get called if a call to pvPortMalloc() fails.*/
     //taskDISABLE_INTERRUPTS();
-#if USE_ERRORBLINK
-	errorLedBlink(22);
-#else
+    _Error_Handler(__FILENAME__, __LINE__);
 	for(;;);
-#endif
 }
 
 void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskName )
 {
-    ( void ) pcTaskName;
-    ( void ) pxTask;
-
     /* Run time stack overflow checking is performed if
     configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2.  This hook
     function is called if a stack overflow is detected. */
     //taskDISABLE_INTERRUPTS();
-#if USE_ERRORBLINK
-	errorLedBlink(23);
-#else
+    _Error_Handler(pcTaskName, (uint32_t)pxTask);
 	for(;;);
-#endif
 }
 
 
@@ -81,6 +66,8 @@ void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskName )
 #pragma message "port heap use heap_4.c"
 #elif portUSE_HEAP == 5
 #pragma message "port heap use heap_5.c"
+#else
+#error !portUSE_HEAP must be defined 1~5!
 #endif
 
 #if configUSE_COUNTING_SEMAPHORES > 0

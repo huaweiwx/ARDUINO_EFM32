@@ -44,7 +44,7 @@ void setup( void )
 /* setup alternate location default is 0# */  
   Serial.setRouteLoc(1); /*set to 1#. the serial port's Alternate LOCATION(see datasheet)*/
 #endif
-  Serial.begin(115200);  /*set param: 115200bps 8N1 (default 9600bps 8N1) */
+  Serial.begin(115200);  /*set param: 115200bps 8N1 (default 115200bps 8N1) */
   /* Create the first task at priority 2.  This time the task parameter is
   not used and is set to NULL.  The task handle is also not used so likewise
   is also set to NULL. */

@@ -62,7 +62,7 @@ void setup( void )
 /* setup alternate location default is 0# */  
   Serial.setRouteLoc(1); /*set to 1#. the serial port's Alternate LOCATION(see datasheet)*/
 #endif
-  Serial.begin(115200);  /*set param: 115200bps 8N1 (default 9600bps 8N1) */
+  Serial.begin(115200);  /*set param: 115200bps 8N1 (default 115200bps 8N1) */
 
   /* Before a queue can be used it must first be created.  Create both queues
   used by this example.  One queue can hold variables of type unsigned long,

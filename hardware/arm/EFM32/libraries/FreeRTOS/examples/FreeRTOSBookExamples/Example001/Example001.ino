@@ -41,7 +41,7 @@ void setup( void )
 /* setup alternate location default is 0# */  
   Serial.setRouteLoc(1); /*set to 1#. the serial port's Alternate LOCATION(see datasheet)*/
 #endif
-  Serial.begin(115200);  /*set param: 115200bps 8N1 (default 9600bps 8N1) */
+  Serial.begin(115200);  /*set param: 115200bps 8N1 (default 115200bps 8N1) */
   /* Create one of the two tasks. */
   xTaskCreate(  vTask1,   /* Pointer to the function that implements the task. */
     "Task 1", /* Text name for the task.  This is to facilitate debugging only. */
