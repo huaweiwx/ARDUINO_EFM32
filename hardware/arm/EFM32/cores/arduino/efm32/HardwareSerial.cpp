@@ -552,6 +552,20 @@ int HardwareSerial::read(void) {
 }
 
 size_t HardwareSerial::write(unsigned char ch) {
+#if DEBUG_EFM /*for debug unused interrupt*/
+    if (buf->mode == LEUART_TYPE) {
+      LEUART_Tx((LEUART_TypeDef *)buf->instance, ch);
+    }
+  #if defined(UART0)||defined(UART1)
+    else if(buf->mode == UART_TYPE){
+      UART_Tx(buf->instance, ch);
+    }
+  #endif
+    else {
+      USART_Tx(buf->instance, ch);
+    }
+
+#else
   while (availableForWrite() == 0);   /*wait*/
   buf->txBuffer[buf->txEnd++] = ch;
   buf->txEnd %= SERIAL_TX_BUFFER_SIZE;
@@ -569,6 +583,7 @@ size_t HardwareSerial::write(unsigned char ch) {
     USART_IntEnable(buf->instance, USART_IEN_TXC);
     USART_IntSet(buf->instance, USART_IFS_TXC);
   }
+#endif  
   return 1;
 }
 

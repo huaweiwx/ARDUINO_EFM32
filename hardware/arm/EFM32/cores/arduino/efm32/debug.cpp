@@ -21,14 +21,10 @@
   SOFTWARE.
 */
 
-#include "Arduino.h"
+#include "unistd.h"
 #include "debug.h"
+#include "cmsis_gcc.h"
 
-#pragma GCC diagnostic ignored "-Wformat-zero-length"
-#pragma GCC diagnostic ignored "-Wformat"
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-
-//------------------------------------------------------------------------------
 /** calibration factor for delayMS */
 # define CAL_FACTOR (F_CPU/7000)
 
@@ -42,6 +38,49 @@ static void delayMS(uint32_t millis) {
     asm volatile("nop\n\t");
   }
 }
+
+static const int print_fileno = 3;
+
+static Print *print;
+
+int efm32SetPrintOutput(Print *p) {
+    if (p == NULL) {
+        print = NULL;
+        return 0;
+    }
+
+    if (isInterrupt() && print != NULL) {
+        return 0;
+    }
+
+    while(print != NULL);
+    print = p;
+
+    return print_fileno;
+}
+
+extern "C"
+int _write(int file, char *ptr, int len ) {
+	if (file == STDOUT_FILENO){
+		return Serial.write(ptr, len);
+	} 
+	if (file == STDERR_FILENO) {
+		Serial.write(ptr, len);
+//		Serial.flush();
+		return len;
+	} 
+	if (file == print_fileno) {
+		if (print != NULL)  return print->write(ptr, len);
+	}
+
+	// TODO show error
+	return 0;  //return no-void warning add by huaweiwx@sina.com 2017.7.21
+}
+
+#pragma GCC diagnostic ignored "-Wformat-zero-length"
+#pragma GCC diagnostic ignored "-Wformat"
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+//------------------------------------------------------------------------------
 
 static void nblink(int n, int l){
   if(l){	
@@ -59,6 +98,7 @@ static void nblink(int n, int l){
   }
 }
 
+extern "C"
 void errorLedBlink(char* file, uint32_t n) {
   UNUSED(file);	
   noInterrupts();
@@ -84,13 +124,13 @@ void errorLedBlink(char* file, uint32_t n) {
 	nblink(h,0);
 	nblink(d,1);
     nblink(l,0);
-	delayMS(1000);
+	delayMS(2000);
   }
 }
 
-void errorCallback(char* file, uint32_t n) __attribute__ ((weak, alias("errorLedBlink")));
 
 //debug_if add by huaweiwx@sina.com  2017.12.8
+extern "C"
 void debug(const char *format, ...) {
     va_list args;
     va_start(args, format);
@@ -98,8 +138,21 @@ void debug(const char *format, ...) {
     va_end(args);
 }
 
+extern "C"
+void printErrFileLine(char* file, uint32_t n) {
+  debug("\r\nErr! File:'%s' on Line:%d",file,n);
+}
+
+#if USE_ERRORBLINK >0
+extern "C"
+void errorCallback(char* file, uint32_t n) __attribute__ ((weak, alias("errorLedBlink")));
+#else
+extern "C"
+void errorCallback(char* file, uint32_t n) __attribute__ ((weak, alias("printErrFileLine")));
+#endif
 
 //debug_if add by huaweiwx@sina.com  2017.12.8
+extern "C"
 void debug_if(int condition, const char *format, ...) {	
     if (condition) {
        va_list args;
@@ -109,6 +162,7 @@ void debug_if(int condition, const char *format, ...) {
     }
 }
 
+extern "C"
 void print_log(const char *level, const char *format, const char *file, const int line, ...) {
 
     uint32_t m = micros();
@@ -125,18 +179,97 @@ void print_log(const char *level, const char *format, const char *file, const in
 }
 
 //_Error_Handler() created by CubeMX. huaweiwx@sina.com  2017.12.8
+extern "C"
 void _Error_Handler(char* file, uint32_t line) __weak;
+
+extern "C"
 void _Error_Handler(char* file, uint32_t line){
-#if USE_ASSERT
-  #if USE_ERRORCALLBACK
-	errorCallback(file,line);
-  #else	  
-	debug("\r\nFailed! File:'%s' on Line:%d",file,line);
-  #endif
-#endif
-	while(1)
-		yield();	
+  errorCallback(file,line);
+  while(1)
+	yield();	
 }
+
+#if USE_HARDFAUILTHOOK
+extern "C"
+void ProcessHardFault(uint32_t lr, uint32_t msp, uint32_t psp)
+{
+    uint32_t exception_num;
+    uint32_t r0, r1, r2, r3, r12, pc, psr;
+    uint32_t *stack;
+
+    stack = (uint32_t *)msp;
+
+    /* Get information from stack */
+    r0  = stack[0];
+    r1  = stack[1];
+    r2  = stack[2];
+    r3  = stack[3];
+    r12 = stack[4];
+    lr  = stack[5];
+    pc  = stack[6];
+    psr = stack[7];
+
+
+    /* Check T bit of psr */
+    if((psr & (1 << 24)) == 0)
+    {
+        debug("PSR T bit is 0.\nHard fault caused by changing to ARM mode!\n");
+        while(1);
+    }
+    /* Check hard fault caused by ISR */
+    exception_num = psr & xPSR_ISR_Msk;
+    if(exception_num > 0)
+    {
+        /*
+        Exception number
+            0 = Thread mode
+            1 = Reserved
+            2 = NMI
+            3 = HardFault
+            4-10 = Reserved11 = SVCall
+            12, 13 = Reserved
+            14 = PendSV
+            15 = SysTick, if implemented[a]
+            16 = IRQ0.
+                .
+                .
+            n+15 = IRQ(n-1)[b]
+            (n+16) to 63 = Reserved.
+        The number of interrupts, n, is 32
+        */
+    
+        debug("Hard fault is caused in IRQ #%d\n", exception_num - 16);
+    
+          while(1);
+    }
+
+
+    debug("Hard fault location is at 0x%08x\n", pc);
+    /*
+        If the hard fault location is a memory access instruction, You may debug the load/store issues.
+
+        Memory access faults can be caused by:
+            Invalid address - read/write wrong address
+            Data alignment issue - Violate alignment rule of Cortex-M processor
+            Memory access permission - MPU violations or unprivileged access (Cortex-M0+)
+            Bus components or peripheral returned an error response.
+    */
+    debug("r0  = 0x%x\n", r0);
+    debug("r1  = 0x%x\n", r1);
+    debug("r2  = 0x%x\n", r2);
+    debug("r3  = 0x%x\n", r3);
+    debug("r12 = 0x%x\n", r12);
+    debug("lr  = 0x%x\n", lr);
+    debug("pc  = 0x%x\n", pc);
+    debug("psr = 0x%x\n", psr);
+
+    while(1);
+
+}
+
+extern "C"
+void hard_fault_handler_hook(uint32_t lr, uint32_t msp, uint32_t psp) __attribute__ ((weak, alias("ProcessHardFault")));
+#endif
 
 #if defined(DEBUG_EFM)
 /***************************************************************************//**
@@ -163,13 +296,10 @@ void _Error_Handler(char* file, uint32_t line){
  *   Line number in source file where assertion failed.
  ******************************************************************************/
 // redefine in em_assert.c   huaweiwx@sina.com  2018.9.8
+extern "C"
 void assertEFM(const char* file, int line)
 {
-#if USE_ERRORCALLBACK
-    errorLedBlink(file,line);
-#else	
-	debug("\r\nAssert failed! File: '%s' on Line:%d",(char *)file,line);
-#endif
+    errorLedBlink((char*)file,line);
 	while(1)
 		yield();
 };
@@ -178,36 +308,50 @@ void assertEFM(const char* file, int line)
  /**
 * @brief This function handles Hard fault interrupt.
 */
+extern "C"
 void HardFault_Handler(void)
 {
-	errorCallback("HardFault",31);
+#if USE_HARDFAUILTHOOK
+  __asm volatile(
+  " tst lr, #4   \n" 
+  " ite eq       \n" 
+  " mrseq r0,msp \n"
+  " mrsne r0,psp \n"
+  " b hard_fault_handler_hook \n"
+  );
+#else
+	errorCallback((char*)"HardFault",31);
+#endif
     while(1);
 }
 
 /**
 * @brief This function handles Memory management fault.
 */
+extern "C"
 void MemManage_Handler(void)
 {
-	errorCallback("MemFault",32);
+	errorCallback((char*)"MemFault",32);
     while(1);
 }
 
 /**
 * @brief This function handles Pre-fetch fault, memory access fault.
 */
+extern "C"
 void BusFault_Handler(void)
 {
-	errorCallback("BusFault",33);
+	errorCallback((char*)"BusFault",33);
     while(1);
 }
 
 /**
 * @brief This function handles Undefined instruction or illegal state.
 */
+extern "C"
 void UsageFault_Handler(void)
 {
-	errorCallback("UsageFault",34);
+	errorCallback((char*)"UsageFault",34);
     while(1);
 }
 #endif

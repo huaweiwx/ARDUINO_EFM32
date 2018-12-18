@@ -31,9 +31,14 @@
 #endif
 
 /*EFM/STM32 Compatibility definition */
+#ifdef DEBUG_EFM
+#  ifndef USE_FULL_ASSERT
+#    define USE_FULL_ASSERT
+#  endif
+#endif
 #ifdef USE_FULL_ASSERT
-#  ifndef USE_ASSERT
-#    define USE_ASSERT
+#  ifndef DEBUG_EFM
+#    define DEBUG_EFM
 #  endif
 #endif
 
@@ -49,12 +54,12 @@
 # define UCOSII      0
 #endif
 
-#ifndef BOOTLOADER	/*check & go addr if avalible */
-# define BOOTLOADER  0
+#ifndef BOOTLOADER	     /*check & go addr if avalible */
+# define BOOTLOADER       0
 #endif
 
 #ifndef  USE_BITBAND
-#define  USE_BITBAND 1
+#define  USE_BITBAND     1
 #endif
 
 #ifndef USE_CORECALLBACK
@@ -64,14 +69,6 @@
 #ifndef USE_AVREMULATION
 #define USE_AVREMULATION 1
 #endif
-
-#ifndef USE_ERRORCALLBACK
-#  ifdef USE_FULL_ASSERT
-    #define USE_ERRORCALLBACK 1
-#  else
-    #define USE_ERRORCALLBACK 0
-#  endif
-#endif	
 
 #ifndef USE_TIMER0_PWM
 # define USE_TIMER0_PWM 1
@@ -125,28 +122,28 @@
 
 //USART
 #ifndef USE_USART0
-#define USE_USART0 1
+#define USE_USART0  1
 #endif
 #ifndef USE_USART1
-#define USE_USART1 1
+#define USE_USART1  1
 #endif
 #ifndef USE_USART2
-#define USE_USART2 1
+#define USE_USART2  1
 #endif
 #ifndef USE_USART3
-#define USE_USART3 1
+#define USE_USART3  1
 #endif
 #ifndef USE_USART4
-#define USE_USART4 1
+#define USE_USART4  1
 #endif
 #ifndef USE_USART5
-#define USE_USART5 1
+#define USE_USART5  1
 #endif
 #ifndef USE_UART0
-#define USE_UART0 1
+#define USE_UART0   1
 #endif
 #ifndef USE_UART1
-#define USE_UART1 1
+#define USE_UART1   1
 #endif
 
 #ifndef USE_LEUART0

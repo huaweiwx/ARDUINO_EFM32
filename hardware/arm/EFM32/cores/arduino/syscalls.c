@@ -100,6 +100,7 @@ void _exit (int status)
 	while (1) {}
 }
 
+/*
 int _write(int file, char *ptr, int len)
 {
 	int DataIdx;
@@ -110,7 +111,7 @@ int _write(int file, char *ptr, int len)
 		}
 	return len;
 }
-
+*/
 int _close(int file)
 {
 	return -1;

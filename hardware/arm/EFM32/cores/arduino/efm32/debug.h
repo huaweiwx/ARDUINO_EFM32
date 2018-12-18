@@ -24,10 +24,26 @@
 #ifndef EFM32_DEBUG_H
 #define EFM32_DEBUG_H
 
+#include "Arduino.h"
+
 #include <stdio.h>
 #include <stdarg.h>
 
 #include "efm32.h"
+#include "cmsis_gcc.h"
+
+
+# ifndef  ASSERT_PARAM
+#   define ASSERT_PARAM  EFM_ASSERT
+# endif
+#define assert_param(expr)  EFM_ASSERT(expr)   /*compatible with stm32*/
+
+// Returns if we are in an interrupt
+inline bool isInterrupt() {
+    return (SCB->ICSR & SCB_ICSR_VECTACTIVE_Msk) != 0 ;
+}
+
+
 
 #ifndef __LOG_LEVEL
   #define __LOG_LEVEL    0
@@ -44,12 +60,13 @@
 extern "C" {
 #endif
 
+
 void errorLedBlink(char* file, uint32_t n);
 void _Error_Handler(char* file, uint32_t line);
 // Internal: use PRINT_XXX instead
 void print_log(const char *level, const char *format, const char *file, const int line, ...);
 
-//stm32_assert.h use stderr out debug info
+//use stderr out debug info
 void debug(const char *format, ...);
 void debug_if(int condition, const char *format, ...);
 

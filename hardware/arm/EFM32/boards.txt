@@ -21,21 +21,21 @@ EFM32G222.build.board=efm32g222f128
 EFM32G222.build.mcu=cortex-m3 -mthumb
 #EFM32G222.build.spacil_includes="-I{build.core.path}/efm32" "-I{build.system.path}" "-I{build.system.path}/emlib/inc" "-I{build.system.path}/emlib/src"
 
-EFM32G222.menu.cpu.128=EFM32G222F128
+EFM32G222.menu.cpu.128=EFM32G222F128(128kFLASH 16kSRAM)
 EFM32G222.menu.cpu.128.build.board=efm32g222f128
 EFM32G222.menu.cpu.128.build.extra_flags=-DARM_MATH_CM3 -DEFM32G222F128 -DRAMSIZE={upload.maximum_data_size}
 EFM32G222.menu.cpu.128.build.ldscript=ld/efm32g222f128.ld
 EFM32G222.menu.cpu.128.upload.maximum_size=131072
 EFM32G222.menu.cpu.128.upload.maximum_data_size=16384
 
-EFM32G222.menu.cpu.64=EFM32G222F64
+EFM32G222.menu.cpu.64=EFM32G222F64(64kFLASH 16kSRAM)
 EFM32G222.menu.cpu.64.build.board=efm32g222f64
 EFM32G222.menu.cpu.64.build.extra_flags=-DARM_MATH_CM3 -DEFM32G222F64 -DRAMSIZE={upload.maximum_data_size}
 EFM32G222.menu.cpu.64.build.ldscript=ld/efm32g222f64.ld
 EFM32G222.menu.cpu.64.upload.maximum_size=65536
 EFM32G222.menu.cpu.64.upload.maximum_data_size=16384
 
-EFM32G222.menu.cpu.32=EFM32G222F32
+EFM32G222.menu.cpu.32=EFM32G222F32(32kFLASH 8kSRAM)
 EFM32G222.menu.cpu.32.build.board=efm32g222f32
 EFM32G222.menu.cpu.32.build.extra_flags=-DARM_MATH_CM3 -DEFM32G222F32 -DRAMSIZE={upload.maximum_data_size}
 EFM32G222.menu.cpu.32.build.ldscript=ld/efm32g222f32.ld
@@ -80,17 +80,17 @@ EFM32G222.menu.log.default.build.log_level=-fno-exceptions
 EFM32G222.menu.log.Release=Release(exceptions)
 EFM32G222.menu.log.Release.build.log_level=
 EFM32G222.menu.log.fatal=FATAL
-EFM32G222.menu.log.fatal.build.log_level=-D__LOG_LEVEL=1 -DUSE_ASSERT
+EFM32G222.menu.log.fatal.build.log_level=-D__LOG_LEVEL=1 -DDEBUG_EFM
 EFM32G222.menu.log.error=ERROR
-EFM32G222.menu.log.error.build.log_level=-D__LOG_LEVEL=2 -DUSE_ASSERT
+EFM32G222.menu.log.error.build.log_level=-D__LOG_LEVEL=2 -DDEBUG_EFM
 EFM32G222.menu.log.warning=WARNING
-EFM32G222.menu.log.warning.build.log_level=-D__LOG_LEVEL=3 -DUSE_ASSERT
+EFM32G222.menu.log.warning.build.log_level=-D__LOG_LEVEL=3 -DDEBUG_EFM
 EFM32G222.menu.log.info=INFO
-EFM32G222.menu.log.info.build.log_level=-D__LOG_LEVEL=4 -DUSE_ASSERT
+EFM32G222.menu.log.info.build.log_level=-D__LOG_LEVEL=4 -DDEBUG_EFM
 EFM32G222.menu.log.debug=DEBUG
-EFM32G222.menu.log.debug.build.log_level=-D__LOG_LEVEL=5 -DUSE_ASSERT
+EFM32G222.menu.log.debug.build.log_level=-D__LOG_LEVEL=5 -DDEBUG_EFM
 EFM32G222.menu.log.trace=TRACE
-EFM32G222.menu.log.trace.build.log_level=-D__LOG_LEVEL=6 -DUSE_ASSERT
+EFM32G222.menu.log.trace.build.log_level=-D__LOG_LEVEL=6 -DDEBUG_EFM
 
 EFM32G222.upload.file_type=bin
 EFM32G222.upload.params.quiet=no
@@ -119,14 +119,14 @@ EFM32TG110.build.board=efm32Tg110f32
 EFM32TG110.build.mcu=cortex-m3 -mthumb
 #EFM32TG110.build.spacil_includes="-I{build.core.path}/efm32" "-I{build.system.path}" "-I{build.system.path}/emlib/inc" "-I{build.system.path}/emlib/src"
 
-EFM32TG110.menu.cpu.32=EFM32TG110F32
+EFM32TG110.menu.cpu.32=EFM32TG110F32(32kFLASH 4kSRAM)
 EFM32TG110.menu.cpu.32.build.board=efm32tg110f32
 EFM32TG110.menu.cpu.32.build.extra_flags=-DARM_MATH_CM3 -DEFM32TG110F32
 EFM32TG110.menu.cpu.32.build.ldscript=ld/efm32tg110f32.ld
 EFM32TG110.menu.cpu.32.upload.maximum_size=32768
 EFM32TG110.menu.cpu.32.upload.maximum_data_size=4096
 
-EFM32TG110.menu.cpu.16=EFM32TG110F16
+EFM32TG110.menu.cpu.16=EFM32TG110F16(16kFLASH 4kSRAM)
 EFM32TG110.menu.cpu.16.build.board=efm32tg110f16
 EFM32TG110.menu.cpu.16.build.extra_flags=-DARM_MATH_CM3 -DEFM32TG110F16
 EFM32TG110.menu.cpu.16.build.ldscript=ld/efm32tg110f16.ld
@@ -168,17 +168,17 @@ EFM32TG110.menu.log.default.build.log_level=-fno-exceptions
 EFM32TG110.menu.log.Release=Release(exceptions)
 EFM32TG110.menu.log.Release.build.log_level=
 EFM32TG110.menu.log.fatal=FATAL
-EFM32TG110.menu.log.fatal.build.log_level=-D__LOG_LEVEL=1 -DUSE_ASSERT
+EFM32TG110.menu.log.fatal.build.log_level=-D__LOG_LEVEL=1 -DDEBUG_EFM
 EFM32TG110.menu.log.error=ERROR
-EFM32TG110.menu.log.error.build.log_level=-D__LOG_LEVEL=2 -DUSE_ASSERT
+EFM32TG110.menu.log.error.build.log_level=-D__LOG_LEVEL=2 -DDEBUG_EFM
 EFM32TG110.menu.log.warning=WARNING
-EFM32TG110.menu.log.warning.build.log_level=-D__LOG_LEVEL=3 -DUSE_ASSERT
+EFM32TG110.menu.log.warning.build.log_level=-D__LOG_LEVEL=3 -DDEBUG_EFM
 EFM32TG110.menu.log.info=INFO
-EFM32TG110.menu.log.info.build.log_level=-D__LOG_LEVEL=4 -DUSE_ASSERT
+EFM32TG110.menu.log.info.build.log_level=-D__LOG_LEVEL=4 -DDEBUG_EFM
 EFM32TG110.menu.log.debug=DEBUG
-EFM32TG110.menu.log.debug.build.log_level=-D__LOG_LEVEL=5 -DUSE_ASSERT
+EFM32TG110.menu.log.debug.build.log_level=-D__LOG_LEVEL=5 -DDEBUG_EFM
 EFM32TG110.menu.log.trace=TRACE
-EFM32TG110.menu.log.trace.build.log_level=-D__LOG_LEVEL=6 -DUSE_ASSERT
+EFM32TG110.menu.log.trace.build.log_level=-D__LOG_LEVEL=6 -DDEBUG_EFM
 
 #--------------------------UPLOAD METHODS------------------------------
 EFM32TG110.upload.file_type=bin
