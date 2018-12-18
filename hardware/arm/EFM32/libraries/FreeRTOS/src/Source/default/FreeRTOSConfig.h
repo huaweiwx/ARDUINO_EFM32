@@ -151,8 +151,8 @@ extern "C" {
 #define portUSE_HEAP 0  /* use heap_useNewlib */
 #endif
 
+//#define configTOTAL_HEAP_SIZE                   (( size_t )((unsigned)SRAM_SIZE)/4)
 #ifndef configTOTAL_HEAP_SIZE
-//#define configTOTAL_HEAP_SIZE                     (( size_t )((unsigned)SRAM_SIZE)/4)
 #define configTOTAL_HEAP_SIZE                     (SRAM_SIZE/4)
 #endif
 
@@ -194,18 +194,26 @@ extern "C" {
 
 /* Hook function related definitions. */
 #ifndef configUSE_TICK_HOOK
-#define configUSE_TICK_HOOK                       ( 0 )
+ #define configUSE_TICK_HOOK                       ( 0 )
 #endif
 #ifndef configCHECK_FOR_STACK_OVERFLOW
-#define configCHECK_FOR_STACK_OVERFLOW            ( 0 )
+ #if defined(DEBUG_EFM)
+  #define configCHECK_FOR_STACK_OVERFLOW            ( 1 )
+ #else
+  #define configCHECK_FOR_STACK_OVERFLOW            ( 0 )
+ #endif 
 #endif
 #ifndef configUSE_MALLOC_FAILED_HOOK
-#define configUSE_MALLOC_FAILED_HOOK              ( 0 )
+ #if defined(DEBUG_EFM)
+   #define configUSE_MALLOC_FAILED_HOOK              ( 1 )
+ #else
+   #define configUSE_MALLOC_FAILED_HOOK              ( 0 )
+ #endif 
 #endif
 
 /* Run time stats gathering related definitions. */
 #ifndef configGENERATE_RUN_TIME_STATS
-#define configGENERATE_RUN_TIME_STATS             ( 0 )
+ #define configGENERATE_RUN_TIME_STATS             ( 0 )
 #endif
 
 /* Co-routine related definitions. */
